@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 from datetime import datetime
 
 from sqlalchemy import select
@@ -23,26 +22,89 @@ class EmailService:
         self.provider = provider
 
     def draft(self, *, sender: str, recipients: list[str], subject: str, body_text: str, commitment_id: str | None = None, cc: list[str] | None = None, bcc: list[str] | None = None, reply_to: str | None = None, body_html: str | None = None) -> EmailSendAction:
-        fingerprint = hashlib.sha256(f"{sender}|{','.join(recipients)}|{subject}|{body_text}".encode()).hexdigest()[:24]
         thread = EmailThread(subject=subject, commitment_id=commitment_id)
         self.session.add(thread)
         self.session.flush()
-        action = EmailSendAction(sender=sender, recipients=recipients, cc=cc or [], bcc=bcc or [], reply_to=reply_to, subject=subject, body_text=body_text, body_html=body_html, commitment_id=commitment_id, thread_id=thread.id, idempotency_key=f"pactlyn-{fingerprint}")
+        action = EmailSendAction(sender=sender, recipients=recipients, cc=cc or [], bcc=bcc or [], reply_to=reply_to, subject=subject, body_text=body_text, body_html=body_html, commitment_id=commitment_id, thread_id=thread.id, idempotency_key="pending")
         self.session.add(action)
         self.session.flush()
+        action.idempotency_key = f"pactlyn-{action.id}"
         return action
 
     def approve(self, action_id: str) -> EmailSendAction:
         action = self._required(action_id)
+        if action.state in {EmailState.SENT, EmailState.DELIVERED, EmailState.CANCELLED}:
+            raise ValueError("This email cannot be approved in its current state")
         action.approval_hash = payload_hash(sender=action.sender, recipients=action.recipients, cc=action.cc, bcc=action.bcc, reply_to=action.reply_to, subject=action.subject, body_text=action.body_text, body_html=action.body_html)
         action.state = EmailState.QUEUED
         self.session.add(AuditEvent(operation="email_approved", operation_id=action.id, detail={"payload_hash": action.approval_hash}))
         self.session.commit()
         return action
 
+    def list_actions(self, *, limit: int = 100) -> list[EmailSendAction]:
+        return list(
+            self.session.scalars(
+                select(EmailSendAction)
+                .order_by(EmailSendAction.updated_at.desc())
+                .limit(limit)
+            )
+        )
+
+    def update_draft(
+        self,
+        action_id: str,
+        *,
+        sender: str,
+        recipients: list[str],
+        cc: list[str],
+        bcc: list[str],
+        reply_to: str | None,
+        subject: str,
+        body_text: str,
+        body_html: str | None = None,
+        commitment_id: str | None = None,
+    ) -> EmailSendAction:
+        action = self._required(action_id)
+        if action.state in {EmailState.SENT, EmailState.DELIVERED}:
+            raise ValueError("Sent email payloads cannot be edited")
+        action.sender = sender
+        action.recipients = recipients
+        action.cc = cc
+        action.bcc = bcc
+        action.reply_to = reply_to
+        action.subject = subject
+        action.body_text = body_text
+        action.body_html = body_html
+        action.commitment_id = commitment_id
+        if action.thread_id:
+            thread = self.session.get(EmailThread, action.thread_id)
+            if thread:
+                thread.subject = subject
+                thread.commitment_id = commitment_id
+        action.approval_hash = None
+        action.state = EmailState.DRAFT
+        action.last_error = None
+        self.session.add(
+            AuditEvent(
+                operation="email_edited",
+                operation_id=action.id,
+                detail={"approval_invalidated": True},
+            )
+        )
+        return action
+
     def cancel(self, action_id: str) -> EmailSendAction:
         action = self._required(action_id)
         action.state = EmailState.CANCELLED
+        self.session.commit()
+        return action
+
+    def retry(self, action_id: str) -> EmailSendAction:
+        action = self._required(action_id)
+        if action.state != EmailState.FAILED:
+            raise ValueError("Only failed sends can be retried")
+        action.state = EmailState.QUEUED
+        action.last_error = None
         self.session.commit()
         return action
 
@@ -66,8 +128,8 @@ class EmailService:
                 processed.append(action)
                 self.session.add(EmailMessage(thread_id=action.thread_id or "", provider_message_id=result.provider_id, message_id_header=f"<{action.id}@pactlyn.local>", sender=action.sender, recipients=action.recipients, subject=action.subject, body_text=action.body_text, received_at=datetime.utcnow()))
                 self.session.add(AuditEvent(operation="email_sent", operation_id=action.id, detail={"provider_id": result.provider_id}))
-            except Exception as exc:  # provider errors are persisted for recovery
-                action.state = EmailState.QUEUED
+            except Exception as exc:  # uncertain outcomes must not auto-retry
+                action.state = EmailState.UNKNOWN
                 action.last_error = str(exc)[:1000]
             self.session.commit()
         return processed

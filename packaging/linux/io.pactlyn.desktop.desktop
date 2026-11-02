@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Pactlyn
+Comment=Remember what matters. Follow through.
+Exec=pactlyn
+Icon=io.pactlyn.desktop
+Terminal=false
+Categories=Office;Utility;
+StartupWMClass=Pactlyn

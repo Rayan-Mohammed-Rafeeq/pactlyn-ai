@@ -27,4 +27,4 @@ async def test_inbound_reply_resolves_waiting_commitment(session):
     count, _ = await InboundEmailSync(session, FakeInboundProvider()).sync()
     session.refresh(commitment)
     assert count == 1
-    assert commitment.status == CommitmentStatus.COMPLETED
+    assert commitment.status == CommitmentStatus.RESPONSE_RECEIVED

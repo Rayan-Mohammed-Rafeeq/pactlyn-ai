@@ -17,6 +17,7 @@ def main() -> int:
     except Exception as exc:
         QMessageBox.critical(None, "Pactlyn could not start", str(exc))
         return 1
+    app.aboutToQuit.connect(window.shutdown)
     window.show()
     return app.exec()
 
