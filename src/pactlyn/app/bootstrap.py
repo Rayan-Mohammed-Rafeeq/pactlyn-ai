@@ -15,6 +15,7 @@ from pactlyn.llm.gateway import LLMGateway
 from pactlyn.llm.providers.ollama import OllamaProvider
 from pactlyn.llm.providers.openrouter import OpenRouterProvider
 from pactlyn.memory.service import MemoryService
+from pactlyn.rag.embeddings import EmbeddingModelState, activate_embedding_model
 from pactlyn.security.credentials import CredentialStore
 from pactlyn.storage.database import create_session_factory, init_database, make_engine
 from pactlyn.storage.models import Contact, MemoryRecord
@@ -29,6 +30,7 @@ class AppContainer:
     vectors: LocalQdrantStore
     embedder: object
     clock: Callable[[], datetime]
+    embedding_state: EmbeddingModelState | None = None
     email_provider: ResendProvider | None = None
 
     def session(self) -> Session:
@@ -78,12 +80,22 @@ def build_container(
     resend_key = credentials.get("resend_api_key")
     if resend_key and settings.resend_from:
         email_provider = ResendProvider(resend_key)
+    vectors = LocalQdrantStore(settings.qdrant_path)
+    session_factory = create_session_factory(engine)
+    metadata_session = session_factory()
+    try:
+        embedding_state = activate_embedding_model(
+            metadata_session, vectors, settings.ollama_embedding_model
+        )
+    finally:
+        metadata_session.close()
     return AppContainer(
         settings=settings,
-        session_factory=create_session_factory(engine),
+        session_factory=session_factory,
         llm=LLMGateway(local, cloud),
-        vectors=LocalQdrantStore(settings.qdrant_path),
+        vectors=vectors,
         embedder=local,
         clock=clock or (lambda: datetime.now(UTC)),
+        embedding_state=embedding_state,
         email_provider=email_provider,
     )
