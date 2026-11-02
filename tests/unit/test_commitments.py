@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 
-from pactlyn.core.commitments import CommitmentExtractor, CommitmentService
+from pactlyn.core.commitments import CommitmentCandidate, CommitmentExtractor, CommitmentService
 from pactlyn.storage.models import CommitmentStatus, CommitmentType
 
 
@@ -25,6 +25,16 @@ def test_relative_deadline_is_parsed_and_persisted(session):
     assert CommitmentService(session).get(commitment.id) is not None
 
 
+def test_relative_deadline_uses_configured_timezone():
+    now = datetime(2026, 11, 2, 18, tzinfo=UTC)
+    result = CommitmentExtractor().extract(
+        "Finish the assignment tomorrow",
+        now=now,
+        timezone_name="Asia/Kolkata",
+    )
+    assert result.candidates[0].due_at == datetime(2026, 11, 3, 11, 30, tzinfo=UTC)
+
+
 def test_duplicate_reminder_schedule_is_deduplicated(session):
     result = CommitmentExtractor().extract("Finish the report tomorrow", now=datetime.now(UTC))
     service = CommitmentService(session)
@@ -32,3 +42,18 @@ def test_duplicate_reminder_schedule_is_deduplicated(session):
     first = service.schedule_reminder(commitment.id, datetime.now(UTC) + timedelta(hours=1))
     second = service.schedule_reminder(commitment.id, first.scheduled_at)
     assert first.id == second.id
+
+
+def test_existing_contact_email_is_associated(session):
+    from pactlyn.storage.models import Contact
+
+    session.add(Contact(name="Rahul", email="rahul@example.com"))
+    session.flush()
+    candidate = CommitmentCandidate(
+        title="Ask Rahul",
+        description="Ask Rahul for an update",
+        person="Rahul",
+        needs_confirmation=False,
+    )
+    commitment = CommitmentService(session).create(candidate, confirmed=True)
+    assert commitment.contact_email == "rahul@example.com"

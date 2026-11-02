@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import builtins
 import re
 from datetime import UTC, datetime, timedelta
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from dateutil import parser as date_parser
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
@@ -14,6 +16,7 @@ from pactlyn.storage.models import (
     CommitmentEvent,
     CommitmentStatus,
     CommitmentType,
+    Contact,
     Reminder,
 )
 
@@ -42,11 +45,28 @@ class CommitmentCandidate(BaseModel):
             return value
         return date_parser.parse(str(value))
 
+    @model_validator(mode="after")
+    def canonicalise_timestamps(self) -> CommitmentCandidate:
+        try:
+            zone = ZoneInfo(self.timezone)
+        except KeyError:
+            return self
+        for field in ("due_at", "reminder_at"):
+            value = getattr(self, field)
+            if value is not None:
+                if value.tzinfo is None:
+                    value = value.replace(tzinfo=zone)
+                setattr(self, field, value.astimezone(UTC))
+        return self
+
 
 class CaptureResult(BaseModel):
     candidates: list[CommitmentCandidate]
     explanation: str = ""
     used_local_model: bool = False
+    used_fallback: bool = False
+    provider_name: str | None = None
+    provider_error: str | None = None
 
 
 class CommitmentExtractor:
@@ -66,6 +86,10 @@ class CommitmentExtractor:
 
     def extract(self, text: str, *, now: datetime | None = None, timezone_name: str = "UTC") -> CaptureResult:
         now = now or datetime.now(UTC)
+        try:
+            now = now.astimezone(ZoneInfo(timezone_name))
+        except KeyError:
+            pass
         source = text.strip()
         if not source:
             return CaptureResult(candidates=[], explanation="Empty capture")
@@ -148,13 +172,19 @@ class CommitmentService:
         status = CommitmentStatus.ACTIVE if confirmed and not candidate.needs_confirmation else CommitmentStatus.NEEDS_CONFIRMATION
         if candidate.type == CommitmentType.WAITING_FOR and confirmed:
             status = CommitmentStatus.WAITING
+        contact_email = candidate.contact_email
+        if candidate.person and not contact_email:
+            contact = self.session.scalar(
+                select(Contact).where(Contact.name.ilike(candidate.person)).limit(1)
+            )
+            contact_email = contact.email if contact else None
         commitment = Commitment(
             title=candidate.title,
             description=candidate.description,
             type=candidate.type,
             status=status,
             person=candidate.person,
-            contact_email=candidate.contact_email,
+            contact_email=contact_email,
             due_at=candidate.due_at,
             timezone=candidate.timezone,
             reminder_at=candidate.reminder_at,
@@ -177,6 +207,33 @@ class CommitmentService:
             query = query.where(Commitment.status == status)
         return list(self.session.scalars(query))
 
+    def search(
+        self,
+        query_text: str = "",
+        *,
+        status: CommitmentStatus | None = None,
+        limit: int = 100,
+    ) -> builtins.list[Commitment]:
+        if not query_text.strip():
+            return self.list(status=status, limit=limit)
+        identifiers: list[str] = list(
+            self.session.execute(
+                text(
+                    "SELECT commitment_id FROM commitment_fts "
+                    "WHERE commitment_fts MATCH :query LIMIT :limit"
+                ),
+                {"query": query_text.strip().replace("\"", ""), "limit": limit},
+            ).scalars()
+        )
+        if not identifiers:
+            return []
+        statement = select(Commitment).where(Commitment.id.in_(identifiers))
+        if status:
+            statement = statement.where(Commitment.status == status)
+        commitments = list(self.session.scalars(statement))
+        order = {identifier: index for index, identifier in enumerate(identifiers)}
+        return sorted(commitments, key=lambda item: order.get(item.id, limit))
+
     def get(self, commitment_id: str) -> Commitment | None:
         return self.session.get(Commitment, commitment_id)
 
@@ -197,7 +254,55 @@ class CommitmentService:
     def complete(self, commitment_id: str) -> Commitment:
         commitment = self._required(commitment_id)
         commitment.status = CommitmentStatus.COMPLETED
+        self._dismiss_reminders(commitment.id)
         self.session.add(CommitmentEvent(commitment_id=commitment.id, event_type="completed"))
+        return commitment
+
+    def cancel(self, commitment_id: str) -> Commitment:
+        commitment = self._required(commitment_id)
+        commitment.status = CommitmentStatus.CANCELLED
+        self._dismiss_reminders(commitment.id)
+        self.session.add(CommitmentEvent(commitment_id=commitment.id, event_type="cancelled"))
+        return commitment
+
+    def update(
+        self,
+        commitment_id: str,
+        *,
+        title: str | None = None,
+        description: str | None = None,
+        person: str | None = None,
+        contact_email: str | None = None,
+        due_at: datetime | None = None,
+        reminder_at: datetime | None = None,
+        status: CommitmentStatus | None = None,
+    ) -> Commitment:
+        commitment = self._required(commitment_id)
+        changed: list[str] = []
+        for field, value in {
+            "title": title,
+            "description": description,
+            "person": person,
+            "contact_email": contact_email,
+            "due_at": due_at,
+            "reminder_at": reminder_at,
+            "status": status,
+        }.items():
+            if value is not None and getattr(commitment, field) != value:
+                setattr(commitment, field, value)
+                changed.append(field)
+        if changed:
+            commitment.needs_confirmation = False
+            self._update_fts(commitment)
+            self.session.add(
+                CommitmentEvent(
+                    commitment_id=commitment.id,
+                    event_type="updated",
+                    detail=", ".join(changed),
+                )
+            )
+            if reminder_at:
+                self.schedule_reminder(commitment.id, reminder_at)
         return commitment
 
     def postpone(self, commitment_id: str, until: datetime) -> Commitment:
@@ -209,6 +314,20 @@ class CommitmentService:
         self.schedule_reminder(commitment.id, until)
         return commitment
 
+    def snooze(self, commitment_id: str, until: datetime) -> Reminder:
+        commitment = self._required(commitment_id)
+        reminder = self.session.scalar(
+            select(Reminder)
+            .where(Reminder.commitment_id == commitment.id, Reminder.dismissed.is_(False))
+            .order_by(Reminder.scheduled_at)
+        )
+        if reminder is None:
+            return self.schedule_reminder(commitment.id, until)
+        reminder.snoozed_until = until
+        reminder.scheduled_at = until
+        reminder.delivered_at = None
+        return reminder
+
     def schedule_reminder(self, commitment_id: str, scheduled_at: datetime) -> Reminder:
         existing = self.session.scalar(select(Reminder).where(Reminder.commitment_id == commitment_id, Reminder.scheduled_at == scheduled_at))
         if existing:
@@ -216,6 +335,13 @@ class CommitmentService:
         reminder = Reminder(commitment_id=commitment_id, scheduled_at=scheduled_at)
         self.session.add(reminder)
         return reminder
+
+    def _dismiss_reminders(self, commitment_id: str) -> None:
+        reminders = self.session.scalars(
+            select(Reminder).where(Reminder.commitment_id == commitment_id)
+        )
+        for reminder in reminders:
+            reminder.dismissed = True
 
     def _required(self, commitment_id: str) -> Commitment:
         commitment = self.get(commitment_id)

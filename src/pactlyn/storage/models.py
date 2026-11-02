@@ -38,6 +38,7 @@ class CommitmentStatus(enum.StrEnum):
     NEEDS_CONFIRMATION = "needs_confirmation"
     ACTIVE = "active"
     WAITING = "waiting"
+    RESPONSE_RECEIVED = "response_received"
     DUE_SOON = "due_soon"
     OVERDUE = "overdue"
     COMPLETED = "completed"
@@ -193,6 +194,8 @@ class EmailThread(Base):
     provider_thread_id: Mapped[str | None] = mapped_column(String(300), unique=True, nullable=True)
     subject: Mapped[str] = mapped_column(String(500), default="")
     commitment_id: Mapped[str | None] = mapped_column(ForeignKey("commitments.id", ondelete="SET NULL"), nullable=True)
+    association_confidence: Mapped[float] = mapped_column(default=0.0)
+    needs_review: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
     messages: Mapped[list[EmailMessage]] = relationship(back_populates="thread", cascade="all, delete-orphan")
 
@@ -282,6 +285,7 @@ class MemoryRecord(Base):
     source_id: Mapped[str] = mapped_column(String(36), index=True)
     confidence: Mapped[float] = mapped_column(default=1.0)
     user_verified: Mapped[bool] = mapped_column(Boolean, default=False)
+    indexed: Mapped[bool] = mapped_column(Boolean, default=False)
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
 

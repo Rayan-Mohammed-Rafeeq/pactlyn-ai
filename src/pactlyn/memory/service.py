@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from pactlyn.llm.interfaces import LLMUnavailable
 from pactlyn.storage.models import MemoryKind, MemoryRecord
 from pactlyn.vectorstore.collections import (
     COLLECTION_COMMITMENTS,
@@ -23,9 +24,15 @@ class MemoryService:
         record = MemoryRecord(kind=kind, content=content, source_type=source_type, source_id=source_id, user_verified=verified, confidence=1.0 if verified else 0.6)
         self.session.add(record)
         self.session.flush()
-        vectors = await self.embedder.embed([content])  # type: ignore[attr-defined]
         collection = {MemoryKind.EPISODIC: COLLECTION_COMMITMENTS, MemoryKind.SEMANTIC: COLLECTION_KNOWLEDGE, MemoryKind.PROCEDURAL: COLLECTION_KNOWLEDGE}[kind]
-        self.vectors.upsert(collection, record.id, vectors[0], {"source_id": source_id, "source_type": source_type, "content": content, "memory_id": record.id})
+        try:
+            vectors = await self.embedder.embed([content])  # type: ignore[attr-defined]
+            self.vectors.upsert(collection, record.id, vectors[0], {"source_id": source_id, "source_type": source_type, "content": content, "memory_id": record.id})
+            record.indexed = True
+        except LLMUnavailable:
+            # Structured memory remains durable; callers can reindex it once
+            # the local embedding model is available again.
+            record.indexed = False
         return record
 
     def list(self, *, kind: MemoryKind | None = None) -> list[MemoryRecord]:
@@ -42,3 +49,25 @@ class MemoryService:
         collection = {MemoryKind.EPISODIC: COLLECTION_COMMITMENTS, MemoryKind.SEMANTIC: COLLECTION_KNOWLEDGE, MemoryKind.PROCEDURAL: COLLECTION_KNOWLEDGE}[record.kind]
         self.vectors.delete(collection, memory_id)
         self.session.commit()
+
+    async def reindex_pending(self) -> int:
+        records = list(
+            self.session.scalars(
+                select(MemoryRecord).where(
+                    MemoryRecord.deleted_at.is_(None), MemoryRecord.indexed.is_(False)
+                )
+            )
+        )
+        count = 0
+        for record in records:
+            vectors = await self.embedder.embed([record.content])  # type: ignore[attr-defined]
+            collection = {
+                MemoryKind.EPISODIC: COLLECTION_COMMITMENTS,
+                MemoryKind.SEMANTIC: COLLECTION_KNOWLEDGE,
+                MemoryKind.PROCEDURAL: COLLECTION_KNOWLEDGE,
+            }[record.kind]
+            self.vectors.upsert(collection, record.id, vectors[0], {"source_id": record.source_id, "source_type": record.source_type, "content": record.content, "memory_id": record.id})
+            record.indexed = True
+            count += 1
+        self.session.commit()
+        return count

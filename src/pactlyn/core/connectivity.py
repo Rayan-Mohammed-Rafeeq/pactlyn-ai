@@ -35,8 +35,10 @@ class ConnectivityMonitor:
             self.set_state(ConnectivityState.RESUMING)
         try:
             async with httpx.AsyncClient(timeout=timeout) as client:
-                response = await client.head(url)
-            state = ConnectivityState.ONLINE if response.is_success else ConnectivityState.LIMITED
+                await client.head(url)
+            # A reachable provider returning 401/404 still proves that the
+            # machine is online; provider authentication is handled elsewhere.
+            state = ConnectivityState.ONLINE
         except httpx.HTTPError:
             state = ConnectivityState.OFFLINE
         self.set_state(state)

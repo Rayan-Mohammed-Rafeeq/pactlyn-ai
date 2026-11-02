@@ -10,7 +10,10 @@ class CredentialStore:
         keyring.set_password(self.service, name, value)
 
     def get(self, name: str) -> str | None:
-        return keyring.get_password(self.service, name)
+        try:
+            return keyring.get_password(self.service, name)
+        except keyring.errors.KeyringError:
+            return None
 
     def delete(self, name: str) -> None:
         try:

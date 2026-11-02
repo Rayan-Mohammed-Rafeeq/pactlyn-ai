@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     ollama_model: str = "llama3.2:3b"
     ollama_embedding_model: str = "nomic-embed-text"
     openrouter_model: str | None = None
+    openrouter_enabled: bool = False
     resend_from: str | None = None
     resend_inbound_address: str | None = None
     default_timezone: str = "UTC"
