@@ -23,9 +23,18 @@ class HybridRetriever:
         self.vectors = vectors
         self.embedder = embedder
 
-    async def search(self, query: str, *, limit: int = 5, collection: str = "personal_knowledge") -> list[Evidence]:
+    async def search(
+        self,
+        query: str,
+        *,
+        limit: int = 5,
+        collection: str = "personal_knowledge",
+        metadata_filter: dict[str, object] | None = None,
+    ) -> list[Evidence]:
         vectors = await self.embedder.embed([query])  # type: ignore[attr-defined]
-        semantic = self.vectors.search(collection, vectors[0], limit=limit)
+        semantic = self.vectors.search(
+            collection, vectors[0], limit=limit, query_filter=metadata_filter
+        )
         tokens = re.findall(r"[A-Za-z0-9_]+", query)
         fts_query = " OR ".join(f'"{token}"' for token in tokens) or '""'
         keyword = self.session.execute(text("SELECT commitment_id, title, description, person FROM commitment_fts WHERE commitment_fts MATCH :query LIMIT :limit"), {"query": fts_query, "limit": limit}).mappings().all()
