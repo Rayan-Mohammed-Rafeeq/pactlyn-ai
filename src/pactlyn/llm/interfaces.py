@@ -12,6 +12,14 @@ class LLMUnavailable(RuntimeError):
     pass
 
 
+class EmbeddingUnavailable(LLMUnavailable):
+    """The configured local embedding model could not produce a vector."""
+
+
+class EmbeddingDimensionMismatch(ValueError):
+    """A provider returned vectors with incompatible dimensions."""
+
+
 class LLMProvider(Protocol):
     name: str
     is_local: bool
