@@ -1,0 +1,8 @@
+{
+  "name": "deterministic_capture_baseline",
+  "dataset_size": 150,
+  "type_accuracy": 0.8,
+  "confirmation_accuracy": 0.5,
+  "deadline_presence_accuracy": 0.8,
+  "note": "This is a reproducible baseline, not an LLM quality claim."
+}

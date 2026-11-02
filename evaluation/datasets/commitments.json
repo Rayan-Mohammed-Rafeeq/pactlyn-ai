@@ -1,0 +1,1352 @@
+[
+  {
+    "id": "commitment-001",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-002",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-003",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-004",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-005",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-006",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-007",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-008",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-009",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-010",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-011",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-012",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-013",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-014",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-015",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-016",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-017",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-018",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-019",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-020",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-021",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-022",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-023",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-024",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-025",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-026",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-027",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-028",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-029",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-030",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-031",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-032",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-033",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-034",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-035",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-036",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-037",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-038",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-039",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-040",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-041",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-042",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-043",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-044",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-045",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-046",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-047",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-048",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-049",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-050",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-051",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-052",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-053",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-054",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-055",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-056",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-057",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-058",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-059",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-060",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-061",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-062",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-063",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-064",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-065",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-066",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-067",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-068",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-069",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-070",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-071",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-072",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-073",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-074",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-075",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-076",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-077",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-078",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-079",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-080",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-081",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-082",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-083",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-084",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-085",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-086",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-087",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-088",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-089",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-090",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-091",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-092",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-093",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-094",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-095",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-096",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-097",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-098",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-099",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-100",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-101",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-102",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-103",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-104",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-105",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-106",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-107",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-108",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-109",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-110",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-111",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-112",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-113",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-114",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-115",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-116",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-117",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-118",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-119",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-120",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-121",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-122",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-123",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-124",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-125",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-126",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-127",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-128",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-129",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-130",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-131",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-132",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-133",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-134",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-135",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-136",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-137",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-138",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-139",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-140",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-141",
+    "text": "I will send the proposal by Friday.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-142",
+    "text": "Remind me to finish the assignment tomorrow.",
+    "expected": {
+      "type": "deadline",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-143",
+    "text": "I'm waiting for the placement coordinator to confirm the next step.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-144",
+    "text": "Follow up with my professor if they have not replied by Monday.",
+    "expected": {
+      "type": "follow_up",
+      "requires_confirmation": false,
+      "has_deadline": true
+    }
+  },
+  {
+    "id": "commitment-145",
+    "text": "I promised the HR team that I would submit the application.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-146",
+    "text": "Please remember that Alex owes me an update next week.",
+    "expected": {
+      "type": "waiting_for",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-147",
+    "text": "Can you help me postpone share the notes until next month?",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-148",
+    "text": "I already completed prepare the presentation; do not remind me again.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-149",
+    "text": "Maybe I should renew the membership, but I'm not sure when.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": true,
+      "has_deadline": false
+    }
+  },
+  {
+    "id": "commitment-150",
+    "text": "Reply to the message and ask the library for context.",
+    "expected": {
+      "type": "personal_task",
+      "requires_confirmation": false,
+      "has_deadline": false
+    }
+  }
+]
