@@ -137,12 +137,20 @@ class EmailService:
     async def reconcile(self) -> None:
         if not self.provider:
             return
-        actions = list(self.session.scalars(select(EmailSendAction).where(EmailSendAction.provider_id.is_not(None), EmailSendAction.state == EmailState.SENT)))
+        actions = list(
+            self.session.scalars(
+                select(EmailSendAction).where(
+                    EmailSendAction.provider_id.is_not(None),
+                    EmailSendAction.state.in_([EmailState.SENT, EmailState.UNKNOWN]),
+                )
+            )
+        )
         for action in actions:
             try:
                 state = await self.provider.status(action.provider_id or "")
-                if state.lower() in {"delivered", "delivery_delayed", "bounced", "complained"}:
-                    action.state = EmailState.DELIVERED if state.lower() == "delivered" else EmailState.FAILED
+                normalized = state.lower()
+                if normalized in {"sent", "delivered", "delivery_delayed", "bounced", "complained"}:
+                    action.state = EmailState.DELIVERED if normalized == "delivered" else EmailState.FAILED if normalized in {"bounced", "complained"} else EmailState.SENT
             except Exception:
                 continue
         self.session.commit()
