@@ -1,0 +1,4 @@
+Pactlyn schema migrations are managed with Alembic. The application creates
+the current metadata on first run for a zero-configuration desktop install;
+future releases should run `alembic upgrade head` before destructive schema
+changes.
