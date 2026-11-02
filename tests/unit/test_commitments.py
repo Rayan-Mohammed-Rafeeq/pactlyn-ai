@@ -14,6 +14,13 @@ def test_waiting_for_capture_requires_follow_up_confirmation():
     assert candidate.person is not None
 
 
+def test_waiting_for_named_person_does_not_include_following_verb():
+    result = CommitmentExtractor().extract(
+        "I'm waiting for Rahul to send me the project proposal by Friday."
+    )
+    assert result.candidates[0].person == "Rahul"
+
+
 def test_relative_deadline_is_parsed_and_persisted(session):
     now = datetime(2026, 11, 2, 10, tzinfo=UTC)
     result = CommitmentExtractor().extract("I need to submit my assignment by Friday", now=now)

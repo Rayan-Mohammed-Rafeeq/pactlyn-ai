@@ -105,7 +105,10 @@ class CommitmentExtractor:
         due_at = self._parse_relative_date(source, now)
         email_match = self._email_pattern.search(source)
         person = self._infer_person(source)
-        needs_confirmation = due_at is None or (commitment_type in {CommitmentType.WAITING_FOR, CommitmentType.FOLLOW_UP} and person is None)
+        needs_confirmation = due_at is None or (
+            commitment_type in {CommitmentType.WAITING_FOR, CommitmentType.FOLLOW_UP}
+            and (person is None or email_match is None)
+        )
         title = self._title(source, commitment_type)
         candidate = CommitmentCandidate(
             title=title,
@@ -152,7 +155,11 @@ class CommitmentExtractor:
         match = re.search(r"\b(?:with|from|to|ask|contact|email)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)", source)
         if match:
             return match.group(1)
-        waiting_match = re.search(r"\bwaiting for (?:the\s+)?([a-z][a-z-]*(?:\s+[a-z][a-z-]*)?)", source, re.IGNORECASE)
+        waiting_match = re.search(
+            r"\bwaiting for (?:the\s+)?([a-z][a-z-]*(?:\s+[a-z][a-z-]*)*?)(?=\s+(?:to|that|who|send|reply|confirm)\b|\s*$)",
+            source,
+            re.IGNORECASE,
+        )
         return waiting_match.group(1) if waiting_match else None
 
     @staticmethod
