@@ -17,3 +17,16 @@ async def test_qdrant_and_memory_persist(tmp_path, session):
     hits = store.search("personal_knowledge", (await DeterministicTestEmbedding().embed(["Rahul project"]))[0])
     assert hits and hits[0].payload["memory_id"] == record.id
     store.close()
+
+
+@pytest.mark.asyncio
+async def test_memory_deletion_removes_qdrant_point(tmp_path, session):
+    store = LocalQdrantStore(tmp_path / "qdrant")
+    service = MemoryService(session, store, DeterministicTestEmbedding())
+    record = await service.remember("Delete this private note", kind=MemoryKind.SEMANTIC, source_type="note", source_id="delete-me")
+    session.commit()
+    vector = (await DeterministicTestEmbedding().embed([record.content]))[0]
+    assert store.search("personal_knowledge", vector)
+    service.delete(record.id)
+    assert not store.search("personal_knowledge", vector)
+    store.close()
