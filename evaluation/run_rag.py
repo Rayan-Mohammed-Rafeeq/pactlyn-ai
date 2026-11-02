@@ -29,9 +29,11 @@ async def run() -> dict[str, object]:
         retriever = HybridRetriever(session, vectors, embedder)
         ranks: list[int] = []
         precision_hits = 0
+        retrieved_at_5 = 0
         for row in dataset:
             evidence = await retriever.search(row["query"], limit=5)
             ids = [item.source_id.split(":chunk:")[0] for item in evidence]
+            retrieved_at_5 += min(5, len(ids))
             if row["relevant"] in ids:
                 rank = ids.index(row["relevant"]) + 1
                 ranks.append(rank)
@@ -61,7 +63,7 @@ async def run() -> dict[str, object]:
         "embedding_model": DeterministicTestEmbedding.model_name,
         "recall_at_5": round(recall_at_5, 4),
         "mrr": round(mrr, 4),
-        "retrieval_precision_at_5": round(recall_at_5, 4),
+        "retrieval_precision_at_5": round(precision_hits / retrieved_at_5, 4) if retrieved_at_5 else 0.0,
         "deletion_consistent": not any(first["id"] == item.source_id.split(":chunk:")[0] for item in deleted_hits),
         "reindex_count": reindexed,
         "note": "Executed with the deterministic local evaluation embedder because Ollama was unavailable; no hosted vector service was used.",

@@ -1,0 +1,26 @@
+{
+  "status": "unavailable",
+  "evaluation_timestamp": "2026-11-02T18:20:13.190116+00:00",
+  "configuration": {
+    "ollama_url": "http://127.0.0.1:11434",
+    "embedding_model": "nomic-embed-text"
+  },
+  "deterministic": {
+    "dataset_size": 10,
+    "embedding_model": "deterministic-test",
+    "embedding_dimension": 64,
+    "recall_at_5": 1.0,
+    "recall_at_10": 1.0,
+    "precision_at_5": 0.2,
+    "mrr": 0.8833,
+    "empty_result_rate": 0.0,
+    "latency_ms_mean": 0.4,
+    "latency_ms_median": 0.32,
+    "latency_ms_p95": 0.44
+  },
+  "real_ollama": null,
+  "note": "Deterministic results are a harness check only and are not semantic-model evidence.",
+  "missing": [
+    "nomic-embed-text"
+  ]
+}

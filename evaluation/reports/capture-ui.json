@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-11-02T18:44:12.091484+00:00",
+  "model": "qwen2.5:7b",
+  "endpoint": "http://127.0.0.1:11434",
+  "input": "I'm waiting for Rahul to send the project proposal by Friday.",
+  "latency_ms": 2052.88,
+  "capture_result": {
+    "candidates": [
+      {
+        "title": "Rahul to send the project proposal by Friday",
+        "description": "",
+        "type": "personal_task",
+        "person": null,
+        "contact_email": null,
+        "action": null,
+        "expected_recipient": null,
+        "reminder_preference": null,
+        "dependency": null,
+        "due_at": null,
+        "timezone": "UTC",
+        "reminder_at": null,
+        "confidence": 0.75,
+        "needs_confirmation": true,
+        "evidence": "I'm waiting for Rahul to send the project proposal by Friday."
+      }
+    ],
+    "explanation": "",
+    "used_local_model": true,
+    "used_fallback": false,
+    "provider_name": "ollama",
+    "provider_error": null
+  }
+}

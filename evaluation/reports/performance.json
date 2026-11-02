@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-11-02T18:46:05.032182+00:00",
+  "configuration": {
+    "llm_model": "llama3.2:3b",
+    "embedding_model": "nomic-embed-text",
+    "ollama_url": "http://127.0.0.1:11434"
+  },
+  "gpu": "not measured: no GPU telemetry is claimed by this harness",
+  "status": "unavailable",
+  "missing": [
+    "llama3.2:3b",
+    "nomic-embed-text"
+  ]
+}

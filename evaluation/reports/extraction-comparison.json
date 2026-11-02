@@ -1,0 +1,90 @@
+{
+  "evaluation_timestamp": "2026-11-02T18:39:43.472783+00:00",
+  "dataset": "evaluation/datasets/commitments.json",
+  "scoring": {
+    "type_accuracy": "first candidate type equals expected type; empty prediction is incorrect",
+    "deadline_precision_recall": "binary presence of a due_at value against has_deadline labels",
+    "contact_accuracy": "binary person or contact_email presence against has_contact labels",
+    "confirmation_accuracy": "candidate needs_confirmation equals requires_confirmation",
+    "multi_commitment_accuracy": "not scored: the checked-in 150-example labels contain no expected commitment count"
+  },
+  "deterministic_baseline": {
+    "name": "deterministic_capture_baseline",
+    "dataset_size": 150,
+    "type_accuracy": 0.8,
+    "confirmation_accuracy": 0.5,
+    "deadline_presence_accuracy": 0.8,
+    "contact_presence_accuracy": 0.6,
+    "deadline_precision": 0.6,
+    "deadline_recall": 1.0,
+    "deadline_f1": 0.75,
+    "latency_ms_mean": 0.0395,
+    "latency_ms_p95": 0.0435,
+    "note": "This is a reproducible baseline, not an LLM quality claim."
+  },
+  "ollama": {
+    "name": "ollama_capture_evaluation",
+    "status": "complete",
+    "evaluation_timestamp": "2026-11-02T18:24:50.014367+00:00",
+    "evaluation_now": "2026-11-02T10:00:00+00:00",
+    "configuration": {
+      "ollama_url": "http://127.0.0.1:11434",
+      "llm_model": "qwen2.5:7b",
+      "embedding_model": "nomic-embed-text",
+      "timezone": "UTC"
+    },
+    "ollama_version": "0.40.7",
+    "installed_models": [
+      "qwen2.5:7b"
+    ],
+    "embedding_dimension": null,
+    "embedding_status": "unavailable",
+    "missing_embedding_model": "nomic-embed-text",
+    "dataset_size": 150,
+    "type_accuracy": 0.3867,
+    "confirmation_accuracy": 0.5,
+    "deadline_presence_accuracy": 0.8,
+    "contact_presence_accuracy": 0.5133,
+    "deadline": {
+      "precision": 0.6027,
+      "recall": 0.9778,
+      "f1": 0.7458
+    },
+    "contact_presence": {
+      "precision": 1.0,
+      "recall": 0.0267,
+      "f1": 0.0519
+    },
+    "extraction_detection": {
+      "precision": 0.8133,
+      "recall": 0.8133,
+      "f1": 0.8133,
+      "definition": "The checked-in dataset labels one commitment per example but does not label a commitment count; this is prediction non-emptiness, not a multi-commitment score."
+    },
+    "multi_commitment_accuracy": null,
+    "categories": {
+      "deadline": {
+        "count": 30.0,
+        "type_accuracy": 0.1
+      },
+      "follow_up": {
+        "count": 15.0,
+        "type_accuracy": 0.4
+      },
+      "personal_task": {
+        "count": 75.0,
+        "type_accuracy": 0.48
+      },
+      "waiting_for": {
+        "count": 30.0,
+        "type_accuracy": 0.4333
+      }
+    },
+    "latency_ms_mean": 2253.64,
+    "latency_ms_median": 2366.62,
+    "latency_ms_p95": 3023.47,
+    "empty_results": 28
+  },
+  "comparison_status": "available",
+  "note": "The qwen report is an explicit PACTLYN_OLLAMA_MODEL override; it is not a result for the configured llama3.2:3b model."
+}

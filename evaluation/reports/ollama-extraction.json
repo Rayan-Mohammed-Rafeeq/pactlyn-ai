@@ -1,0 +1,20 @@
+{
+  "name": "ollama_capture_evaluation",
+  "status": "unavailable",
+  "evaluation_timestamp": "2026-11-02T18:46:05.521382+00:00",
+  "evaluation_now": "2026-11-02T10:00:00+00:00",
+  "configuration": {
+    "ollama_url": "http://127.0.0.1:11434",
+    "llm_model": "llama3.2:3b",
+    "embedding_model": "nomic-embed-text",
+    "timezone": "UTC"
+  },
+  "ollama_version": "0.40.7",
+  "installed_models": [
+    "qwen2.5:7b"
+  ],
+  "missing": [
+    "llama3.2:3b",
+    "nomic-embed-text"
+  ]
+}

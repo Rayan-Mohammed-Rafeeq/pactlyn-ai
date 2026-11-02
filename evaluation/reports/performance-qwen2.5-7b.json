@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-11-02T18:45:33.795700+00:00",
+  "configuration": {
+    "llm_model": "qwen2.5:7b",
+    "embedding_model": "nomic-embed-text",
+    "ollama_url": "http://127.0.0.1:11434"
+  },
+  "gpu": "not measured: no GPU telemetry is claimed by this harness",
+  "status": "complete",
+  "model_version": "0.40.7",
+  "latency_ms_mean": 2190.77,
+  "latency_ms_median": 2307.6,
+  "latency_ms_p95": 2307.6,
+  "sample_count": 3,
+  "process_max_rss_kib": 65660,
+  "process_max_rss_delta_kib": 2560,
+  "embedding": "unavailable: configured embedding model is not installed",
+  "qdrant_storage_growth": "not measured without real embeddings",
+  "sqlite_storage_growth": "not measured in this model-only probe"
+}
