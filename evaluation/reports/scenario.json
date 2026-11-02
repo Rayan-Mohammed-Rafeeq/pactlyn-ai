@@ -1,0 +1,17 @@
+{
+  "input": "I'm waiting for Rahul to send me the project proposal by Friday.",
+  "extracted_type": "waiting_for",
+  "extracted_person": "Rahul",
+  "extracted_due_at_utc": "2026-11-06T17:00:00+00:00",
+  "initial_confirmation_required": true,
+  "saved_status": "waiting",
+  "memory_persisted": true,
+  "retrieval_hit": true,
+  "email_approval_bound": true,
+  "email_queued": true,
+  "restart_persisted": true,
+  "reply_sync": "not_run_without_live_Resend",
+  "outcome_confirmation": "not_run_without_live_Resend",
+  "external_model": "not_run_without_live_Ollama",
+  "external_email": "not_run_without_live_Resend"
+}

@@ -1,0 +1,12 @@
+[
+  {"id": "commitment-rahul", "source_type": "commitment", "content": "Rahul should review the project proposal by Friday.", "query": "Rahul project proposal review", "relevant": "commitment-rahul"},
+  {"id": "contact-rahul", "source_type": "contact_note", "content": "Rahul is the project partner and prefers concise follow-ups.", "query": "Rahul project partner preferences", "relevant": "contact-rahul"},
+  {"id": "email-proposal", "source_type": "email", "content": "From: rahul@example.com\nSubject: Project proposal\nRahul will review the proposal this week.", "query": "email from Rahul about proposal", "relevant": "email-proposal"},
+  {"id": "document-internship", "source_type": "document", "content": "Internship application checklist: submit the research proposal and confirmation letter.", "query": "internship application research proposal", "relevant": "document-internship"},
+  {"id": "memory-followup", "source_type": "memory", "content": "The user prefers a two-day follow-up interval for unanswered project emails.", "query": "preferred follow-up interval project emails", "relevant": "memory-followup"},
+  {"id": "commitment-assignment", "source_type": "commitment", "content": "Submit the assignment before Friday at 17:00.", "query": "assignment Friday deadline", "relevant": "commitment-assignment"},
+  {"id": "contact-professor", "source_type": "contact_note", "content": "Professor Mehta supervises the research proposal.", "query": "research proposal supervisor", "relevant": "contact-professor"},
+  {"id": "email-coordinator", "source_type": "email", "content": "From: coordinator@example.com\nSubject: Interview details\nThe placement interview details are pending.", "query": "placement coordinator interview details", "relevant": "email-coordinator"},
+  {"id": "document-quiet", "source_type": "document", "content": "Reminder preference: do not notify during quiet hours from 22:00 to 08:00.", "query": "quiet hours reminder preference", "relevant": "document-quiet"},
+  {"id": "memory-tone", "source_type": "memory", "content": "The user confirmed a polite and concise tone for follow-up emails.", "query": "preferred follow-up email tone", "relevant": "memory-tone"}
+]

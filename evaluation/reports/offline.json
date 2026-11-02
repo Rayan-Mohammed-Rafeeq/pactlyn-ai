@@ -1,0 +1,15 @@
+{
+  "network_namespace": "physical",
+  "sqlite": true,
+  "qdrant_local_path": true,
+  "desktop_ui": true,
+  "ollama_available": false,
+  "local_embeddings": false,
+  "rag": false,
+  "commitment_created": true,
+  "reminder_evaluated": true,
+  "email_draft_created": true,
+  "email_queued_without_provider": true,
+  "cloud_fallback": false,
+  "note": "Run with `unshare -n` for physical network isolation. Ollama/RAG are unavailable unless local Ollama is already installed and reachable without networking."
+}

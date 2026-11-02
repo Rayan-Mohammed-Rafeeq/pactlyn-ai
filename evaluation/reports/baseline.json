@@ -8,7 +8,7 @@
   "deadline_precision": 0.6,
   "deadline_recall": 1.0,
   "deadline_f1": 0.75,
-  "latency_ms_mean": 0.0461,
-  "latency_ms_p95": 0.0502,
+  "latency_ms_mean": 0.0395,
+  "latency_ms_p95": 0.0435,
   "note": "This is a reproducible baseline, not an LLM quality claim."
 }
