@@ -851,6 +851,28 @@ class PactlynWindow(QMainWindow):
         QMessageBox.information(self, thread.subject or "Conversation", messages + association)
         if thread.needs_review:
             self._review_thread_association(str(thread_id))
+        elif thread.commitment_id:
+            session = self.container.session()
+            try:
+                commitment = self.container.commitments(session).get(thread.commitment_id)
+                response_received = commitment and commitment.status == CommitmentStatus.RESPONSE_RECEIVED
+            finally:
+                session.close()
+            if response_received:
+                outcome = QMessageBox.question(
+                    self,
+                    "Confirm outcome",
+                    "This reply is associated with a waiting commitment. Did it resolve the commitment?",
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                )
+                if outcome == QMessageBox.StandardButton.Yes:
+                    session = self.container.session()
+                    try:
+                        self.container.commitments(session).complete(thread.commitment_id)
+                        session.commit()
+                    finally:
+                        session.close()
+                    self._refresh()
 
     def _review_thread_association(self, thread_id: str) -> None:
         session = self.container.session()
