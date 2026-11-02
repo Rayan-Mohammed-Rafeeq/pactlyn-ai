@@ -41,8 +41,16 @@ from pactlyn.core.connectivity import ConnectivityMonitor, ConnectivityState
 from pactlyn.core.scheduler import ReminderScheduler
 from pactlyn.email.inbound_sync import InboundEmailSync
 from pactlyn.platform.linux.autostart import LinuxAutostart
+from pactlyn.rag.retrieval import HybridRetriever
+from pactlyn.rag.service import RAGService
 from pactlyn.storage.backup import BackupError, BackupService
-from pactlyn.storage.models import CommitmentStatus, CommitmentType, EmailSendAction, EmailThread
+from pactlyn.storage.models import (
+    CommitmentStatus,
+    CommitmentType,
+    EmailSendAction,
+    EmailThread,
+    MemoryKind,
+)
 
 STYLE = """
 QMainWindow, QWidget { background: #f7f8fc; color: #1d2433; font-family: Inter, sans-serif; }
@@ -106,6 +114,73 @@ class CaptureWorker(QThread):
             self.finished.emit(result)
         except Exception as exc:  # the UI must recover from worker failures
             self.failed.emit(str(exc))
+
+
+class CapturePersistenceWorker(QThread):
+    finished = Signal(object)
+    failed = Signal(str)
+
+    def __init__(self, container: AppContainer, candidates: list[CommitmentCandidate], source: str):
+        super().__init__()
+        self.container = container
+        self.candidates = candidates
+        self.source = source
+
+    def run(self) -> None:
+        session = self.container.session()
+        try:
+            async def persist() -> list[str]:
+                service = self.container.commitments(session)
+                memory = self.container.memories(session)
+                identifiers: list[str] = []
+                for candidate in self.candidates:
+                    commitment = service.create(
+                        candidate,
+                        confirmed=not candidate.needs_confirmation,
+                        source=self.source,
+                    )
+                    await memory.remember(
+                        candidate.evidence or candidate.description,
+                        kind=MemoryKind.EPISODIC,
+                        source_type="commitment",
+                        source_id=commitment.id,
+                        verified=not candidate.needs_confirmation,
+                    )
+                    identifiers.append(commitment.id)
+                session.commit()
+                return identifiers
+
+            result = asyncio.run(persist())
+            self.finished.emit(result)
+        except Exception as exc:
+            session.rollback()
+            self.failed.emit(str(exc))
+        finally:
+            session.close()
+
+
+class AssistantWorker(QThread):
+    finished = Signal(object)
+    failed = Signal(str)
+
+    def __init__(self, container: AppContainer, question: str):
+        super().__init__()
+        self.container = container
+        self.question = question
+
+    def run(self) -> None:
+        session = self.container.session()
+        try:
+            async def answer() -> object:
+                retriever = HybridRetriever(session, self.container.vectors, self.container.embedder)
+                return await RAGService(session, self.container.llm, retriever).answer(self.question)
+
+            self.finished.emit(asyncio.run(answer()))
+        except Exception as exc:
+            session.rollback()
+            self.failed.emit(str(exc))
+        finally:
+            session.close()
 
 
 class EmailQueueWorker(QThread):
@@ -368,6 +443,8 @@ class PactlynWindow(QMainWindow):
         self.pages = QStackedWidget()
         self.nav: list[QPushButton] = []
         self.capture_worker: CaptureWorker | None = None
+        self.persistence_worker: CapturePersistenceWorker | None = None
+        self.assistant_worker: AssistantWorker | None = None
         self.email_worker: EmailQueueWorker | None = None
         self.email_sync_worker: EmailSyncWorker | None = None
         self.connectivity = ConnectivityMonitor()
@@ -559,10 +636,21 @@ class PactlynWindow(QMainWindow):
         self.assistant_input = QTextEdit()
         self.assistant_input.setPlaceholderText("Capture a commitment or ask: What am I waiting for?")
         layout.addWidget(self.assistant_input)
+        controls = QHBoxLayout()
         send = QPushButton("Remember this")
         send.setObjectName("primary")
         send.clicked.connect(lambda: self._capture(self.assistant_input.toPlainText()))
-        layout.addWidget(send, 0, Qt.AlignmentFlag.AlignLeft)
+        controls.addWidget(send)
+        ask = QPushButton("Ask local context")
+        ask.setObjectName("secondary")
+        ask.clicked.connect(self._ask_assistant)
+        controls.addWidget(ask)
+        controls.addStretch()
+        layout.addLayout(controls)
+        self.assistant_output = QTextEdit()
+        self.assistant_output.setReadOnly(True)
+        self.assistant_output.setPlaceholderText("Grounded answers cite local source records here.")
+        layout.addWidget(self.assistant_output, 1)
         page.setLayout(layout)
         return page
 
@@ -672,7 +760,8 @@ class PactlynWindow(QMainWindow):
         worker.deleteLater()
         if self.capture_worker is worker:
             self.capture_worker = None
-        self._set_capture_busy(False)
+        if self.persistence_worker is None:
+            self._set_capture_busy(False)
 
     def _set_capture_busy(self, busy: bool) -> None:
         self.quick_capture.setEnabled(not busy)
@@ -702,6 +791,32 @@ class PactlynWindow(QMainWindow):
     def _capture_failed(self, error: str) -> None:
         QMessageBox.critical(self, "Capture failed", f"The local model workflow failed:\n\n{error}")
 
+    def _ask_assistant(self) -> None:
+        question = self.assistant_input.toPlainText().strip()
+        if not question or (self.assistant_worker and self.assistant_worker.isRunning()):
+            return
+        self.assistant_output.setPlainText("Searching local memory and commitments…")
+        worker = AssistantWorker(self.container, question)
+        worker.finished.connect(lambda answer: self._assistant_finished(worker, answer))
+        worker.failed.connect(lambda error: self._assistant_failed(worker, error))
+        self.assistant_worker = worker
+        worker.start()
+
+    def _assistant_finished(self, worker: AssistantWorker, answer: Any) -> None:
+        evidence = "\n\nSources:\n" + "\n".join(
+            f"- {item.source_type}/{item.source_id}" for item in answer.evidence
+        ) if answer.evidence else ""
+        self.assistant_output.setPlainText(answer.answer + evidence)
+        worker.deleteLater()
+        if self.assistant_worker is worker:
+            self.assistant_worker = None
+
+    def _assistant_failed(self, worker: AssistantWorker, error: str) -> None:
+        self.assistant_output.setPlainText(f"Local assistant unavailable: {error}")
+        worker.deleteLater()
+        if self.assistant_worker is worker:
+            self.assistant_worker = None
+
     def _capture_finished(self, text: str, result: CaptureResult) -> None:
         if not result.candidates:
             response = QMessageBox.question(
@@ -724,20 +839,29 @@ class PactlynWindow(QMainWindow):
         dialog = CommitmentReviewDialog(self, result)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
-        session = self.container.session()
-        try:
-            service = self.container.commitments(session)
-            for candidate in dialog.candidates():
-                service.create(candidate, confirmed=not candidate.needs_confirmation, source="ollama" if result.used_local_model else "offline_fallback")
-            session.commit()
-        except Exception as exc:
-            session.rollback()
-            QMessageBox.critical(self, "Could not save", f"No commitment was saved:\n\n{exc}")
-        finally:
-            session.close()
+        self._set_capture_busy(True)
+        worker = CapturePersistenceWorker(
+            self.container,
+            dialog.candidates(),
+            "ollama" if result.used_local_model else "offline_fallback",
+        )
+        worker.finished.connect(lambda _ids: self._capture_persisted(worker, text))
+        worker.failed.connect(lambda error: self._capture_persist_failed(worker, error))
+        self.persistence_worker = worker
+        worker.start()
+
+    def _capture_persisted(self, worker: CapturePersistenceWorker, _text: str) -> None:
+        worker.deleteLater()
+        if self.persistence_worker is worker:
+            self.persistence_worker = None
         self.quick_capture.clear()
         self.assistant_input.clear()
+        self._set_capture_busy(False)
         self._refresh()
+
+    def _capture_persist_failed(self, worker: CapturePersistenceWorker, error: str) -> None:
+        self._capture_persisted(worker, "")
+        QMessageBox.critical(self, "Could not save", f"No commitment was saved:\n\n{error}")
 
     def _refresh(self) -> None:
         session = self.container.session()
