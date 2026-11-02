@@ -1,10 +1,7 @@
 # Roadmap
 
-* Complete Alembic migration scripts and encrypted backup/export UI.
-* Add full Resend inbound thread matching and attachment policy controls.
-* Use the configured Ollama embedding adapter for production indexing and add
-  controlled reindexing when model dimensions change.
-* Add desktop autostart files and native Linux notification backend.
-* Expand the evaluation dataset to 150+ labelled scenarios and publish actual
-  reproducible reports.
+* Add full attachment retrieval and attachment policy controls.
+* Add controlled embedding reindexing when model dimensions change.
+* Expand the evaluation dataset with actual Ollama runs and publish latency,
+  precision/recall/F1 and RAG reports.
 * Add Windows platform adapters without changing core services.

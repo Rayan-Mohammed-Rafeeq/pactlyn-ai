@@ -14,7 +14,9 @@ The repository contains a working 0.1 foundation: a PySide6 desktop shell,
 SQLite/SQLAlchemy persistence, Qdrant local-mode storage, a deterministic
 capture baseline, Ollama and explicit OpenRouter gateways, a LangGraph capture
 workflow, reminder recovery, provenance-aware memory, Resend outbound queueing
-and inbound polling adapters. Uncertain extraction remains confirmation-first.
+and inbound polling adapters. Desktop capture runs Ollama asynchronously,
+supports editable multi-commitment review, and only offers a clearly labelled
+offline fallback after a model failure.
 
 The desktop app does not silently use a cloud model. Resend delivery is only
 possible after a user approves an exact payload.
@@ -51,9 +53,9 @@ ollama pull nomic-embed-text
 
 Pactlyn checks the local endpoint at `http://127.0.0.1:11434`. Configure it
 with `PACTLYN_OLLAMA_URL`, `PACTLYN_OLLAMA_MODEL` and
-`PACTLYN_OLLAMA_EMBEDDING_MODEL`. A fresh install still supports conservative
-rule-based capture until Ollama is available; model output is never treated as
-confirmed fact automatically.
+`PACTLYN_OLLAMA_EMBEDDING_MODEL`. If Ollama is unavailable, the UI explains the
+failure and asks before using the conservative rule-based fallback; model output
+is never treated as confirmed fact automatically.
 
 ## Resend setup
 
@@ -76,13 +78,21 @@ Email content necessarily passes through Resend during transmission.
 SQLite, Qdrant local mode, capture, local embeddings, reminders, memory and
 email drafts work without internet. Approved outbound email actions remain in
 the local queue until a configured Resend provider is available. There is no
-automatic OpenRouter fallback. OpenRouter is an explicit optional provider and
-must be configured separately with a credential-store key.
+automatic OpenRouter fallback. OpenRouter is an explicit optional provider,
+disabled by default, and must be enabled separately with a credential-store key.
+
+## Backup and restore
+
+Use Settings → Create backup or `BackupService`. Password-protected backups
+encrypt the SQLite database and local Qdrant files. Restore requires restarting
+Pactlyn so local stores are reopened safely.
 
 ## Development and checks
 
 ```bash
 uv run pytest
+uv run coverage run --source=src/pactlyn -m pytest
+uv run coverage report -m
 uv run ruff check src tests
 uv run mypy src
 ```

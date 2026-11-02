@@ -42,7 +42,7 @@ def build_dataset() -> list[dict[str, object]]:
         else:
             text = f"{action.capitalize()} and ask {person} for context."
             expected_type = "personal_task"
-        examples.append({"id": f"commitment-{index + 1:03d}", "text": text, "expected": {"type": expected_type, "requires_confirmation": variant in {2, 5, 8}, "has_deadline": variant in {0, 1, 3}}})
+        examples.append({"id": f"commitment-{index + 1:03d}", "text": text, "expected": {"type": expected_type, "requires_confirmation": variant in {2, 5, 8}, "has_deadline": variant in {0, 1, 3}, "has_contact": variant in {2, 3, 4, 5, 9}}})
     return examples
 
 

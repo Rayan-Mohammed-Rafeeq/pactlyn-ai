@@ -4,5 +4,11 @@
   "type_accuracy": 0.8,
   "confirmation_accuracy": 0.5,
   "deadline_presence_accuracy": 0.8,
+  "contact_presence_accuracy": 0.6,
+  "deadline_precision": 0.6,
+  "deadline_recall": 1.0,
+  "deadline_f1": 0.75,
+  "latency_ms_mean": 0.0461,
+  "latency_ms_p95": 0.0502,
   "note": "This is a reproducible baseline, not an LLM quality claim."
 }

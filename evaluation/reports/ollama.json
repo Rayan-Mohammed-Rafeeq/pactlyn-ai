@@ -1,0 +1,6 @@
+{
+  "name": "ollama_capture_evaluation",
+  "status": "unavailable",
+  "model": "llama3.2:3b",
+  "note": "No live Ollama service was available; no model result was fabricated."
+}

@@ -12,6 +12,12 @@
 4. Install Ollama and pull a chat model plus `nomic-embed-text` if local AI is
    desired.
 
+To install a user-scoped desktop launcher from a source checkout:
+
+```bash
+./packaging/linux/install-user.sh
+```
+
 For background reminders, keep Pactlyn running in the system tray. The current
 shell supports tray notifications; desktop autostart packaging is planned for
 the release packaging phase. Linux notification support depends on the
