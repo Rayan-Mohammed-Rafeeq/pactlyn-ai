@@ -30,7 +30,8 @@ class Settings(BaseSettings):
 
     def expanded_data_dir(self) -> Path:
         path = self.data_dir.expanduser()
-        path.mkdir(parents=True, exist_ok=True)
+        path.mkdir(parents=True, exist_ok=True, mode=0o700)
+        path.chmod(0o700)
         return path
 
     @property
@@ -40,5 +41,6 @@ class Settings(BaseSettings):
     @property
     def qdrant_path(self) -> Path:
         path = self.expanded_data_dir() / "qdrant"
-        path.mkdir(parents=True, exist_ok=True)
+        path.mkdir(parents=True, exist_ok=True, mode=0o700)
+        path.chmod(0o700)
         return path
