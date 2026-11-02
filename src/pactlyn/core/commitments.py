@@ -31,6 +31,10 @@ class CommitmentCandidate(BaseModel):
     type: CommitmentType = CommitmentType.PERSONAL_TASK
     person: str | None = None
     contact_email: str | None = None
+    action: str | None = None
+    expected_recipient: str | None = None
+    reminder_preference: str | None = None
+    dependency: str | None = None
     due_at: datetime | None = None
     timezone: str = "UTC"
     reminder_at: datetime | None = None
@@ -79,7 +83,9 @@ class CommitmentExtractor:
 
     _date_pattern = re.compile(
         r"\b(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday|"
-        r"next week|next month|\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?)\b",
+        r"next week|next month|next (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)|"
+        r"end of (?:this )?week|in (?:one|two|three|four|five|six|seven|\d+) days|"
+        r"\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?)\b",
         re.IGNORECASE,
     )
     _email_pattern = re.compile(r"\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+\b")
@@ -105,7 +111,7 @@ class CommitmentExtractor:
         due_at = self._parse_relative_date(source, now)
         email_match = self._email_pattern.search(source)
         person = self._infer_person(source)
-        needs_confirmation = due_at is None or (
+        needs_confirmation = due_at is None or (due_at < now) or (
             commitment_type in {CommitmentType.WAITING_FOR, CommitmentType.FOLLOW_UP}
             and (person is None or email_match is None)
         )
@@ -122,6 +128,8 @@ class CommitmentExtractor:
             confidence=0.62 if due_at else 0.45,
             needs_confirmation=needs_confirmation,
             evidence=source,
+            action=self._infer_action(source),
+            expected_recipient=person,
         )
         return CaptureResult(candidates=[candidate], explanation="Deterministic local extraction; confirmation is required for uncertain fields")
 
@@ -139,8 +147,20 @@ class CommitmentExtractor:
         if value == "next week":
             return (now + timedelta(days=7)).replace(hour=17, minute=0, second=0, microsecond=0)
         if value == "next month":
-            return (now + timedelta(days=30)).replace(hour=17, minute=0, second=0, microsecond=0)
+            month = now.month % 12 + 1
+            year = now.year + (1 if now.month == 12 else 0)
+            return now.replace(year=year, month=month, day=1, hour=17, minute=0, second=0, microsecond=0)
+        if value == "end of this week" or value == "end of week":
+            return (now + timedelta(days=4 - now.weekday())).replace(hour=17, minute=0, second=0, microsecond=0)
+        if value.startswith("in ") and value.endswith(" days"):
+            number = value[3:-5].strip()
+            words = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7}
+            days = words[number] if number in words else int(number) if number.isdigit() else 0
+            return (now + timedelta(days=days)).replace(hour=17, minute=0, second=0, microsecond=0)
         weekdays = {day.lower(): index for index, day in enumerate(("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"))}
+        if value.startswith("next ") and value[5:] in weekdays:
+            delta = (weekdays[value[5:]] - now.weekday()) % 7 or 7
+            return (now + timedelta(days=delta + 7)).replace(hour=17, minute=0, second=0, microsecond=0)
         if value in weekdays:
             delta = (weekdays[value] - now.weekday()) % 7 or 7
             return (now + timedelta(days=delta)).replace(hour=17, minute=0, second=0, microsecond=0)
@@ -161,6 +181,15 @@ class CommitmentExtractor:
             re.IGNORECASE,
         )
         return waiting_match.group(1) if waiting_match else None
+
+    @staticmethod
+    def _infer_action(source: str) -> str | None:
+        match = re.search(
+            r"\b(?:to|need to|must|should|will|ask .*? to)\s+([a-z][a-z -]{2,80})",
+            source,
+            re.IGNORECASE,
+        )
+        return match.group(1).strip(" .,!?") if match else None
 
     @staticmethod
     def _title(source: str, commitment_type: CommitmentType) -> str:
