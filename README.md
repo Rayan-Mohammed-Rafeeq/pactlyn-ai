@@ -112,6 +112,7 @@ See:
 * [Privacy](docs/privacy.md)
 * [Security](docs/security.md)
 * [Testing and evaluation](docs/evaluation.md)
+* [0.2 validation report](docs/validation-0.2.md)
 * [Roadmap](docs/roadmap.md)
 
 ## License
