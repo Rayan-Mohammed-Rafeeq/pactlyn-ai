@@ -9,6 +9,7 @@ from pactlyn.memory.service import MemoryService
 from pactlyn.rag.embeddings import DeterministicTestEmbedding
 from pactlyn.rag.ingestion import IngestionService, SourceChunker
 from pactlyn.rag.retrieval import HybridRetriever
+from pactlyn.storage.models import MemoryKind
 from pactlyn.vectorstore.qdrant_local import LocalQdrantStore
 
 
@@ -42,4 +43,21 @@ async def test_email_ingestion_preserves_headers_and_hybrid_retrieval(tmp_path, 
     assert records
     assert any("Rahul" in item.content for item in evidence)
     assert any(item.source_id.startswith("message-1:chunk:") for item in evidence)
+    store.close()
+
+
+@pytest.mark.asyncio
+async def test_hybrid_retrieval_sanitizes_punctuation_in_fts_queries(tmp_path, session):
+    store = LocalQdrantStore(tmp_path / "qdrant")
+    embedder = DeterministicTestEmbedding()
+    memory = MemoryService(session, store, embedder)
+    await memory.remember(
+        "Follow-up with Rahul about the project",
+        kind=MemoryKind.SEMANTIC,
+        source_type="note",
+        source_id="note-follow-up",
+    )
+    session.commit()
+    evidence = await HybridRetriever(session, store, embedder).search("follow-up Rahul", limit=5)
+    assert evidence
     store.close()
