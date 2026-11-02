@@ -10,7 +10,7 @@ reminder. It is designed to remain useful offline after local model setup.
 
 ## Current release
 
-The repository contains a working 0.1 foundation: a PySide6 desktop shell,
+The repository contains a working 0.3 local-first foundation: a PySide6 desktop shell,
 SQLite/SQLAlchemy persistence, Qdrant local-mode storage, a deterministic
 capture baseline, Ollama and explicit OpenRouter gateways, a LangGraph capture
 workflow, reminder recovery, provenance-aware memory, Resend outbound queueing
@@ -75,8 +75,10 @@ Email content necessarily passes through Resend during transmission.
 
 ## Offline behavior
 
-SQLite, Qdrant local mode, capture, local embeddings, reminders, memory and
-email drafts work without internet. Approved outbound email actions remain in
+SQLite, Qdrant local mode, reminders, memory and email drafts work without
+internet. Ollama capture and embeddings work without external internet only
+when the local Ollama server and models were installed before isolation.
+Approved outbound email actions remain in
 the local queue until a configured Resend provider is available. There is no
 automatic OpenRouter fallback. OpenRouter is an explicit optional provider,
 disabled by default, and must be enabled separately with a credential-store key.
@@ -113,6 +115,7 @@ See:
 * [Security](docs/security.md)
 * [Testing and evaluation](docs/evaluation.md)
 * [0.2 validation report](docs/validation-0.2.md)
+* [0.3 validation report](docs/validation-0.3.md)
 * [Roadmap](docs/roadmap.md)
 
 ## License

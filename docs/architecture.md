@@ -19,6 +19,18 @@ External effects are passed into the graph as explicit callbacks. The email
 service hashes the complete payload when approved and sends only if that exact
 hash still matches. Retries reuse a stable idempotency key.
 
+The production desktop capture worker calls the selected local Ollama gateway
+asynchronously, validates structured Pydantic candidates, presents the editable
+review dialog, and persists confirmed candidates plus provenance-aware episodic
+memory. The assistant page uses the same Ollama embedding provider through
+SQLite FTS5/Qdrant reciprocal-rank-fusion retrieval; answers cite the retrieved
+local source identifiers and are not generated when local evidence is absent.
+
+Embedding model name and discovered dimension are persisted in
+`model_configurations`. Changing the active local embedding model invalidates
+derived Qdrant points and marks canonical SQLite memory records for reindexing;
+source records are preserved.
+
 Qdrant collections are `commitment_memories`, `email_context` and
 `personal_knowledge`. Memory records retain source type and source ID, and
 deletion removes the corresponding point.
