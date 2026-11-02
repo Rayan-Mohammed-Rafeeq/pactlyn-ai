@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from pactlyn.core.commitments import CommitmentCandidate, CommitmentExtractor, CommitmentService
 from pactlyn.storage.models import CommitmentStatus, CommitmentType
@@ -19,6 +20,17 @@ def test_waiting_for_named_person_does_not_include_following_verb():
         "I'm waiting for Rahul to send me the project proposal by Friday."
     )
     assert result.candidates[0].person == "Rahul"
+
+
+def test_relative_dates_are_timezone_aware_and_reproducible():
+    now = datetime(2026, 11, 2, 10, tzinfo=ZoneInfo("Asia/Kolkata"))
+    result = CommitmentExtractor().extract("Finish it in three days", now=now, timezone_name="Asia/Kolkata")
+    assert result.candidates[0].due_at == datetime(2026, 11, 5, 11, 30, tzinfo=UTC)
+
+    end_of_week = CommitmentExtractor().extract(
+        "Submit by end of this week", now=now, timezone_name="Asia/Kolkata"
+    )
+    assert end_of_week.candidates[0].due_at == datetime(2026, 11, 6, 11, 30, tzinfo=UTC)
 
 
 def test_relative_deadline_is_parsed_and_persisted(session):
