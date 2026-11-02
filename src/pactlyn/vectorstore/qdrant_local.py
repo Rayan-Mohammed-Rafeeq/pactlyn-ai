@@ -50,5 +50,17 @@ class LocalQdrantStore:
         if self.client.collection_exists(collection):
             self.client.delete(collection_name=collection, points_selector=models.PointIdsList(points=[point_id]))
 
+    def reset(self, collection: str) -> None:
+        """Drop one local index while preserving canonical SQLite records."""
+        if self.client.collection_exists(collection):
+            self.client.delete_collection(collection_name=collection)
+        self._dimensions.pop(collection, None)
+
+    def dimension(self, collection: str) -> int | None:
+        if not self.client.collection_exists(collection):
+            return None
+        configured = self.client.get_collection(collection).config.params.vectors
+        return configured.size if isinstance(configured, models.VectorParams) else None
+
     def close(self) -> None:
         self.client.close()
