@@ -30,3 +30,18 @@ async def test_memory_deletion_removes_qdrant_point(tmp_path, session):
     service.delete(record.id)
     assert not store.search("personal_knowledge", vector)
     store.close()
+
+
+@pytest.mark.asyncio
+async def test_memory_source_is_not_indexed_twice(tmp_path, session):
+    store = LocalQdrantStore(tmp_path / "qdrant")
+    service = MemoryService(session, store, DeterministicTestEmbedding())
+    first = await service.remember(
+        "Same source", kind=MemoryKind.SEMANTIC, source_type="note", source_id="same-source"
+    )
+    second = await service.remember(
+        "Same source", kind=MemoryKind.SEMANTIC, source_type="note", source_id="same-source"
+    )
+    assert first.id == second.id
+    assert len(service.list()) == 1
+    store.close()
