@@ -2,9 +2,14 @@ from __future__ import annotations
 
 import pytest
 
+from pactlyn.core.commitments import (
+    CommitmentCandidate,
+    CommitmentRelationshipCandidate,
+    CommitmentService,
+)
 from pactlyn.memory.service import MemoryService
 from pactlyn.rag.embeddings import DeterministicTestEmbedding
-from pactlyn.storage.models import MemoryKind
+from pactlyn.storage.models import CommitmentRelationshipType, MemoryKind
 from pactlyn.vectorstore.qdrant_local import LocalQdrantStore
 
 
@@ -45,3 +50,26 @@ async def test_memory_source_is_not_indexed_twice(tmp_path, session):
     assert first.id == second.id
     assert len(service.list()) == 1
     store.close()
+
+
+def test_commitment_relationships_persist_and_are_queryable(session):
+    service = CommitmentService(session)
+    commitments = service.create_many(
+        [
+            CommitmentCandidate(title="Get approval", needs_confirmation=False),
+            CommitmentCandidate(title="Submit report", needs_confirmation=False),
+        ],
+        [
+            CommitmentRelationshipCandidate(
+                source_index=1,
+                target_index=0,
+                relationship=CommitmentRelationshipType.DEPENDS_ON,
+            )
+        ],
+    )
+    session.commit()
+    related = service.related(commitments[1].id)
+    assert len(related) == 1
+    assert related[0][0].relationship == CommitmentRelationshipType.DEPENDS_ON
+    assert related[0][1].id == commitments[0].id
+    assert service.search("DEPENDS_ON")

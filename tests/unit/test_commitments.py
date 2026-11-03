@@ -4,7 +4,7 @@ from datetime import UTC, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 from pactlyn.core.commitments import CommitmentCandidate, CommitmentExtractor, CommitmentService
-from pactlyn.storage.models import CommitmentStatus, CommitmentType
+from pactlyn.storage.models import CommitmentRelationshipType, CommitmentStatus, CommitmentType
 
 
 def test_waiting_for_capture_requires_follow_up_confirmation():
@@ -76,3 +76,38 @@ def test_existing_contact_email_is_associated(session):
     )
     commitment = CommitmentService(session).create(candidate, confirmed=True)
     assert commitment.contact_email == "rahul@example.com"
+
+
+def test_contact_normalization_stops_at_deadline_language():
+    result = CommitmentExtractor().extract(
+        "Follow up with Aisha next Tuesday if she has not replied.",
+        now=datetime(2026, 11, 2, 10, tzinfo=UTC),
+    )
+    candidate = result.candidates[0]
+    assert candidate.person == "Aisha"
+    assert candidate.contact_role == "recipient"
+
+
+def test_explicit_email_is_preserved_as_contact():
+    result = CommitmentExtractor().extract(
+        "Email maria@example.com about the renewal tomorrow.",
+        now=datetime(2026, 11, 2, 10, tzinfo=UTC),
+    )
+    candidate = result.candidates[0]
+    assert candidate.contact_email == "maria@example.com"
+    assert candidate.contact_kind == "person"
+
+
+def test_deterministic_extractor_preserves_multiple_actions_and_edges():
+    result = CommitmentExtractor().extract(
+        "I need to complete my assignment tomorrow, send the internship application on Monday and follow up with HR next week.",
+        now=datetime(2026, 11, 2, 10, tzinfo=UTC),
+    )
+    assert len(result.candidates) == 3
+    assert [candidate.type for candidate in result.candidates] == [
+        CommitmentType.DEADLINE,
+        CommitmentType.DEADLINE,
+        CommitmentType.FOLLOW_UP,
+    ]
+    assert len(result.relationships) == 2
+    assert result.relationships[0].relationship == CommitmentRelationshipType.FOLLOWED_BY

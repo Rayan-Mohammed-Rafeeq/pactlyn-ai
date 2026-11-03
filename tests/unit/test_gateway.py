@@ -108,3 +108,103 @@ async def test_gateway_rejects_explicitly_negated_model_capture():
         "I don't need to send the report anymore.", context="Known contact: Rahul"
     )
     assert result.candidates == []
+
+
+def test_gateway_parser_maps_only_grounded_contact_aliases():
+    result = LLMGateway._parse_result(
+        json.dumps(
+            {
+                "candidates": [
+                    {
+                        "title": "Ask Rahul",
+                        "description": "Ask Rahul for an update",
+                        "type": "follow_up",
+                        "contact_name": "Rahul",
+                        "email": "rahul@example.com",
+                    }
+                ]
+            }
+        )
+    )
+    candidate = result.candidates[0]
+    assert candidate.person == "Rahul"
+    assert candidate.contact_email == "rahul@example.com"
+
+
+def test_gateway_validation_rejects_ungrounded_person_and_waiting_date():
+    result = LLMGateway._validate_result(
+        LLMGateway._parse_result(
+            json.dumps(
+                {
+                    "candidates": [
+                        {
+                            "title": "Wait for Maya",
+                            "description": "Wait for Maya",
+                            "type": "waiting_for",
+                            "person": "Invented Person",
+                            "due_at": "2026-11-09T17:00:00+00:00",
+                        }
+                    ]
+                }
+            )
+        ),
+        "Please wait for Maya to reply next week.",
+        datetime(2026, 11, 2, 10, tzinfo=UTC),
+    )
+    candidate = result.candidates[0]
+    assert candidate.person == "Maya"
+    assert candidate.due_at is None
+    assert candidate.needs_confirmation is True
+
+
+def test_gateway_separates_waiting_date_from_user_follow_up_date():
+    result = LLMGateway._validate_result(
+        LLMGateway._parse_result(
+            json.dumps(
+                {
+                    "candidates": [
+                        {
+                            "title": "Wait for Rahul",
+                            "description": "Rahul sends the document",
+                            "type": "waiting_for",
+                            "person": "Rahul",
+                            "due_at": "2026-11-06T17:00:00+00:00",
+                            "evidence": "I'm waiting for Rahul to send the document by Friday.",
+                        }
+                    ]
+                }
+            )
+        ),
+        "I'm waiting for Rahul to send the document by Friday. If he doesn't, I'll contact him on Monday.",
+        datetime(2026, 11, 2, 10, tzinfo=UTC),
+    )
+    waiting, follow_up = result.candidates
+    assert waiting.type.value == "waiting_for"
+    assert waiting.due_at is None
+    assert follow_up.type.value == "follow_up"
+    assert follow_up.person == "Rahul"
+    assert follow_up.due_at == datetime(2026, 11, 9, 17, tzinfo=UTC)
+    assert follow_up.dependency
+
+
+def test_gateway_treats_postponement_as_dependency_not_deadline():
+    result = LLMGateway._validate_result(
+        LLMGateway._parse_result(
+            json.dumps(
+                {
+                    "candidates": [
+                        {
+                            "title": "Postpone the report",
+                            "description": "Postpone the report until next month",
+                            "type": "personal_task",
+                            "due_at": "2026-12-01T17:00:00+00:00",
+                        }
+                    ]
+                }
+            )
+        ),
+        "Can you help me postpone the report until next month?",
+        datetime(2026, 11, 2, 10, tzinfo=UTC),
+    )
+    assert result.candidates[0].due_at is None
+    assert result.candidates[0].dependency
