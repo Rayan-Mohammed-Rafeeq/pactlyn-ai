@@ -109,31 +109,78 @@ class CaptureResult(BaseModel):
 
     @model_validator(mode="after")
     def normalize_event_graph(self) -> CaptureResult:
+        def warn(message: str) -> None:
+            if message not in self.relationship_warnings:
+                self.relationship_warnings.append(message)
+
+        event_ids: set[str] = set()
         for index, candidate in enumerate(self.candidates):
             candidate.event_id = candidate.event_id or f"event-{index + 1}"
+            if candidate.event_id in event_ids:
+                warn(f"Duplicate event_id {candidate.event_id!r}; reassigned for event {index + 1}")
+                candidate.event_id = f"event-{index + 1}"
+            event_ids.add(candidate.event_id)
             candidate.source_span = candidate.source_span or candidate.evidence or candidate.description
         unique: list[CommitmentRelationshipCandidate] = []
         seen: set[tuple[int, int, CommitmentRelationshipType]] = set()
         for relation in self.relationships:
             if relation.source_index >= len(self.candidates) or relation.target_index >= len(self.candidates):
-                self.relationship_warnings.append(
-                    f"Relationship {relation.relationship.value} references a missing event"
-                )
+                warn(f"Relationship {relation.relationship.value} references a missing event")
                 continue
             if relation.source_index == relation.target_index:
-                self.relationship_warnings.append(
-                    f"Relationship {relation.relationship.value} cannot reference itself"
-                )
+                warn(f"Relationship {relation.relationship.value} cannot reference itself")
+                continue
+            source_event_id = self.candidates[relation.source_index].event_id
+            target_event_id = self.candidates[relation.target_index].event_id
+            if relation.source_event_id and relation.source_event_id != source_event_id:
+                warn(f"Relationship {relation.relationship.value} has an unresolved source event")
+                continue
+            if relation.target_event_id and relation.target_event_id != target_event_id:
+                warn(f"Relationship {relation.relationship.value} has an unresolved target event")
+                continue
+            if relation.relationship == CommitmentRelationshipType.FOLLOWED_BY and relation.source_index > relation.target_index:
+                warn("FOLLOWED_BY relationship has the later event as its source")
+                continue
+            if relation.relationship == CommitmentRelationshipType.SUPERSEDES and relation.source_index < relation.target_index:
+                warn("SUPERSEDES relationship has the older event as its source")
                 continue
             key = (relation.source_index, relation.target_index, relation.relationship)
             if key in seen:
-                self.relationship_warnings.append(f"Duplicate relationship removed: {relation.relationship.value}")
+                warn(f"Duplicate relationship removed: {relation.relationship.value}")
                 continue
             seen.add(key)
-            relation.source_event_id = self.candidates[relation.source_index].event_id
-            relation.target_event_id = self.candidates[relation.target_index].event_id
+            relation.source_event_id = source_event_id
+            relation.target_event_id = target_event_id
             unique.append(relation)
         self.relationships = unique
+        dependency_edges = [
+            (relation.source_index, relation.target_index)
+            for relation in unique
+            if relation.relationship in {
+                CommitmentRelationshipType.DEPENDS_ON,
+                CommitmentRelationshipType.BLOCKED_BY,
+            }
+        ]
+        adjacency: dict[int, list[int]] = {}
+        for source, target in dependency_edges:
+            adjacency.setdefault(source, []).append(target)
+        visiting: set[int] = set()
+        visited: set[int] = set()
+
+        def visit(node: int) -> None:
+            if node in visiting:
+                warn("Dependency cycle detected; relationship requires confirmation")
+                return
+            if node in visited:
+                return
+            visiting.add(node)
+            for target in adjacency.get(node, []):
+                visit(target)
+            visiting.remove(node)
+            visited.add(node)
+
+        for node in adjacency:
+            visit(node)
         return self
 
 
@@ -189,6 +236,8 @@ class CommitmentExtractor:
                     confidence=0.65,
                 )
             )
+        for candidate in candidates:
+            candidate.event_id = None
         return CaptureResult(
             candidates=candidates,
             relationships=relationships,
@@ -220,6 +269,9 @@ class CommitmentExtractor:
                 contact_kind="person",
                 contact_role="responsible",
                 contact_status="resolved",
+                actor=name,
+                responsibility="USER_WAITING_FOR",
+                deadline_owner=name,
                 needs_confirmation=True,
                 evidence=source,
             )
@@ -230,6 +282,10 @@ class CommitmentExtractor:
             follow.contact_kind = "person"
             follow.contact_role = "recipient"
             follow.contact_status = "resolved"
+            follow.actor = "user"
+            follow.responsibility = "CONDITIONALLY_EXECUTES"
+            follow.condition = f"If {name} does not {conditional.group('action')} by {conditional.group('first')}"
+            follow.event_id = None
             follow.evidence = source
             return CaptureResult(
                 candidates=[waiting, follow],
@@ -250,6 +306,7 @@ class CommitmentExtractor:
             waiting = CommitmentCandidate(
                 title=f"Wait for {name}", description=source, type=CommitmentType.WAITING_FOR,
                 person=name, contact_kind="person", contact_role="responsible", contact_status="resolved",
+                actor=name, responsibility="USER_WAITING_FOR", deadline_owner=name,
                 needs_confirmation=True, evidence=source,
             )
             follow_text = f"I will {waiting_fallback.group('action')} {name} on {waiting_fallback.group('date')}"
@@ -258,6 +315,10 @@ class CommitmentExtractor:
             follow.person = name
             follow.contact_kind = "person"
             follow.contact_role = "recipient"
+            follow.actor = "user"
+            follow.responsibility = "CONDITIONALLY_EXECUTES"
+            follow.condition = f"If {name} does not respond"
+            follow.event_id = None
             follow.evidence = source
             return CaptureResult(
                 candidates=[waiting, follow],
@@ -268,7 +329,8 @@ class CommitmentExtractor:
                 explanation="Extracted waiting and conditional follow-up commitments.",
             )
         approval = re.match(
-            r"Once\s+(?P<owner>.+?)\s+(?:confirms|approves|responds),?\s+I\s+will\s+(?P<action>.+)",
+            r"Once\s+(?P<owner>.+?)\s+(?:confirms|approves|responds)(?:\s+[^,]+)?,?\s+"
+            r"(?:I\s+will|I'll)\s+(?P<action>.+)",
             source.strip().rstrip(".!?"),
             re.IGNORECASE,
         )
@@ -285,10 +347,17 @@ class CommitmentExtractor:
                 contact_kind=CommitmentExtractor._contact_kind(owner),
                 contact_role="responsible",
                 contact_status="unresolved",
+                actor=owner,
+                responsibility="OTHER_PARTY_PERFORMS",
                 needs_confirmation=True,
                 evidence=source,
             )
             task.evidence = source
+            task.actor = "user"
+            task.responsibility = "CONDITIONALLY_EXECUTES"
+            task.condition = f"Once {owner} approves or confirms"
+            waiting.event_id = None
+            task.event_id = None
             return CaptureResult(
                 candidates=[waiting, task],
                 relationships=[CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.DEPENDS_ON, evidence=source, confidence=0.9)],
@@ -299,6 +368,8 @@ class CommitmentExtractor:
             old = CommitmentExtractor()._extract_single(f"I will {correction.group('old')}", now=current, timezone_name=timezone_name).candidates[0]
             old.extraction_status = "cancelled"
             new = CommitmentExtractor()._extract_single(f"I will {correction.group('new')}", now=current, timezone_name=timezone_name).candidates[0]
+            old.event_id = None
+            new.event_id = None
             return CaptureResult(
                 candidates=[old, new],
                 relationships=[CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.SUPERSEDES, evidence=source, confidence=0.95)],
@@ -349,6 +420,7 @@ class CommitmentExtractor:
             and (person is None or email_match is None)
         )
         title = self._title(source, commitment_type)
+        condition_match = re.search(r"\bif\s+(.+)", source, re.IGNORECASE)
         candidate = CommitmentCandidate(
             title=title,
             description=source,
@@ -371,9 +443,8 @@ class CommitmentExtractor:
             action=self._infer_action(source),
             expected_recipient=person,
             actor=(person if commitment_type == CommitmentType.WAITING_FOR else "user"),
-            action=self._infer_action(source),
             deadline_owner=(person if commitment_type == CommitmentType.WAITING_FOR else "user") if due_at else None,
-            condition=(re.search(r"\bif\s+(.+)", source, re.IGNORECASE).group(0) if re.search(r"\bif\s+(.+)", source, re.IGNORECASE) else None),
+            condition=condition_match.group(0) if condition_match else None,
             responsibility=(
                 "USER_WAITING_FOR" if commitment_type == CommitmentType.WAITING_FOR else
                 "USER_CONTACTS" if commitment_type == CommitmentType.FOLLOW_UP else
