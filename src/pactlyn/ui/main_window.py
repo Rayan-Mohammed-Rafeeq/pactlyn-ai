@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal, cast
 
 from dateutil import parser as date_parser
 from PySide6.QtCore import Qt, QThread, QTimer, Signal
@@ -360,6 +360,11 @@ class CommitmentReviewDialog(QDialog):
             relationships.setWordWrap(True)
             relationships.setObjectName("muted")
             layout.addWidget(relationships)
+        if result.relationship_warnings:
+            warning = QLabel("Relationship review required: " + "; ".join(result.relationship_warnings))
+            warning.setWordWrap(True)
+            warning.setObjectName("muted")
+            layout.addWidget(warning)
         tabs = QTabWidget()
         for index, candidate in enumerate(result.candidates, start=1):
             tabs.addTab(self._candidate_form(candidate), f"Commitment {index}")
@@ -382,6 +387,18 @@ class CommitmentReviewDialog(QDialog):
         description.setMaximumHeight(100)
         person = QLineEdit(candidate.person or "")
         email = QLineEdit(candidate.contact_email or "")
+        actor = QLineEdit(candidate.actor or "")
+        action = QLineEdit(candidate.action or "")
+        object_value = QLineEdit(candidate.object or "")
+        beneficiary = QLineEdit(candidate.beneficiary or "")
+        deadline_owner = QLineEdit(candidate.deadline_owner or "")
+        condition = QLineEdit(candidate.condition or "")
+        responsibility = QLineEdit(candidate.responsibility)
+        event_id = QLineEdit(candidate.event_id or "")
+        event_id.setReadOnly(True)
+        source_span = QTextEdit(candidate.source_span or candidate.evidence)
+        source_span.setReadOnly(True)
+        source_span.setMaximumHeight(80)
         due = QLineEdit(candidate.due_at.isoformat() if candidate.due_at else "")
         reminder = QLineEdit(candidate.reminder_at.isoformat() if candidate.reminder_at else "")
         kind = QComboBox()
@@ -390,12 +407,39 @@ class CommitmentReviewDialog(QDialog):
         kind.setCurrentIndex(max(0, list(CommitmentType).index(candidate.type)))
         confirm = QCheckBox("I confirm these extracted details")
         confirm.setChecked(not candidate.needs_confirmation)
-        fields.update(title=title, description=description, person=person, email=email, due=due, reminder=reminder, kind=kind, confirm=confirm)
+        fields.update(
+            title=title,
+            description=description,
+            person=person,
+            email=email,
+            actor=actor,
+            action=action,
+            object=object_value,
+            beneficiary=beneficiary,
+            deadline_owner=deadline_owner,
+            condition=condition,
+            responsibility=responsibility,
+            event_id=event_id,
+            source_span=source_span,
+            due=due,
+            reminder=reminder,
+            kind=kind,
+            confirm=confirm,
+        )
         form.addRow("Title", title)
         form.addRow("Description", description)
         form.addRow("Type", kind)
         form.addRow("Person / organisation", person)
         form.addRow("Email", email)
+        form.addRow("Event ID", event_id)
+        form.addRow("Actor", actor)
+        form.addRow("Action", action)
+        form.addRow("Object", object_value)
+        form.addRow("Beneficiary", beneficiary)
+        form.addRow("Deadline owner", deadline_owner)
+        form.addRow("Condition", condition)
+        form.addRow("Responsibility", responsibility)
+        form.addRow("Source span", source_span)
         form.addRow("Deadline (ISO or natural date)", due)
         form.addRow("Reminder (ISO or natural date)", reminder)
         form.addRow("", confirm)
@@ -413,12 +457,41 @@ class CommitmentReviewDialog(QDialog):
             description = fields["description"]
             person = fields["person"]
             email = fields["email"]
+            actor = fields["actor"]
+            action = fields["action"]
+            object_value = fields["object"]
+            beneficiary = fields["beneficiary"]
+            deadline_owner = fields["deadline_owner"]
+            condition = fields["condition"]
+            responsibility = fields["responsibility"]
+            event_id = fields["event_id"]
+            source_span = fields["source_span"]
             due = fields["due"]
             reminder = fields["reminder"]
             assert isinstance(title, QLineEdit)
             assert isinstance(description, QTextEdit)
             assert isinstance(person, QLineEdit)
             assert isinstance(email, QLineEdit)
+            assert isinstance(actor, QLineEdit)
+            assert isinstance(action, QLineEdit)
+            assert isinstance(object_value, QLineEdit)
+            assert isinstance(beneficiary, QLineEdit)
+            assert isinstance(deadline_owner, QLineEdit)
+            assert isinstance(condition, QLineEdit)
+            assert isinstance(responsibility, QLineEdit)
+            assert isinstance(event_id, QLineEdit)
+            assert isinstance(source_span, QTextEdit)
+            responsibility_value = responsibility.text().strip()
+            allowed_responsibilities = {
+                "USER_PERFORMS",
+                "OTHER_PARTY_PERFORMS",
+                "USER_WAITING_FOR",
+                "USER_CONTACTS",
+                "CONDITIONALLY_EXECUTES",
+                "UNKNOWN",
+            }
+            if responsibility_value not in allowed_responsibilities:
+                responsibility_value = "UNKNOWN"
             assert isinstance(due, QLineEdit)
             assert isinstance(reminder, QLineEdit)
             values.append(
@@ -428,6 +501,25 @@ class CommitmentReviewDialog(QDialog):
                     type=kind.currentData(),
                     person=person.text().strip() or None,
                     contact_email=email.text().strip() or None,
+                    actor=actor.text().strip() or None,
+                    action=action.text().strip() or None,
+                    object=object_value.text().strip() or None,
+                    beneficiary=beneficiary.text().strip() or None,
+                    deadline_owner=deadline_owner.text().strip() or None,
+                    condition=condition.text().strip() or None,
+                    responsibility=cast(
+                        Literal[
+                            "USER_PERFORMS",
+                            "OTHER_PARTY_PERFORMS",
+                            "USER_WAITING_FOR",
+                            "USER_CONTACTS",
+                            "CONDITIONALLY_EXECUTES",
+                            "UNKNOWN",
+                        ],
+                        responsibility_value,
+                    ),
+                    event_id=event_id.text().strip() or None,
+                    source_span=source_span.toPlainText().strip(),
                     due_at=self._parse_datetime(due.text()),
                     timezone=original.timezone,
                     reminder_at=self._parse_datetime(reminder.text()),
