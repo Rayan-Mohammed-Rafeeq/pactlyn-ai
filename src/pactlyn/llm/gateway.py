@@ -202,6 +202,8 @@ class LLMGateway:
         relations = payload.get("relationships", [])
         if isinstance(relations, list):
             normalized_relations: list[dict[str, Any]] = []
+            supported = {item.value for item in CommitmentRelationshipType}
+            warnings = list(payload.get("relationship_warnings", []))
             for item in relations:
                 if not isinstance(item, dict):
                     continue
@@ -212,8 +214,12 @@ class LLMGateway:
                     item["target_index"] = item["to"]
                 if "relationship" not in item and "type" in item:
                     item["relationship"] = item["type"]
+                if item.get("relationship") not in supported:
+                    warnings.append(f"Unsupported relationship ignored: {item.get('relationship')!r}")
+                    continue
                 normalized_relations.append(item)
             payload["relationships"] = normalized_relations
+            payload["relationship_warnings"] = warnings
         return CaptureResult.model_validate(payload)
 
     @staticmethod
@@ -362,7 +368,7 @@ class LLMGateway:
                 validated.append(candidate)
         result.candidates = validated
         result = LLMGateway._add_conditional_follow_up(result, source, now)
-        result.normalize_event_graph()
+        result = CaptureResult.model_validate(result.model_dump())
         return result
 
     @staticmethod
