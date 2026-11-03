@@ -33,6 +33,15 @@ class CommitmentType(enum.StrEnum):
     EVENT = "event"
 
 
+class CommitmentRelationshipType(enum.StrEnum):
+    BLOCKED_BY = "BLOCKED_BY"
+    DEPENDS_ON = "DEPENDS_ON"
+    FOLLOWED_BY = "FOLLOWED_BY"
+    RESPONSE_REQUIRED_FROM = "RESPONSE_REQUIRED_FROM"
+    RELATED_TO = "RELATED_TO"
+    SUPERSEDES = "SUPERSEDES"
+
+
 class CommitmentStatus(enum.StrEnum):
     DRAFT = "draft"
     NEEDS_CONFIRMATION = "needs_confirmation"
@@ -121,7 +130,9 @@ class CommitmentRelationship(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     commitment_id: Mapped[str] = mapped_column(ForeignKey("commitments.id", ondelete="CASCADE"), index=True)
     related_commitment_id: Mapped[str] = mapped_column(ForeignKey("commitments.id", ondelete="CASCADE"), index=True)
-    relationship: Mapped[str] = mapped_column(String(80))
+    relationship: Mapped[CommitmentRelationshipType] = mapped_column(
+        Enum(CommitmentRelationshipType), index=True
+    )
 
 
 class ReminderDelivery(Base):
@@ -144,6 +155,15 @@ class Commitment(Base):
     status: Mapped[CommitmentStatus] = mapped_column(Enum(CommitmentStatus), default=CommitmentStatus.NEEDS_CONFIRMATION)
     person: Mapped[str | None] = mapped_column(String(200), nullable=True)
     contact_email: Mapped[str | None] = mapped_column(String(320), nullable=True)
+    event_id: Mapped[str | None] = mapped_column(String(80), index=True, nullable=True)
+    actor: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    action: Mapped[str | None] = mapped_column(String(300), nullable=True)
+    object: Mapped[str | None] = mapped_column(String(300), nullable=True)
+    beneficiary: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    deadline_owner: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    condition: Mapped[str | None] = mapped_column(Text, nullable=True)
+    responsibility: Mapped[str] = mapped_column(String(80), default="UNKNOWN")
+    source_span: Mapped[str] = mapped_column(Text, default="")
     due_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     timezone: Mapped[str] = mapped_column(String(80), default="UTC")
     reminder_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
