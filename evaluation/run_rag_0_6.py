@@ -21,8 +21,8 @@ from pactlyn.rag.ingestion import IngestionService, SourceDocument
 from pactlyn.storage.database import create_session_factory, init_database, make_engine
 from pactlyn.vectorstore.qdrant_local import LocalQdrantStore
 
-DATASET = Path(__file__).parent / "datasets" / "rag-0.6.json"
-REPORT = Path(__file__).parent / "reports" / "rag-expanded-0.6.json"
+DATASET = Path(os.environ.get("PACTLYN_RAG_DATASET", Path(__file__).parent / "datasets" / "rag-0.6.json"))
+REPORT = Path(os.environ.get("PACTLYN_RAG_REPORT", Path(__file__).parent / "reports" / "rag-expanded-0.6.json"))
 
 
 def _metrics(rows: list[dict[str, Any]], mode: str, dimension: int | None, latencies: list[float], persistence: bool) -> dict[str, object]:

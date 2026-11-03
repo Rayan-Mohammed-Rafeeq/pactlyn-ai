@@ -1,0 +1,675 @@
+{
+  "dataset_version": "rag-0.7-v1",
+  "method": "retrieved evidence is sufficient only when a manually labelled relevant source is present; citation coverage uses exact source IDs",
+  "metrics": {
+    "dense": {
+      "mode": "dense",
+      "dataset_size": 60,
+      "evidence_sufficiency_rate": 0.8727,
+      "citation_coverage": 0.8727,
+      "safe_no_answer_abstention_rate": 0.8,
+      "unsupported_answer_rate": 0.0182,
+      "abstention_accuracy": 0.8667,
+      "failures": [
+        {
+          "id": "q-004-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v2",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        },
+        {
+          "id": "q-010-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-012-v4",
+          "answerable": false,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        }
+      ]
+    },
+    "fts5": {
+      "mode": "fts5",
+      "dataset_size": 60,
+      "evidence_sufficiency_rate": 0.5273,
+      "citation_coverage": 0.5273,
+      "safe_no_answer_abstention_rate": 1.0,
+      "unsupported_answer_rate": 0.1091,
+      "abstention_accuracy": 0.6667,
+      "failures": [
+        {
+          "id": "q-005-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        }
+      ]
+    },
+    "hybrid": {
+      "mode": "hybrid",
+      "dataset_size": 60,
+      "evidence_sufficiency_rate": 0.7818,
+      "citation_coverage": 0.7818,
+      "safe_no_answer_abstention_rate": 1.0,
+      "unsupported_answer_rate": 0.0364,
+      "abstention_accuracy": 0.8333,
+      "failures": [
+        {
+          "id": "q-004-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-005-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        }
+      ]
+    },
+    "real_ollama_dense": {
+      "mode": "real_ollama_dense",
+      "dataset_size": 60,
+      "evidence_sufficiency_rate": 1.0,
+      "citation_coverage": 1.0,
+      "safe_no_answer_abstention_rate": 1.0,
+      "unsupported_answer_rate": 0.0,
+      "abstention_accuracy": 0.9167,
+      "failures": [
+        {
+          "id": "q-010-v1",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        },
+        {
+          "id": "q-010-v2",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        },
+        {
+          "id": "q-010-v3",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        },
+        {
+          "id": "q-010-v4",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        },
+        {
+          "id": "q-010-v5",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        }
+      ]
+    },
+    "real_ollama_fts5": {
+      "mode": "real_ollama_fts5",
+      "dataset_size": 60,
+      "evidence_sufficiency_rate": 0.5273,
+      "citation_coverage": 0.5273,
+      "safe_no_answer_abstention_rate": 1.0,
+      "unsupported_answer_rate": 0.1091,
+      "abstention_accuracy": 0.6667,
+      "failures": [
+        {
+          "id": "q-005-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-007-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": false,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-008-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-009-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-010-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v1",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v2",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v3",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v4",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        },
+        {
+          "id": "q-011-v5",
+          "answerable": true,
+          "evidence_sufficient": false,
+          "predicted_abstain": true,
+          "citation_ids": []
+        }
+      ]
+    },
+    "real_ollama_hybrid": {
+      "mode": "real_ollama_hybrid",
+      "dataset_size": 60,
+      "evidence_sufficiency_rate": 1.0,
+      "citation_coverage": 1.0,
+      "safe_no_answer_abstention_rate": 1.0,
+      "unsupported_answer_rate": 0.0,
+      "abstention_accuracy": 0.9167,
+      "failures": [
+        {
+          "id": "q-010-v1",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        },
+        {
+          "id": "q-010-v2",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        },
+        {
+          "id": "q-010-v3",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        },
+        {
+          "id": "q-010-v4",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        },
+        {
+          "id": "q-010-v5",
+          "answerable": true,
+          "evidence_sufficient": true,
+          "predicted_abstain": true,
+          "citation_ids": [
+            "m-tone"
+          ]
+        }
+      ]
+    }
+  }
+}

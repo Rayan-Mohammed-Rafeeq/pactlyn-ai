@@ -1,0 +1,749 @@
+{
+  "dataset_version": "rag-0.7-v1",
+  "authoring": "manually authored query templates over manually reviewed 0.6 source facts; no model predictions used",
+  "source_count": 28,
+  "sources": [
+    {
+      "id": "c-rahul-proposal",
+      "source_type": "commitment",
+      "content": "Rahul will send the revised project proposal after the budget review."
+    },
+    {
+      "id": "c-review-proposal",
+      "source_type": "commitment",
+      "content": "I will review Rahul's proposal before forwarding it to the placement coordinator."
+    },
+    {
+      "id": "c-coordinator-followup",
+      "source_type": "commitment",
+      "content": "Follow up with the placement coordinator on Monday if the proposal is not acknowledged."
+    },
+    {
+      "id": "e-rahul-budget",
+      "source_type": "email",
+      "content": "From rahul@example.com: I will send the revised proposal after finance approves the budget."
+    },
+    {
+      "id": "e-coordinator",
+      "source_type": "email",
+      "content": "From coordinator@example.edu: We are waiting for the placement documents."
+    },
+    {
+      "id": "m-followup-preference",
+      "source_type": "memory",
+      "content": "The user prefers a polite follow-up after two business days without a reply."
+    },
+    {
+      "id": "c-hr-response",
+      "source_type": "commitment",
+      "content": "Waiting for HR to confirm the internship start date."
+    },
+    {
+      "id": "c-hr-followup",
+      "source_type": "commitment",
+      "content": "Email HR next Friday if the internship start date is still unconfirmed."
+    },
+    {
+      "id": "e-hr",
+      "source_type": "email",
+      "content": "From hr@example.com: Your application is under review; we will confirm the start date."
+    },
+    {
+      "id": "c-professor-approval",
+      "source_type": "commitment",
+      "content": "The final report depends on Professor Mehta approving the research results."
+    },
+    {
+      "id": "c-report-submit",
+      "source_type": "commitment",
+      "content": "Submit the final research report once Professor Mehta approves it."
+    },
+    {
+      "id": "c-report-share",
+      "source_type": "commitment",
+      "content": "Share the approved report with the research office after submission."
+    },
+    {
+      "id": "contact-professor",
+      "source_type": "contact_note",
+      "content": "Professor Mehta supervises the research proposal and approves research results."
+    },
+    {
+      "id": "contact-office",
+      "source_type": "contact_note",
+      "content": "The research office is an organisation that receives approved reports."
+    },
+    {
+      "id": "c-completed-tax",
+      "source_type": "commitment",
+      "content": "The tax filing was completed and its reminder was cancelled."
+    },
+    {
+      "id": "m-completed-tax",
+      "source_type": "memory",
+      "content": "Completed commitments should not appear in the active reminders list."
+    },
+    {
+      "id": "c-postponed-license",
+      "source_type": "commitment",
+      "content": "The city licensing call was postponed twice until next month."
+    },
+    {
+      "id": "m-postponed-license",
+      "source_type": "memory",
+      "content": "Repeated postponements should be reviewed before creating another reminder."
+    },
+    {
+      "id": "e-library",
+      "source_type": "email",
+      "content": "From library@example.edu: The reserved book is ready for collection."
+    },
+    {
+      "id": "c-library-followup",
+      "source_type": "commitment",
+      "content": "Ask the library for collection details if the reservation email is unclear."
+    },
+    {
+      "id": "m-tone",
+      "source_type": "memory",
+      "content": "The user prefers concise, polite email drafts."
+    },
+    {
+      "id": "document-dependency",
+      "source_type": "document",
+      "content": "Deployment must be approved by the manager before the public announcement is sent."
+    },
+    {
+      "id": "c-deployment",
+      "source_type": "commitment",
+      "content": "Send the public announcement after manager approval of the deployment."
+    },
+    {
+      "id": "contact-daniel",
+      "source_type": "contact_note",
+      "content": "Daniel is the external auditor for the compliance review."
+    },
+    {
+      "id": "e-daniel",
+      "source_type": "email",
+      "content": "From daniel@audit.example: Please send the evidence package before the audit call."
+    },
+    {
+      "id": "c-daniel-send",
+      "source_type": "commitment",
+      "content": "Send Daniel the evidence package before the audit call."
+    },
+    {
+      "id": "c-unrelated",
+      "source_type": "commitment",
+      "content": "Renew the gym membership in December."
+    },
+    {
+      "id": "memory-no-answer",
+      "source_type": "memory",
+      "content": "No local record states whether the user contacted the bank about the mortgage."
+    }
+  ],
+  "queries": [
+    {
+      "id": "q-001-v1",
+      "query": "What local record supports this: What am I waiting for from Rahul??",
+      "relevant": [
+        "c-rahul-proposal",
+        "e-rahul-budget"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-001-v2",
+      "query": "Can you tell me from the records What am I waiting for from Rahul??",
+      "relevant": [
+        "c-rahul-proposal",
+        "e-rahul-budget"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-001-v3",
+      "query": "Which commitment or email answers: What am I waiting for from Rahul??",
+      "relevant": [
+        "c-rahul-proposal",
+        "e-rahul-budget"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-001-v4",
+      "query": "Do I have enough local evidence for What am I waiting for from Rahul??",
+      "relevant": [
+        "c-rahul-proposal",
+        "e-rahul-budget"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-001-v5",
+      "query": "Is there a record showing What am I waiting for from Rahul??",
+      "relevant": [
+        "c-rahul-proposal",
+        "e-rahul-budget"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-002-v1",
+      "query": "What local record supports this: Which tasks cannot proceed until Professor Mehta responds??",
+      "relevant": [
+        "c-professor-approval",
+        "c-report-submit",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-002-v2",
+      "query": "Can you tell me from the records Which tasks cannot proceed until Professor Mehta responds??",
+      "relevant": [
+        "c-professor-approval",
+        "c-report-submit",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-002-v3",
+      "query": "Which commitment or email answers: Which tasks cannot proceed until Professor Mehta responds??",
+      "relevant": [
+        "c-professor-approval",
+        "c-report-submit",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-002-v4",
+      "query": "Do I have enough local evidence for Which tasks cannot proceed until Professor Mehta responds??",
+      "relevant": [
+        "c-professor-approval",
+        "c-report-submit",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-002-v5",
+      "query": "Is there a record showing Which tasks cannot proceed until Professor Mehta responds??",
+      "relevant": [
+        "c-professor-approval",
+        "c-report-submit",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-003-v1",
+      "query": "What local record supports this: Have I already contacted the placement coordinator??",
+      "relevant": [
+        "e-coordinator",
+        "c-coordinator-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-003-v2",
+      "query": "Can you tell me from the records Have I already contacted the placement coordinator??",
+      "relevant": [
+        "e-coordinator",
+        "c-coordinator-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-003-v3",
+      "query": "Which commitment or email answers: Have I already contacted the placement coordinator??",
+      "relevant": [
+        "e-coordinator",
+        "c-coordinator-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-003-v4",
+      "query": "Do I have enough local evidence for Have I already contacted the placement coordinator??",
+      "relevant": [
+        "e-coordinator",
+        "c-coordinator-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-003-v5",
+      "query": "Is there a record showing Have I already contacted the placement coordinator??",
+      "relevant": [
+        "e-coordinator",
+        "c-coordinator-followup"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-004-v1",
+      "query": "What local record supports this: What commitments did I make after the internship email??",
+      "relevant": [
+        "e-hr",
+        "c-hr-response",
+        "c-hr-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-004-v2",
+      "query": "Can you tell me from the records What commitments did I make after the internship email??",
+      "relevant": [
+        "e-hr",
+        "c-hr-response",
+        "c-hr-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-004-v3",
+      "query": "Which commitment or email answers: What commitments did I make after the internship email??",
+      "relevant": [
+        "e-hr",
+        "c-hr-response",
+        "c-hr-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-004-v4",
+      "query": "Do I have enough local evidence for What commitments did I make after the internship email??",
+      "relevant": [
+        "e-hr",
+        "c-hr-response",
+        "c-hr-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-004-v5",
+      "query": "Is there a record showing What commitments did I make after the internship email??",
+      "relevant": [
+        "e-hr",
+        "c-hr-response",
+        "c-hr-followup"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-005-v1",
+      "query": "What local record supports this: Which follow-ups have I postponed more than once??",
+      "relevant": [
+        "c-postponed-license",
+        "m-postponed-license"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-005-v2",
+      "query": "Can you tell me from the records Which follow-ups have I postponed more than once??",
+      "relevant": [
+        "c-postponed-license",
+        "m-postponed-license"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-005-v3",
+      "query": "Which commitment or email answers: Which follow-ups have I postponed more than once??",
+      "relevant": [
+        "c-postponed-license",
+        "m-postponed-license"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-005-v4",
+      "query": "Do I have enough local evidence for Which follow-ups have I postponed more than once??",
+      "relevant": [
+        "c-postponed-license",
+        "m-postponed-license"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-005-v5",
+      "query": "Is there a record showing Which follow-ups have I postponed more than once??",
+      "relevant": [
+        "c-postponed-license",
+        "m-postponed-license"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-006-v1",
+      "query": "What local record supports this: Does the report submission depend on anyone else's approval??",
+      "relevant": [
+        "c-report-submit",
+        "c-professor-approval",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-006-v2",
+      "query": "Can you tell me from the records Does the report submission depend on anyone else's approval??",
+      "relevant": [
+        "c-report-submit",
+        "c-professor-approval",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-006-v3",
+      "query": "Which commitment or email answers: Does the report submission depend on anyone else's approval??",
+      "relevant": [
+        "c-report-submit",
+        "c-professor-approval",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-006-v4",
+      "query": "Do I have enough local evidence for Does the report submission depend on anyone else's approval??",
+      "relevant": [
+        "c-report-submit",
+        "c-professor-approval",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-006-v5",
+      "query": "Is there a record showing Does the report submission depend on anyone else's approval??",
+      "relevant": [
+        "c-report-submit",
+        "c-professor-approval",
+        "contact-professor"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-007-v1",
+      "query": "What local record supports this: What should I do after the library reservation email??",
+      "relevant": [
+        "e-library",
+        "c-library-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-007-v2",
+      "query": "Can you tell me from the records What should I do after the library reservation email??",
+      "relevant": [
+        "e-library",
+        "c-library-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-007-v3",
+      "query": "Which commitment or email answers: What should I do after the library reservation email??",
+      "relevant": [
+        "e-library",
+        "c-library-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-007-v4",
+      "query": "Do I have enough local evidence for What should I do after the library reservation email??",
+      "relevant": [
+        "e-library",
+        "c-library-followup"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-007-v5",
+      "query": "Is there a record showing What should I do after the library reservation email??",
+      "relevant": [
+        "e-library",
+        "c-library-followup"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-008-v1",
+      "query": "What local record supports this: Which record says the tax filing is complete??",
+      "relevant": [
+        "c-completed-tax",
+        "m-completed-tax"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-008-v2",
+      "query": "Can you tell me from the records Which record says the tax filing is complete??",
+      "relevant": [
+        "c-completed-tax",
+        "m-completed-tax"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-008-v3",
+      "query": "Which commitment or email answers: Which record says the tax filing is complete??",
+      "relevant": [
+        "c-completed-tax",
+        "m-completed-tax"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-008-v4",
+      "query": "Do I have enough local evidence for Which record says the tax filing is complete??",
+      "relevant": [
+        "c-completed-tax",
+        "m-completed-tax"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-008-v5",
+      "query": "Is there a record showing Which record says the tax filing is complete??",
+      "relevant": [
+        "c-completed-tax",
+        "m-completed-tax"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-009-v1",
+      "query": "What local record supports this: Who should receive the compliance evidence package??",
+      "relevant": [
+        "contact-daniel",
+        "e-daniel",
+        "c-daniel-send"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-009-v2",
+      "query": "Can you tell me from the records Who should receive the compliance evidence package??",
+      "relevant": [
+        "contact-daniel",
+        "e-daniel",
+        "c-daniel-send"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-009-v3",
+      "query": "Which commitment or email answers: Who should receive the compliance evidence package??",
+      "relevant": [
+        "contact-daniel",
+        "e-daniel",
+        "c-daniel-send"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-009-v4",
+      "query": "Do I have enough local evidence for Who should receive the compliance evidence package??",
+      "relevant": [
+        "contact-daniel",
+        "e-daniel",
+        "c-daniel-send"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-009-v5",
+      "query": "Is there a record showing Who should receive the compliance evidence package??",
+      "relevant": [
+        "contact-daniel",
+        "e-daniel",
+        "c-daniel-send"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-010-v1",
+      "query": "What local record supports this: What is the preferred tone for a local email draft??",
+      "relevant": [
+        "m-tone"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-010-v2",
+      "query": "Can you tell me from the records What is the preferred tone for a local email draft??",
+      "relevant": [
+        "m-tone"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-010-v3",
+      "query": "Which commitment or email answers: What is the preferred tone for a local email draft??",
+      "relevant": [
+        "m-tone"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-010-v4",
+      "query": "Do I have enough local evidence for What is the preferred tone for a local email draft??",
+      "relevant": [
+        "m-tone"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-010-v5",
+      "query": "Is there a record showing What is the preferred tone for a local email draft??",
+      "relevant": [
+        "m-tone"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-011-v1",
+      "query": "What local record supports this: What blocks the public announcement??",
+      "relevant": [
+        "document-dependency",
+        "c-deployment"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-011-v2",
+      "query": "Can you tell me from the records What blocks the public announcement??",
+      "relevant": [
+        "document-dependency",
+        "c-deployment"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-011-v3",
+      "query": "Which commitment or email answers: What blocks the public announcement??",
+      "relevant": [
+        "document-dependency",
+        "c-deployment"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-011-v4",
+      "query": "Do I have enough local evidence for What blocks the public announcement??",
+      "relevant": [
+        "document-dependency",
+        "c-deployment"
+      ],
+      "answerable": true,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-011-v5",
+      "query": "Is there a record showing What blocks the public announcement??",
+      "relevant": [
+        "document-dependency",
+        "c-deployment"
+      ],
+      "answerable": true,
+      "category": "hard-negative"
+    },
+    {
+      "id": "q-012-v1",
+      "query": "What local record supports this: Do I have a local record that I contacted the bank about the mortgage??",
+      "relevant": [],
+      "answerable": false,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-012-v2",
+      "query": "Can you tell me from the records Do I have a local record that I contacted the bank about the mortgage??",
+      "relevant": [],
+      "answerable": false,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-012-v3",
+      "query": "Which commitment or email answers: Do I have a local record that I contacted the bank about the mortgage??",
+      "relevant": [],
+      "answerable": false,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-012-v4",
+      "query": "Do I have enough local evidence for Do I have a local record that I contacted the bank about the mortgage??",
+      "relevant": [],
+      "answerable": false,
+      "category": "multi-source"
+    },
+    {
+      "id": "q-012-v5",
+      "query": "Is there a record showing Do I have a local record that I contacted the bank about the mortgage??",
+      "relevant": [],
+      "answerable": false,
+      "category": "hard-negative"
+    }
+  ]
+}

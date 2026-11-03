@@ -1,0 +1,1298 @@
+{
+  "full_train": {
+    "metrics": {
+      "precision": 0.2051,
+      "recall": 0.1176,
+      "f1": 0.1495
+    },
+    "relation_type_accuracy": 0.1429
+  },
+  "failures": [
+    {
+      "id": "commitment-0.7-010",
+      "scenario": "three_atomic_actions",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-011",
+      "scenario": "conditional_fallback",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          0,
+          "RESPONSE_REQUIRED_FROM"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": false,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-012",
+      "scenario": "conditional_fallback",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          0,
+          "RESPONSE_REQUIRED_FROM"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": false,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-013",
+      "scenario": "conditional_fallback",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          0,
+          "RESPONSE_REQUIRED_FROM"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": false,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-014",
+      "scenario": "conditional_fallback",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          0,
+          "RESPONSE_REQUIRED_FROM"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": false,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-015",
+      "scenario": "conditional_fallback",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          0,
+          "RESPONSE_REQUIRED_FROM"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": false,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-016",
+      "scenario": "conditional_fallback",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          0,
+          "RESPONSE_REQUIRED_FROM"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": false,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-026",
+      "scenario": "waiting_then_action",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": true,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-027",
+      "scenario": "waiting_then_action",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": true,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-028",
+      "scenario": "waiting_then_action",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": true,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-029",
+      "scenario": "waiting_then_action",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": true,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-030",
+      "scenario": "waiting_then_action",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": true,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-031",
+      "scenario": "multiple_contacts",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ],
+        [
+          1,
+          2,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-032",
+      "scenario": "multiple_contacts",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ],
+        [
+          1,
+          2,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-058",
+      "scenario": "other_party_handoff",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": true,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-059",
+      "scenario": "other_party_handoff",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": true,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-060",
+      "scenario": "other_party_handoff",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": true,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-074",
+      "scenario": "correction",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "SUPERSEDES"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-075",
+      "scenario": "correction",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "SUPERSEDES"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-076",
+      "scenario": "correction",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "SUPERSEDES"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-077",
+      "scenario": "correction",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "SUPERSEDES"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-078",
+      "scenario": "correction",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "SUPERSEDES"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-079",
+      "scenario": "correction",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "SUPERSEDES"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-080",
+      "scenario": "correction",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "SUPERSEDES"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-106",
+      "scenario": "multiple_contact_deadlines",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": false,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-107",
+      "scenario": "multiple_contact_deadlines",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": false,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-108",
+      "scenario": "multiple_contact_deadlines",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": false,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-109",
+      "scenario": "multiple_contact_deadlines",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": false,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-110",
+      "scenario": "multiple_contact_deadlines",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": false,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-111",
+      "scenario": "paragraph_workflow",
+      "expected_count": 3,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": false,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-112",
+      "scenario": "paragraph_workflow",
+      "expected_count": 3,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": false,
+      "recipient_correct": false,
+      "role_correct": false,
+      "responsibility_correct": false,
+      "deadline_owner_correct": true,
+      "conditional_correct": false,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-141",
+      "scenario": "conditional_offer",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-142",
+      "scenario": "conditional_offer",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-143",
+      "scenario": "conditional_offer",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-144",
+      "scenario": "conditional_offer",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_edges": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_edges": [],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": false,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-154",
+      "scenario": "email_and_organisation",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-155",
+      "scenario": "email_and_organisation",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-156",
+      "scenario": "email_and_organisation",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-157",
+      "scenario": "email_and_organisation",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-158",
+      "scenario": "email_and_organisation",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-159",
+      "scenario": "email_and_organisation",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    },
+    {
+      "id": "commitment-0.7-160",
+      "scenario": "email_and_organisation",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_edges": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_edges": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "edges_exact": false,
+      "multi_exact": false,
+      "expected_contacts": true,
+      "actor_correct": true,
+      "recipient_correct": true,
+      "role_correct": true,
+      "responsibility_correct": true,
+      "deadline_owner_correct": true,
+      "conditional_correct": true,
+      "negation_correct": true
+    }
+  ]
+}

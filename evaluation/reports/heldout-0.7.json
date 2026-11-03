@@ -1,0 +1,68 @@
+{
+  "dataset_version": "commitments-0.7-v1",
+  "split": "heldout",
+  "deterministic": {
+    "dataset_size": 30,
+    "event_extraction": {
+      "precision": 1.0,
+      "recall": 0.7321,
+      "f1": 0.8454
+    },
+    "event_count_accuracy": 0.6,
+    "exact_multi_event_accuracy": 0.1667,
+    "relationship_extraction": {
+      "precision": 0.3846,
+      "recall": 0.1613,
+      "f1": 0.2273
+    },
+    "relation_type_accuracy": 0.1111,
+    "responsibility_direction_accuracy": 0.7333,
+    "actor_accuracy": 0.7857,
+    "recipient_accuracy": 0.2143,
+    "deadline_owner_accuracy": 0.9333,
+    "conditional_accuracy": 0.7667,
+    "negation_accuracy": 1.0,
+    "contact_role_accuracy": 0.5,
+    "configuration": {
+      "name": "deterministic-extractor",
+      "dataset_version": "commitments-0.7-v1",
+      "seed": 0,
+      "split": "heldout"
+    }
+  },
+  "qwen2.5:7b": {
+    "status": "complete",
+    "dataset_version": "commitments-0.7-v1",
+    "configuration": {
+      "model": "qwen2.5:7b",
+      "prompt_version": "improved",
+      "evaluation_now": "2026-11-02T10:00:00+00:00"
+    },
+    "metrics": {
+      "dataset_size": 30,
+      "event_extraction": {
+        "precision": 1.0,
+        "recall": 0.7857,
+        "f1": 0.88
+      },
+      "event_count_accuracy": 0.7,
+      "exact_multi_event_accuracy": 0.0556,
+      "relationship_extraction": {
+        "precision": 0.0714,
+        "recall": 0.0323,
+        "f1": 0.0444
+      },
+      "relation_type_accuracy": 0.0,
+      "actor_accuracy": 0.1786,
+      "recipient_accuracy": 0.1786,
+      "responsibility_direction_accuracy": 0.0,
+      "deadline_owner_accuracy": 0.9,
+      "conditional_accuracy": 0.9,
+      "negation_accuracy": 1.0,
+      "contact_role_accuracy": 0.2857
+    },
+    "latency_ms_mean": 8650.53,
+    "latency_ms_p95": 15240.48,
+    "notes": "Recorded from the completed Qwen2.5 7B held-out run; deterministic baseline is retained below."
+  }
+}
