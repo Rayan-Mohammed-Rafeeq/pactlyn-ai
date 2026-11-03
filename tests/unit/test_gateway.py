@@ -131,6 +131,22 @@ def test_gateway_parser_maps_only_grounded_contact_aliases():
     assert candidate.contact_email == "rahul@example.com"
 
 
+def test_gateway_drops_unsupported_relationship_but_keeps_candidates():
+    result = LLMGateway._parse_result(
+        json.dumps(
+            {
+                "candidates": [{"title": "First"}, {"title": "Second"}],
+                "relationships": [
+                    {"source_index": 0, "target_index": 1, "relationship": "MADE_UP"}
+                ],
+            }
+        )
+    )
+    assert len(result.candidates) == 2
+    assert result.relationships == []
+    assert any("Unsupported relationship" in warning for warning in result.relationship_warnings)
+
+
 def test_gateway_validation_rejects_ungrounded_person_and_waiting_date():
     result = LLMGateway._validate_result(
         LLMGateway._parse_result(

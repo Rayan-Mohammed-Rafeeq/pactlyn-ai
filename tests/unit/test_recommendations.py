@@ -48,3 +48,40 @@ def test_recommendation_suggests_follow_up_for_due_waiting_commitment(session: S
     assert commitment.status == CommitmentStatus.WAITING
     suggestions = RecommendationEngine(session).recommend()
     assert any("Follow up" in suggestion.title for suggestion in suggestions)
+
+
+def test_conditional_follow_up_waits_for_response(session: Session) -> None:
+    service = CommitmentService(session)
+    waiting, follow_up = service.create_many(
+        [
+            CommitmentCandidate(
+                title="Wait for Rahul",
+                type=CommitmentType.WAITING_FOR,
+                needs_confirmation=False,
+            ),
+            CommitmentCandidate(
+                title="Call Rahul if needed",
+                type=CommitmentType.FOLLOW_UP,
+                condition="if Rahul does not reply",
+                needs_confirmation=False,
+            ),
+        ],
+        [
+            CommitmentRelationshipCandidate(
+                source_index=1,
+                target_index=0,
+                relationship=CommitmentRelationshipType.RESPONSE_REQUIRED_FROM,
+            )
+        ],
+    )
+    session.commit()
+    held = RecommendationEngine(session).recommend()
+    assert any("held" in suggestion.title for suggestion in held)
+
+    waiting.status = CommitmentStatus.RESPONSE_RECEIVED
+    session.commit()
+    ready = RecommendationEngine(session).recommend()
+    assert any(
+        suggestion.title == f"Now possible: {follow_up.title}"
+        for suggestion in ready
+    )
