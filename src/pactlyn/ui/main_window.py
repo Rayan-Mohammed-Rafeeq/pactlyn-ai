@@ -36,8 +36,14 @@ from PySide6.QtWidgets import (
 from sqlalchemy import select
 
 from pactlyn.app.bootstrap import AppContainer
-from pactlyn.core.commitments import CaptureResult, CommitmentCandidate, CommitmentExtractor
+from pactlyn.core.commitments import (
+    CaptureResult,
+    CommitmentCandidate,
+    CommitmentExtractor,
+    CommitmentRelationshipCandidate,
+)
 from pactlyn.core.connectivity import ConnectivityMonitor, ConnectivityState
+from pactlyn.core.recommendations import RecommendationEngine
 from pactlyn.core.scheduler import ReminderScheduler
 from pactlyn.email.inbound_sync import InboundEmailSync
 from pactlyn.platform.linux.autostart import LinuxAutostart
@@ -120,10 +126,17 @@ class CapturePersistenceWorker(QThread):
     finished = Signal(object)
     failed = Signal(str)
 
-    def __init__(self, container: AppContainer, candidates: list[CommitmentCandidate], source: str):
+    def __init__(
+        self,
+        container: AppContainer,
+        candidates: list[CommitmentCandidate],
+        relationships: list[CommitmentRelationshipCandidate],
+        source: str,
+    ):
         super().__init__()
         self.container = container
         self.candidates = candidates
+        self.relationships = relationships
         self.source = source
 
     def run(self) -> None:
@@ -133,12 +146,12 @@ class CapturePersistenceWorker(QThread):
                 service = self.container.commitments(session)
                 memory = self.container.memories(session)
                 identifiers: list[str] = []
-                for candidate in self.candidates:
-                    commitment = service.create(
-                        candidate,
-                        confirmed=not candidate.needs_confirmation,
-                        source=self.source,
-                    )
+                commitments = service.create_many(
+                    self.candidates,
+                    self.relationships,
+                    source=self.source,
+                )
+                for candidate, commitment in zip(self.candidates, commitments, strict=True):
                     await memory.remember(
                         candidate.evidence or candidate.description,
                         kind=MemoryKind.EPISODIC,
@@ -336,6 +349,17 @@ class CommitmentReviewDialog(QDialog):
             explanation.setWordWrap(True)
             explanation.setObjectName("muted")
             layout.addWidget(explanation)
+        if result.relationships:
+            relationships = QLabel(
+                "Relationships: "
+                + "; ".join(
+                    f"{relation.source_index + 1} {relation.relationship.value} {relation.target_index + 1}"
+                    for relation in result.relationships
+                )
+            )
+            relationships.setWordWrap(True)
+            relationships.setObjectName("muted")
+            layout.addWidget(relationships)
         tabs = QTabWidget()
         for index, candidate in enumerate(result.candidates, start=1):
             tabs.addTab(self._candidate_form(candidate), f"Commitment {index}")
@@ -533,6 +557,10 @@ class PactlynWindow(QMainWindow):
         self.connectivity_label = QLabel("Connectivity: checking…")
         self.connectivity_label.setObjectName("muted")
         layout.addWidget(self.connectivity_label)
+        layout.addWidget(QLabel("Suggested next actions"))
+        self.home_recommendations = QListWidget()
+        self.home_recommendations.setMaximumHeight(120)
+        layout.addWidget(self.home_recommendations)
         self.home_list = QListWidget()
         layout.addWidget(self.home_list, 1)
         page.setLayout(layout)
@@ -576,9 +604,14 @@ class PactlynWindow(QMainWindow):
         controls.addStretch()
         layout.addLayout(controls)
         self.commitment_list = QListWidget()
+        self.commitment_list.currentItemChanged.connect(lambda _current, _previous: self._refresh_related())
         self.commitment_list.itemDoubleClicked.connect(lambda _item: self._complete_selected())
         layout.addWidget(QLabel("Double-click an item to mark it complete."))
         layout.addWidget(self.commitment_list, 1)
+        layout.addWidget(QLabel("Related commitments"))
+        self.related_commitment_list = QListWidget()
+        self.related_commitment_list.setMaximumHeight(120)
+        layout.addWidget(self.related_commitment_list)
         page.setLayout(layout)
         return page
 
@@ -843,6 +876,7 @@ class PactlynWindow(QMainWindow):
         worker = CapturePersistenceWorker(
             self.container,
             dialog.candidates(),
+            result.relationships,
             "ollama" if result.used_local_model else "offline_fallback",
         )
         worker.finished.connect(lambda _ids: self._capture_persisted(worker, text))
@@ -874,6 +908,9 @@ class PactlynWindow(QMainWindow):
                 overdue = sum(item.status == CommitmentStatus.OVERDUE for item in active)
                 waiting = sum(item.status == CommitmentStatus.WAITING for item in active)
                 self.home_summary.setText(f"{len(active)} active commitments  ·  {overdue} overdue  ·  {waiting} waiting for a response")
+                self.home_recommendations.clear()
+                for suggestion in RecommendationEngine(session).recommend(limit=5):
+                    self.home_recommendations.addItem(f"{suggestion.title} — {suggestion.explanation}")
                 self.home_list.clear()
                 for item in active[:10]:
                     self.home_list.addItem(self._commitment_text(item))
@@ -882,6 +919,8 @@ class PactlynWindow(QMainWindow):
                 for item in commitments:
                     list_item = self._list_item(item)
                     self.commitment_list.addItem(list_item)
+                if hasattr(self, "related_commitment_list"):
+                    self._refresh_related(session)
             if hasattr(self, "waiting_list"):
                 self.waiting_list.clear()
                 for item in commitments:
@@ -938,6 +977,24 @@ class PactlynWindow(QMainWindow):
             return None
         value = item.data(Qt.ItemDataRole.UserRole)
         return str(value) if value else None
+
+    def _refresh_related(self, session: Any | None = None) -> None:
+        if not hasattr(self, "related_commitment_list"):
+            return
+        owns_session = session is None
+        session = session or self.container.session()
+        try:
+            self.related_commitment_list.clear()
+            commitment_id = self._selected_commitment_id()
+            if not commitment_id:
+                return
+            for relation, related in self.container.commitments(session).related(commitment_id):
+                self.related_commitment_list.addItem(
+                    f"{relation.relationship.value}: {related.title} [{related.status.value}]"
+                )
+        finally:
+            if owns_session:
+                session.close()
 
     @staticmethod
     def _email_text(action: EmailSendAction) -> str:
