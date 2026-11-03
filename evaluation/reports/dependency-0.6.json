@@ -1,0 +1,1519 @@
+{
+  "configuration": {
+    "name": "deterministic-extractor",
+    "evaluation_now": "2026-11-02T10:00:00+00:00",
+    "seed": 0
+  },
+  "metrics": {
+    "accuracy": 0.5
+  },
+  "failures": [
+    {
+      "id": "commitment-0.6-067",
+      "text": "Send the proposal to Priya by Friday, ask the library for an update on Monday, and submit the final report once Priya approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-068",
+      "text": "Send the proposal to Alex by Friday, ask the clinic for an update on Monday, and submit the final report once Alex approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-069",
+      "text": "Send the proposal to Sam by Friday, ask the research office for an update on Monday, and submit the final report once Sam approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-070",
+      "text": "Send the proposal to Mei by Friday, ask the placement coordinator for an update on Monday, and submit the final report once Mei approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-071",
+      "text": "Send the proposal to Rahul by Friday, ask HR for an update on Monday, and submit the final report once Rahul approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-072",
+      "text": "Send the proposal to Maya by Friday, ask the library for an update on Monday, and submit the final report once Maya approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-073",
+      "text": "Send the proposal to Aisha by Friday, ask the clinic for an update on Monday, and submit the final report once Aisha approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-074",
+      "text": "Send the proposal to Daniel by Friday, ask the research office for an update on Monday, and submit the final report once Daniel approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-075",
+      "text": "Send the proposal to Elena by Friday, ask the placement coordinator for an update on Monday, and submit the final report once Elena approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-076",
+      "text": "Send the proposal to Noor by Friday, ask HR for an update on Monday, and submit the final report once Noor approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-077",
+      "text": "Send the proposal to Priya by Friday, ask the library for an update on Monday, and submit the final report once Priya approves it.",
+      "scenario": "three_action_chain",
+      "expected_count": 3,
+      "predicted_count": 3,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          2,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ],
+        [
+          1,
+          2,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-111",
+      "text": "Once HR confirms the booking, I will send the itinerary to Rahul.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-112",
+      "text": "Once the library confirms the booking, I will send the itinerary to Maya.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-113",
+      "text": "Once the clinic confirms the booking, I will send the itinerary to Aisha.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-114",
+      "text": "Once the research office confirms the booking, I will send the itinerary to Daniel.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-115",
+      "text": "Once the placement coordinator confirms the booking, I will send the itinerary to Elena.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-116",
+      "text": "Once HR confirms the booking, I will send the itinerary to Noor.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-117",
+      "text": "Once the library confirms the booking, I will send the itinerary to Priya.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-118",
+      "text": "Once the clinic confirms the booking, I will send the itinerary to Alex.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-119",
+      "text": "Once the research office confirms the booking, I will send the itinerary to Sam.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-120",
+      "text": "Once the placement coordinator confirms the booking, I will send the itinerary to Mei.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-121",
+      "text": "Once HR confirms the booking, I will send the itinerary to Rahul.",
+      "scenario": "approval_dependency",
+      "expected_count": 2,
+      "predicted_count": 1,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": false,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-122",
+      "text": "Maya will send the documents, and I will review them before sharing them with the library.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-123",
+      "text": "Aisha will send the documents, and I will review them before sharing them with the clinic.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-124",
+      "text": "Daniel will send the documents, and I will review them before sharing them with the research office.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-125",
+      "text": "Elena will send the documents, and I will review them before sharing them with the placement coordinator.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-126",
+      "text": "Noor will send the documents, and I will review them before sharing them with HR.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-127",
+      "text": "Priya will send the documents, and I will review them before sharing them with the library.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-128",
+      "text": "Alex will send the documents, and I will review them before sharing them with the clinic.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-129",
+      "text": "Sam will send the documents, and I will review them before sharing them with the research office.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-130",
+      "text": "Mei will send the documents, and I will review them before sharing them with the placement coordinator.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-131",
+      "text": "Rahul will send the documents, and I will review them before sharing them with HR.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-132",
+      "text": "Maya will send the documents, and I will review them before sharing them with the library.",
+      "scenario": "handoff_chain",
+      "expected_count": 3,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          1,
+          0,
+          "DEPENDS_ON"
+        ],
+        [
+          2,
+          1,
+          "DEPENDS_ON"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": true,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": false,
+      "deadline_expected": false,
+      "deadline_predicted": false,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-155",
+      "text": "Ask Elena for the figures and contact the placement coordinator about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-156",
+      "text": "Ask Noor for the figures and contact HR about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-157",
+      "text": "Ask Priya for the figures and contact the library about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-158",
+      "text": "Ask Alex for the figures and contact the clinic about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-159",
+      "text": "Ask Sam for the figures and contact the research office about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-160",
+      "text": "Ask Mei for the figures and contact the placement coordinator about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-161",
+      "text": "Ask Rahul for the figures and contact HR about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-162",
+      "text": "Ask Maya for the figures and contact the library about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-163",
+      "text": "Ask Aisha for the figures and contact the clinic about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-164",
+      "text": "Ask Daniel for the figures and contact the research office about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    },
+    {
+      "id": "commitment-0.6-165",
+      "text": "Ask Elena for the figures and contact the placement coordinator about the invoice next week.",
+      "scenario": "multiple_contacts",
+      "expected_count": 2,
+      "predicted_count": 2,
+      "expected_relationships": [
+        [
+          0,
+          1,
+          "RELATED_TO"
+        ]
+      ],
+      "predicted_relationships": [
+        [
+          0,
+          1,
+          "FOLLOWED_BY"
+        ]
+      ],
+      "relationship_correct": false,
+      "multi_correct": false,
+      "type_correct": false,
+      "contact_expected": true,
+      "contact_predicted": true,
+      "identity_correct": true,
+      "role_correct": true,
+      "deadline_expected": true,
+      "deadline_predicted": true,
+      "negation_correct": true,
+      "ambiguity_correct": true
+    }
+  ]
+}

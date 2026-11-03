@@ -1,0 +1,607 @@
+{
+  "dataset": "evaluation/datasets/commitments.json",
+  "dataset_size": 150,
+  "methodology": "Same checked-in dataset, fixed evaluation_now, schema and scoring implementation for all model runs.",
+  "experiments": {
+    "A-existing-qwen2.5-7b": {
+      "name": "ollama_capture_evaluation",
+      "status": "complete",
+      "evaluation_timestamp": "2026-11-03T10:22:04.508016+00:00",
+      "evaluation_now": "2026-11-02T10:00:00+00:00",
+      "configuration": {
+        "ollama_url": "http://127.0.0.1:11434",
+        "llm_model": "qwen2.5:7b",
+        "embedding_model": "nomic-embed-text",
+        "timezone": "UTC"
+      },
+      "ollama_version": "0.40.7",
+      "installed_models": [
+        "nomic-embed-text:latest",
+        "qwen2.5:7b",
+        "qwen2.5:3b"
+      ],
+      "embedding_dimension": 768,
+      "embedding_status": "available",
+      "dataset_size": 150,
+      "type_accuracy": 0.8267,
+      "confirmation_accuracy": 0.52,
+      "deadline_presence_accuracy": 0.8333,
+      "contact_presence_accuracy": 0.9267,
+      "deadline": {
+        "precision": 0.6429,
+        "recall": 1.0,
+        "f1": 0.7826
+      },
+      "contact_presence": {
+        "precision": 1.0,
+        "recall": 0.8533,
+        "f1": 0.9209
+      },
+      "extraction_detection": {
+        "precision": 0.8267,
+        "recall": 0.8267,
+        "f1": 0.8267,
+        "definition": "The checked-in dataset labels one commitment per example but does not label a commitment count; this is prediction non-emptiness, not a multi-commitment score."
+      },
+      "multi_commitment_accuracy": null,
+      "categories": {
+        "deadline": {
+          "count": 30.0,
+          "type_accuracy": 1.0
+        },
+        "follow_up": {
+          "count": 15.0,
+          "type_accuracy": 1.0
+        },
+        "personal_task": {
+          "count": 75.0,
+          "type_accuracy": 0.6533
+        },
+        "waiting_for": {
+          "count": 30.0,
+          "type_accuracy": 1.0
+        }
+      },
+      "type_confusion_matrix": {
+        "deadline": {
+          "deadline": 30
+        },
+        "waiting_for": {
+          "waiting_for": 30
+        },
+        "follow_up": {
+          "follow_up": 15
+        },
+        "personal_task": {
+          "personal_task": 49,
+          "missing": 26
+        }
+      },
+      "scenario_failures": {
+        "variant-0": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-1": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-2": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-3": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-4": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-5": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 13,
+          "contact_failures": 0
+        },
+        "variant-6": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 12,
+          "contact_failures": 0
+        },
+        "variant-7": {
+          "count": 15,
+          "type_failures": 15,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-8": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-9": {
+          "count": 15,
+          "type_failures": 11,
+          "deadline_failures": 0,
+          "contact_failures": 11
+        }
+      },
+      "contact_value_evaluable": false,
+      "contact_value_note": "The checked-in labels contain only has_contact; expected name, email, role, and organisation/person class are absent.",
+      "latency_ms_mean": 2261.18,
+      "latency_ms_median": 2329.77,
+      "latency_ms_p95": 2948.11,
+      "empty_results": 26,
+      "prompt_version": "existing",
+      "retrieved_context_mode": "none"
+    },
+    "B-improved-qwen2.5-7b": {
+      "name": "ollama_capture_evaluation",
+      "status": "complete",
+      "evaluation_timestamp": "2026-11-03T10:27:43.837152+00:00",
+      "evaluation_now": "2026-11-02T10:00:00+00:00",
+      "configuration": {
+        "ollama_url": "http://127.0.0.1:11434",
+        "llm_model": "qwen2.5:7b",
+        "embedding_model": "nomic-embed-text",
+        "timezone": "UTC"
+      },
+      "ollama_version": "0.40.7",
+      "installed_models": [
+        "nomic-embed-text:latest",
+        "qwen2.5:7b",
+        "qwen2.5:3b"
+      ],
+      "embedding_dimension": 768,
+      "embedding_status": "available",
+      "dataset_size": 150,
+      "type_accuracy": 0.9,
+      "confirmation_accuracy": 0.4,
+      "deadline_presence_accuracy": 0.9533,
+      "contact_presence_accuracy": 1.0,
+      "deadline": {
+        "precision": 0.8654,
+        "recall": 1.0,
+        "f1": 0.9278
+      },
+      "contact_presence": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "extraction_detection": {
+        "precision": 0.9,
+        "recall": 0.9,
+        "f1": 0.9,
+        "definition": "The checked-in dataset labels one commitment per example but does not label a commitment count; this is prediction non-emptiness, not a multi-commitment score."
+      },
+      "multi_commitment_accuracy": null,
+      "categories": {
+        "deadline": {
+          "count": 30.0,
+          "type_accuracy": 1.0
+        },
+        "follow_up": {
+          "count": 15.0,
+          "type_accuracy": 1.0
+        },
+        "personal_task": {
+          "count": 75.0,
+          "type_accuracy": 0.8
+        },
+        "waiting_for": {
+          "count": 30.0,
+          "type_accuracy": 1.0
+        }
+      },
+      "type_confusion_matrix": {
+        "deadline": {
+          "deadline": 30
+        },
+        "waiting_for": {
+          "waiting_for": 30
+        },
+        "follow_up": {
+          "follow_up": 15
+        },
+        "personal_task": {
+          "personal_task": 60,
+          "missing": 15
+        }
+      },
+      "scenario_failures": {
+        "variant-0": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-1": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-2": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-3": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-4": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-5": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 4,
+          "contact_failures": 0
+        },
+        "variant-6": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 3,
+          "contact_failures": 0
+        },
+        "variant-7": {
+          "count": 15,
+          "type_failures": 15,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-8": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-9": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        }
+      },
+      "contact_value_evaluable": false,
+      "contact_value_note": "The checked-in labels contain only has_contact; expected name, email, role, and organisation/person class are absent.",
+      "latency_ms_mean": 3460.3,
+      "latency_ms_median": 2742.21,
+      "latency_ms_p95": 5313.68,
+      "empty_results": 15,
+      "prompt_version": "improved",
+      "retrieved_context_mode": "none"
+    },
+    "C-improved-qwen2.5-7b-retrieved-context": {
+      "name": "ollama_capture_evaluation",
+      "status": "complete",
+      "evaluation_timestamp": "2026-11-03T10:36:23.796356+00:00",
+      "evaluation_now": "2026-11-02T10:00:00+00:00",
+      "configuration": {
+        "ollama_url": "http://127.0.0.1:11434",
+        "llm_model": "qwen2.5:7b",
+        "embedding_model": "nomic-embed-text",
+        "timezone": "UTC"
+      },
+      "ollama_version": "0.40.7",
+      "installed_models": [
+        "nomic-embed-text:latest",
+        "qwen2.5:7b",
+        "qwen2.5:3b"
+      ],
+      "embedding_dimension": 768,
+      "embedding_status": "available",
+      "dataset_size": 150,
+      "type_accuracy": 0.9,
+      "confirmation_accuracy": 0.4,
+      "deadline_presence_accuracy": 0.9933,
+      "contact_presence_accuracy": 1.0,
+      "deadline": {
+        "precision": 0.9783,
+        "recall": 1.0,
+        "f1": 0.989
+      },
+      "contact_presence": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "extraction_detection": {
+        "precision": 0.9,
+        "recall": 0.9,
+        "f1": 0.9,
+        "definition": "The checked-in dataset labels one commitment per example but does not label a commitment count; this is prediction non-emptiness, not a multi-commitment score."
+      },
+      "multi_commitment_accuracy": null,
+      "categories": {
+        "deadline": {
+          "count": 30.0,
+          "type_accuracy": 1.0
+        },
+        "follow_up": {
+          "count": 15.0,
+          "type_accuracy": 1.0
+        },
+        "personal_task": {
+          "count": 75.0,
+          "type_accuracy": 0.8
+        },
+        "waiting_for": {
+          "count": 30.0,
+          "type_accuracy": 1.0
+        }
+      },
+      "type_confusion_matrix": {
+        "deadline": {
+          "deadline": 30
+        },
+        "waiting_for": {
+          "waiting_for": 30
+        },
+        "follow_up": {
+          "follow_up": 15
+        },
+        "personal_task": {
+          "personal_task": 60,
+          "missing": 15
+        }
+      },
+      "scenario_failures": {
+        "variant-0": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-1": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-2": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-3": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-4": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-5": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-6": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 1,
+          "contact_failures": 0
+        },
+        "variant-7": {
+          "count": 15,
+          "type_failures": 15,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-8": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-9": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        }
+      },
+      "contact_value_evaluable": false,
+      "contact_value_note": "The checked-in labels contain only has_contact; expected name, email, role, and organisation/person class are absent.",
+      "latency_ms_mean": 2918.52,
+      "latency_ms_median": 2456.24,
+      "latency_ms_p95": 5024.55,
+      "empty_results": 15,
+      "prompt_version": "improved",
+      "retrieved_context_mode": "existing_contacts"
+    },
+    "alternative-qwen2.5-3b": {
+      "name": "ollama_capture_evaluation",
+      "status": "complete",
+      "evaluation_timestamp": "2026-11-03T10:43:42.718496+00:00",
+      "evaluation_now": "2026-11-02T10:00:00+00:00",
+      "configuration": {
+        "ollama_url": "http://127.0.0.1:11434",
+        "llm_model": "qwen2.5:3b",
+        "embedding_model": "nomic-embed-text",
+        "timezone": "UTC"
+      },
+      "ollama_version": "0.40.7",
+      "installed_models": [
+        "nomic-embed-text:latest",
+        "qwen2.5:7b",
+        "qwen2.5:3b"
+      ],
+      "embedding_dimension": 768,
+      "embedding_status": "available",
+      "dataset_size": 150,
+      "type_accuracy": 0.7067,
+      "confirmation_accuracy": 0.5867,
+      "deadline_presence_accuracy": 0.98,
+      "contact_presence_accuracy": 0.9133,
+      "deadline": {
+        "precision": 1.0,
+        "recall": 0.9333,
+        "f1": 0.9655
+      },
+      "contact_presence": {
+        "precision": 1.0,
+        "recall": 0.8267,
+        "f1": 0.9051
+      },
+      "extraction_detection": {
+        "precision": 0.7067,
+        "recall": 0.7067,
+        "f1": 0.7067,
+        "definition": "The checked-in dataset labels one commitment per example but does not label a commitment count; this is prediction non-emptiness, not a multi-commitment score."
+      },
+      "multi_commitment_accuracy": null,
+      "categories": {
+        "deadline": {
+          "count": 30.0,
+          "type_accuracy": 0.9667
+        },
+        "follow_up": {
+          "count": 15.0,
+          "type_accuracy": 0.8667
+        },
+        "personal_task": {
+          "count": 75.0,
+          "type_accuracy": 0.56
+        },
+        "waiting_for": {
+          "count": 30.0,
+          "type_accuracy": 0.7333
+        }
+      },
+      "type_confusion_matrix": {
+        "deadline": {
+          "deadline": 29,
+          "missing": 1
+        },
+        "waiting_for": {
+          "waiting_for": 22,
+          "missing": 8
+        },
+        "follow_up": {
+          "follow_up": 13,
+          "missing": 2
+        },
+        "personal_task": {
+          "personal_task": 42,
+          "missing": 33
+        }
+      },
+      "scenario_failures": {
+        "variant-0": {
+          "count": 15,
+          "type_failures": 1,
+          "deadline_failures": 1,
+          "contact_failures": 0
+        },
+        "variant-1": {
+          "count": 15,
+          "type_failures": 0,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-2": {
+          "count": 15,
+          "type_failures": 5,
+          "deadline_failures": 0,
+          "contact_failures": 5
+        },
+        "variant-3": {
+          "count": 15,
+          "type_failures": 2,
+          "deadline_failures": 2,
+          "contact_failures": 2
+        },
+        "variant-4": {
+          "count": 15,
+          "type_failures": 1,
+          "deadline_failures": 0,
+          "contact_failures": 1
+        },
+        "variant-5": {
+          "count": 15,
+          "type_failures": 3,
+          "deadline_failures": 0,
+          "contact_failures": 3
+        },
+        "variant-6": {
+          "count": 15,
+          "type_failures": 4,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-7": {
+          "count": 15,
+          "type_failures": 15,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-8": {
+          "count": 15,
+          "type_failures": 11,
+          "deadline_failures": 0,
+          "contact_failures": 0
+        },
+        "variant-9": {
+          "count": 15,
+          "type_failures": 2,
+          "deadline_failures": 0,
+          "contact_failures": 2
+        }
+      },
+      "contact_value_evaluable": false,
+      "contact_value_note": "The checked-in labels contain only has_contact; expected name, email, role, and organisation/person class are absent.",
+      "latency_ms_mean": 11027.57,
+      "latency_ms_median": 1797.36,
+      "latency_ms_p95": 45073.67,
+      "empty_results": 44,
+      "prompt_version": "improved",
+      "retrieved_context_mode": "none"
+    }
+  },
+  "D-existing-deterministic-extractor": {
+    "name": "deterministic_capture_baseline",
+    "dataset_size": 150,
+    "type_accuracy": 0.9,
+    "confirmation_accuracy": 0.6,
+    "deadline_presence_accuracy": 0.8,
+    "contact_presence_accuracy": 1.0,
+    "deadline_precision": 0.6,
+    "deadline_recall": 1.0,
+    "deadline_f1": 0.75,
+    "contact_precision": 1.0,
+    "contact_recall": 1.0,
+    "contact_f1": 1.0,
+    "latency_ms_mean": 0.0339,
+    "latency_ms_p95": 0.0341,
+    "note": "This is a reproducible baseline, not an LLM quality claim."
+  }
+}

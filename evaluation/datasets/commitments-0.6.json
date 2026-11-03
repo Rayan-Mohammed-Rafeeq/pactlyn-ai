@@ -1,0 +1,5718 @@
+{
+  "dataset_version": "commitments-0.6-v1",
+  "authoring": "manually authored and template-reviewed labels; no model predictions used",
+  "seed": 0,
+  "example_count": 220,
+  "multi_commitment_count": 88,
+  "examples": [
+    {
+      "id": "commitment-0.6-001",
+      "text": "I will send the proposal by Friday for Rahul.",
+      "split": "heldout",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-002",
+      "text": "I will send the proposal by Friday for Maya.",
+      "split": "heldout",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-003",
+      "text": "I will send the proposal by Friday for Aisha.",
+      "split": "heldout",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-004",
+      "text": "I will send the proposal by Friday for Daniel.",
+      "split": "validation",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-005",
+      "text": "I will send the proposal by Friday for Elena.",
+      "split": "validation",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-006",
+      "text": "I will send the proposal by Friday for Noor.",
+      "split": "validation",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-007",
+      "text": "I will send the proposal by Friday for Priya.",
+      "split": "development",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-008",
+      "text": "I will send the proposal by Friday for Alex.",
+      "split": "development",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-009",
+      "text": "I will send the proposal by Friday for Sam.",
+      "split": "development",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-010",
+      "text": "I will send the proposal by Friday for Mei.",
+      "split": "development",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-011",
+      "text": "I will send the proposal by Friday for Rahul.",
+      "split": "train",
+      "scenario": "single_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-012",
+      "text": "I need to complete the assignment before the review meeting with Maya.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-013",
+      "text": "I need to complete the assignment before the review meeting with Aisha.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-014",
+      "text": "I need to complete the assignment before the review meeting with Daniel.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-015",
+      "text": "I need to complete the assignment before the review meeting with Elena.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-016",
+      "text": "I need to complete the assignment before the review meeting with Noor.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-017",
+      "text": "I need to complete the assignment before the review meeting with Priya.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-018",
+      "text": "I need to complete the assignment before the review meeting with Alex.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-019",
+      "text": "I need to complete the assignment before the review meeting with Sam.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-020",
+      "text": "I need to complete the assignment before the review meeting with Mei.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-021",
+      "text": "I need to complete the assignment before the review meeting with Rahul.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-022",
+      "text": "I need to complete the assignment before the review meeting with Maya.",
+      "split": "train",
+      "scenario": "ambiguous_deadline",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-023",
+      "text": "I am waiting for Aisha to approve the budget.",
+      "split": "heldout",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-024",
+      "text": "I am waiting for Daniel to approve the budget.",
+      "split": "heldout",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-025",
+      "text": "I am waiting for Elena to approve the budget.",
+      "split": "heldout",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-026",
+      "text": "I am waiting for Noor to approve the budget.",
+      "split": "validation",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-027",
+      "text": "I am waiting for Priya to approve the budget.",
+      "split": "validation",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-028",
+      "text": "I am waiting for Alex to approve the budget.",
+      "split": "validation",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-029",
+      "text": "I am waiting for Sam to approve the budget.",
+      "split": "development",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-030",
+      "text": "I am waiting for Mei to approve the budget.",
+      "split": "development",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-031",
+      "text": "I am waiting for Rahul to approve the budget.",
+      "split": "development",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-032",
+      "text": "I am waiting for Maya to approve the budget.",
+      "split": "development",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-033",
+      "text": "I am waiting for Aisha to approve the budget.",
+      "split": "train",
+      "scenario": "waiting_for",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-034",
+      "text": "Follow up with the research office next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-035",
+      "text": "Follow up with the placement coordinator next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-036",
+      "text": "Follow up with HR next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-037",
+      "text": "Follow up with the library next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-038",
+      "text": "Follow up with the clinic next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-039",
+      "text": "Follow up with the research office next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-040",
+      "text": "Follow up with the placement coordinator next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-041",
+      "text": "Follow up with HR next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-042",
+      "text": "Follow up with the library next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-043",
+      "text": "Follow up with the clinic next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-044",
+      "text": "Follow up with the research office next Monday if they have not replied.",
+      "split": "train",
+      "scenario": "follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-045",
+      "text": "I promised Elena that I would share the notes, but I have not chosen a date.",
+      "split": "heldout",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-046",
+      "text": "I promised Noor that I would share the notes, but I have not chosen a date.",
+      "split": "heldout",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-047",
+      "text": "I promised Priya that I would share the notes, but I have not chosen a date.",
+      "split": "heldout",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-048",
+      "text": "I promised Alex that I would share the notes, but I have not chosen a date.",
+      "split": "validation",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-049",
+      "text": "I promised Sam that I would share the notes, but I have not chosen a date.",
+      "split": "validation",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-050",
+      "text": "I promised Mei that I would share the notes, but I have not chosen a date.",
+      "split": "validation",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-051",
+      "text": "I promised Rahul that I would share the notes, but I have not chosen a date.",
+      "split": "development",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-052",
+      "text": "I promised Maya that I would share the notes, but I have not chosen a date.",
+      "split": "development",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-053",
+      "text": "I promised Aisha that I would share the notes, but I have not chosen a date.",
+      "split": "development",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-054",
+      "text": "I promised Daniel that I would share the notes, but I have not chosen a date.",
+      "split": "development",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-055",
+      "text": "I promised Elena that I would share the notes, but I have not chosen a date.",
+      "split": "train",
+      "scenario": "promise_without_date",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-056",
+      "text": "If Noor does not send the figures by Friday, I will contact Noor on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-057",
+      "text": "If Priya does not send the figures by Friday, I will contact Priya on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-058",
+      "text": "If Alex does not send the figures by Friday, I will contact Alex on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-059",
+      "text": "If Sam does not send the figures by Friday, I will contact Sam on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-060",
+      "text": "If Mei does not send the figures by Friday, I will contact Mei on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-061",
+      "text": "If Rahul does not send the figures by Friday, I will contact Rahul on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-062",
+      "text": "If Maya does not send the figures by Friday, I will contact Maya on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-063",
+      "text": "If Aisha does not send the figures by Friday, I will contact Aisha on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-064",
+      "text": "If Daniel does not send the figures by Friday, I will contact Daniel on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-065",
+      "text": "If Elena does not send the figures by Friday, I will contact Elena on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-066",
+      "text": "If Noor does not send the figures by Friday, I will contact Noor on Monday.",
+      "split": "train",
+      "scenario": "conditional_follow_up",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-067",
+      "text": "Send the proposal to Priya by Friday, ask the library for an update on Monday, and submit the final report once Priya approves it.",
+      "split": "heldout",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-068",
+      "text": "Send the proposal to Alex by Friday, ask the clinic for an update on Monday, and submit the final report once Alex approves it.",
+      "split": "heldout",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-069",
+      "text": "Send the proposal to Sam by Friday, ask the research office for an update on Monday, and submit the final report once Sam approves it.",
+      "split": "heldout",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-070",
+      "text": "Send the proposal to Mei by Friday, ask the placement coordinator for an update on Monday, and submit the final report once Mei approves it.",
+      "split": "validation",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-071",
+      "text": "Send the proposal to Rahul by Friday, ask HR for an update on Monday, and submit the final report once Rahul approves it.",
+      "split": "validation",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-072",
+      "text": "Send the proposal to Maya by Friday, ask the library for an update on Monday, and submit the final report once Maya approves it.",
+      "split": "validation",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-073",
+      "text": "Send the proposal to Aisha by Friday, ask the clinic for an update on Monday, and submit the final report once Aisha approves it.",
+      "split": "development",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-074",
+      "text": "Send the proposal to Daniel by Friday, ask the research office for an update on Monday, and submit the final report once Daniel approves it.",
+      "split": "development",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-075",
+      "text": "Send the proposal to Elena by Friday, ask the placement coordinator for an update on Monday, and submit the final report once Elena approves it.",
+      "split": "development",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-076",
+      "text": "Send the proposal to Noor by Friday, ask HR for an update on Monday, and submit the final report once Noor approves it.",
+      "split": "development",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-077",
+      "text": "Send the proposal to Priya by Friday, ask the library for an update on Monday, and submit the final report once Priya approves it.",
+      "split": "train",
+      "scenario": "three_action_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 2,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-078",
+      "text": "I already completed the renewal, so do not remind me to contact the clinic.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-079",
+      "text": "I already completed the renewal, so do not remind me to contact the research office.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-080",
+      "text": "I already completed the renewal, so do not remind me to contact the placement coordinator.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-081",
+      "text": "I already completed the renewal, so do not remind me to contact HR.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-082",
+      "text": "I already completed the renewal, so do not remind me to contact the library.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-083",
+      "text": "I already completed the renewal, so do not remind me to contact the clinic.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-084",
+      "text": "I already completed the renewal, so do not remind me to contact the research office.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-085",
+      "text": "I already completed the renewal, so do not remind me to contact the placement coordinator.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-086",
+      "text": "I already completed the renewal, so do not remind me to contact HR.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-087",
+      "text": "I already completed the renewal, so do not remind me to contact the library.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-088",
+      "text": "I already completed the renewal, so do not remind me to contact the clinic.",
+      "split": "train",
+      "scenario": "completed_negation",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "completed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-089",
+      "text": "Please postpone the presentation with Sam until next month.",
+      "split": "heldout",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-090",
+      "text": "Please postpone the presentation with Mei until next month.",
+      "split": "heldout",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-091",
+      "text": "Please postpone the presentation with Rahul until next month.",
+      "split": "heldout",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-092",
+      "text": "Please postpone the presentation with Maya until next month.",
+      "split": "validation",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-093",
+      "text": "Please postpone the presentation with Aisha until next month.",
+      "split": "validation",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-094",
+      "text": "Please postpone the presentation with Daniel until next month.",
+      "split": "validation",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-095",
+      "text": "Please postpone the presentation with Elena until next month.",
+      "split": "development",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-096",
+      "text": "Please postpone the presentation with Noor until next month.",
+      "split": "development",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-097",
+      "text": "Please postpone the presentation with Priya until next month.",
+      "split": "development",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-098",
+      "text": "Please postpone the presentation with Alex until next month.",
+      "split": "development",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-099",
+      "text": "Please postpone the presentation with Sam until next month.",
+      "split": "train",
+      "scenario": "postponement",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "postponed"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-100",
+      "text": "Complete my assignment tomorrow and email Mei the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-101",
+      "text": "Complete my assignment tomorrow and email Rahul the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-102",
+      "text": "Complete my assignment tomorrow and email Maya the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-103",
+      "text": "Complete my assignment tomorrow and email Aisha the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-104",
+      "text": "Complete my assignment tomorrow and email Daniel the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-105",
+      "text": "Complete my assignment tomorrow and email Elena the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-106",
+      "text": "Complete my assignment tomorrow and email Noor the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-107",
+      "text": "Complete my assignment tomorrow and email Priya the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-108",
+      "text": "Complete my assignment tomorrow and email Alex the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-109",
+      "text": "Complete my assignment tomorrow and email Sam the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-110",
+      "text": "Complete my assignment tomorrow and email Mei the application on Tuesday.",
+      "split": "train",
+      "scenario": "two_deadlines",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          },
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-111",
+      "text": "Once HR confirms the booking, I will send the itinerary to Rahul.",
+      "split": "heldout",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-112",
+      "text": "Once the library confirms the booking, I will send the itinerary to Maya.",
+      "split": "heldout",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-113",
+      "text": "Once the clinic confirms the booking, I will send the itinerary to Aisha.",
+      "split": "heldout",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-114",
+      "text": "Once the research office confirms the booking, I will send the itinerary to Daniel.",
+      "split": "validation",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-115",
+      "text": "Once the placement coordinator confirms the booking, I will send the itinerary to Elena.",
+      "split": "validation",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-116",
+      "text": "Once HR confirms the booking, I will send the itinerary to Noor.",
+      "split": "validation",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-117",
+      "text": "Once the library confirms the booking, I will send the itinerary to Priya.",
+      "split": "development",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-118",
+      "text": "Once the clinic confirms the booking, I will send the itinerary to Alex.",
+      "split": "development",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-119",
+      "text": "Once the research office confirms the booking, I will send the itinerary to Sam.",
+      "split": "development",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-120",
+      "text": "Once the placement coordinator confirms the booking, I will send the itinerary to Mei.",
+      "split": "development",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-121",
+      "text": "Once HR confirms the booking, I will send the itinerary to Rahul.",
+      "split": "train",
+      "scenario": "approval_dependency",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-122",
+      "text": "Maya will send the documents, and I will review them before sharing them with the library.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-123",
+      "text": "Aisha will send the documents, and I will review them before sharing them with the clinic.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-124",
+      "text": "Daniel will send the documents, and I will review them before sharing them with the research office.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-125",
+      "text": "Elena will send the documents, and I will review them before sharing them with the placement coordinator.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-126",
+      "text": "Noor will send the documents, and I will review them before sharing them with HR.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-127",
+      "text": "Priya will send the documents, and I will review them before sharing them with the library.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-128",
+      "text": "Alex will send the documents, and I will review them before sharing them with the clinic.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-129",
+      "text": "Sam will send the documents, and I will review them before sharing them with the research office.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-130",
+      "text": "Mei will send the documents, and I will review them before sharing them with the placement coordinator.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-131",
+      "text": "Rahul will send the documents, and I will review them before sharing them with HR.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-132",
+      "text": "Maya will send the documents, and I will review them before sharing them with the library.",
+      "split": "train",
+      "scenario": "handoff_chain",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "DEPENDS_ON"
+          },
+          {
+            "source_index": 2,
+            "target_index": 1,
+            "relationship": "DEPENDS_ON"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-133",
+      "text": "I said I would call Aisha Friday, but correction: I will email Aisha Monday instead.",
+      "split": "heldout",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-134",
+      "text": "I said I would call Daniel Friday, but correction: I will email Daniel Monday instead.",
+      "split": "heldout",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-135",
+      "text": "I said I would call Elena Friday, but correction: I will email Elena Monday instead.",
+      "split": "heldout",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-136",
+      "text": "I said I would call Noor Friday, but correction: I will email Noor Monday instead.",
+      "split": "validation",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-137",
+      "text": "I said I would call Priya Friday, but correction: I will email Priya Monday instead.",
+      "split": "validation",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-138",
+      "text": "I said I would call Alex Friday, but correction: I will email Alex Monday instead.",
+      "split": "validation",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-139",
+      "text": "I said I would call Sam Friday, but correction: I will email Sam Monday instead.",
+      "split": "development",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-140",
+      "text": "I said I would call Mei Friday, but correction: I will email Mei Monday instead.",
+      "split": "development",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-141",
+      "text": "I said I would call Rahul Friday, but correction: I will email Rahul Monday instead.",
+      "split": "development",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-142",
+      "text": "I said I would call Maya Friday, but correction: I will email Maya Monday instead.",
+      "split": "development",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-143",
+      "text": "I said I would call Aisha Friday, but correction: I will email Aisha Monday instead.",
+      "split": "train",
+      "scenario": "correction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "SUPERSEDES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-144",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-145",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-146",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-147",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-148",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-149",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-150",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-151",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-152",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-153",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-154",
+      "text": "Remind me to submit the form tomorrow. I also said earlier that I would submit the form tomorrow.",
+      "split": "train",
+      "scenario": "duplicate_commitment",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-155",
+      "text": "Ask Elena for the figures and contact the placement coordinator about the invoice next week.",
+      "split": "heldout",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-156",
+      "text": "Ask Noor for the figures and contact HR about the invoice next week.",
+      "split": "heldout",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-157",
+      "text": "Ask Priya for the figures and contact the library about the invoice next week.",
+      "split": "heldout",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-158",
+      "text": "Ask Alex for the figures and contact the clinic about the invoice next week.",
+      "split": "validation",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-159",
+      "text": "Ask Sam for the figures and contact the research office about the invoice next week.",
+      "split": "validation",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-160",
+      "text": "Ask Mei for the figures and contact the placement coordinator about the invoice next week.",
+      "split": "validation",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-161",
+      "text": "Ask Rahul for the figures and contact HR about the invoice next week.",
+      "split": "development",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-162",
+      "text": "Ask Maya for the figures and contact the library about the invoice next week.",
+      "split": "development",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-163",
+      "text": "Ask Aisha for the figures and contact the clinic about the invoice next week.",
+      "split": "development",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-164",
+      "text": "Ask Daniel for the figures and contact the research office about the invoice next week.",
+      "split": "development",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-165",
+      "text": "Ask Elena for the figures and contact the placement coordinator about the invoice next week.",
+      "split": "train",
+      "scenario": "multiple_contacts",
+      "expected": {
+        "commitments": [
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "RELATED_TO"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-166",
+      "text": "I will finish the report by Friday; separately, the weather may change and Noor mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-167",
+      "text": "I will finish the report by Friday; separately, the weather may change and Priya mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-168",
+      "text": "I will finish the report by Friday; separately, the weather may change and Alex mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-169",
+      "text": "I will finish the report by Friday; separately, the weather may change and Sam mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-170",
+      "text": "I will finish the report by Friday; separately, the weather may change and Mei mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-171",
+      "text": "I will finish the report by Friday; separately, the weather may change and Rahul mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-172",
+      "text": "I will finish the report by Friday; separately, the weather may change and Maya mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-173",
+      "text": "I will finish the report by Friday; separately, the weather may change and Aisha mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-174",
+      "text": "I will finish the report by Friday; separately, the weather may change and Daniel mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-175",
+      "text": "I will finish the report by Friday; separately, the weather may change and Elena mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-176",
+      "text": "I will finish the report by Friday; separately, the weather may change and Noor mentioned a concert.",
+      "split": "train",
+      "scenario": "unrelated_activity",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": null,
+            "contact_kind": null,
+            "contact_role": null,
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-177",
+      "text": "I will send the contract tomorrow, actually do not send it because the library cancelled the request.",
+      "split": "heldout",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-178",
+      "text": "I will send the contract tomorrow, actually do not send it because the clinic cancelled the request.",
+      "split": "heldout",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-179",
+      "text": "I will send the contract tomorrow, actually do not send it because the research office cancelled the request.",
+      "split": "heldout",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-180",
+      "text": "I will send the contract tomorrow, actually do not send it because the placement coordinator cancelled the request.",
+      "split": "validation",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-181",
+      "text": "I will send the contract tomorrow, actually do not send it because HR cancelled the request.",
+      "split": "validation",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-182",
+      "text": "I will send the contract tomorrow, actually do not send it because the library cancelled the request.",
+      "split": "validation",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-183",
+      "text": "I will send the contract tomorrow, actually do not send it because the clinic cancelled the request.",
+      "split": "development",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the clinic",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-184",
+      "text": "I will send the contract tomorrow, actually do not send it because the research office cancelled the request.",
+      "split": "development",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the research office",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-185",
+      "text": "I will send the contract tomorrow, actually do not send it because the placement coordinator cancelled the request.",
+      "split": "development",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the placement coordinator",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-186",
+      "text": "I will send the contract tomorrow, actually do not send it because HR cancelled the request.",
+      "split": "development",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "HR",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-187",
+      "text": "I will send the contract tomorrow, actually do not send it because the library cancelled the request.",
+      "split": "train",
+      "scenario": "contradiction",
+      "expected": {
+        "commitments": [
+          {
+            "type": "personal_task",
+            "has_deadline": false,
+            "contact": "the library",
+            "contact_kind": "organisation",
+            "contact_role": "recipient",
+            "status": "cancelled"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-188",
+      "text": "Email alex@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "alex@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-189",
+      "text": "Email sam@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "sam@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-190",
+      "text": "Email mei@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "mei@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-191",
+      "text": "Email rahul@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "rahul@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-192",
+      "text": "Email maya@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "maya@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-193",
+      "text": "Email aisha@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "aisha@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-194",
+      "text": "Email daniel@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "daniel@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-195",
+      "text": "Email elena@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "elena@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-196",
+      "text": "Email noor@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "noor@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-197",
+      "text": "Email priya@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "priya@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-198",
+      "text": "Email alex@example.com about the renewal tomorrow.",
+      "split": "train",
+      "scenario": "email_recipient",
+      "expected": {
+        "commitments": [
+          {
+            "type": "deadline",
+            "has_deadline": true,
+            "contact": "alex@example.com",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-199",
+      "text": "Someone mentioned that the research office may hold an event, but I have no action to take.",
+      "split": "heldout",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-200",
+      "text": "Someone mentioned that the placement coordinator may hold an event, but I have no action to take.",
+      "split": "heldout",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-201",
+      "text": "Someone mentioned that HR may hold an event, but I have no action to take.",
+      "split": "heldout",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-202",
+      "text": "Someone mentioned that the library may hold an event, but I have no action to take.",
+      "split": "validation",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-203",
+      "text": "Someone mentioned that the clinic may hold an event, but I have no action to take.",
+      "split": "validation",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-204",
+      "text": "Someone mentioned that the research office may hold an event, but I have no action to take.",
+      "split": "validation",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-205",
+      "text": "Someone mentioned that the placement coordinator may hold an event, but I have no action to take.",
+      "split": "development",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-206",
+      "text": "Someone mentioned that HR may hold an event, but I have no action to take.",
+      "split": "development",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-207",
+      "text": "Someone mentioned that the library may hold an event, but I have no action to take.",
+      "split": "development",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-208",
+      "text": "Someone mentioned that the clinic may hold an event, but I have no action to take.",
+      "split": "development",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-209",
+      "text": "Someone mentioned that the research office may hold an event, but I have no action to take.",
+      "split": "train",
+      "scenario": "no_action",
+      "expected": {
+        "commitments": [],
+        "relationships": []
+      }
+    },
+    {
+      "id": "commitment-0.6-210",
+      "text": "I am waiting for Mei's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-211",
+      "text": "I am waiting for Rahul's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Rahul",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-212",
+      "text": "I am waiting for Maya's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Maya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-213",
+      "text": "I am waiting for Aisha's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Aisha",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-214",
+      "text": "I am waiting for Daniel's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Daniel",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-215",
+      "text": "I am waiting for Elena's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Elena",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-216",
+      "text": "I am waiting for Noor's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Noor",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-217",
+      "text": "I am waiting for Priya's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Priya",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-218",
+      "text": "I am waiting for Alex's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Alex",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-219",
+      "text": "I am waiting for Sam's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Sam",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commitment-0.6-220",
+      "text": "I am waiting for Mei's feedback by Thursday. If they do not respond, I will call them on Friday.",
+      "split": "train",
+      "scenario": "waiting_and_fallback",
+      "expected": {
+        "commitments": [
+          {
+            "type": "waiting_for",
+            "has_deadline": false,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "responsible",
+            "status": "active"
+          },
+          {
+            "type": "follow_up",
+            "has_deadline": true,
+            "contact": "Mei",
+            "contact_kind": "person",
+            "contact_role": "recipient",
+            "status": "active"
+          }
+        ],
+        "relationships": [
+          {
+            "source_index": 0,
+            "target_index": 1,
+            "relationship": "FOLLOWED_BY"
+          },
+          {
+            "source_index": 1,
+            "target_index": 0,
+            "relationship": "RESPONSE_REQUIRED_FROM"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "dataset": "/run/media/rayan/Workspace1/01_Projects/pactlyn-ai/evaluation/datasets/commitments-heldout.json",
+  "dataset_version": "commitments-heldout-v1",
+  "authoring": "manual labels independent of evaluated model output",
+  "evaluation_now": "2026-11-02T10:00:00+00:00",
+  "configuration": {
+    "model": "qwen2.5:7b",
+    "timezone": "UTC"
+  },
+  "status": "complete",
+  "dataset_size": 30,
+  "type_accuracy": 0.8667,
+  "contact_presence": {
+    "precision": 1.0,
+    "recall": 0.9545
+  },
+  "contact_identity": {
+    "exact_value_accuracy_on_contact_rows": 0.9545,
+    "kind_accuracy_on_contact_rows": 0.9545,
+    "role_accuracy_on_contact_rows": 0.7727,
+    "resolution_accuracy_on_contact_rows": 0.8636,
+    "negative_no_contact_accuracy": 1.0,
+    "definition": "Exact manually labelled value plus resolved/unresolved status; not inferred gold data."
+  },
+  "multi_commitment_accuracy": 0.0,
+  "deadline_presence_accuracy": 0.8,
+  "latency_ms_mean": 2597.37,
+  "latency_ms_p95": 3101.67
+}

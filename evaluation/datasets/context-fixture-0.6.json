@@ -1,0 +1,17 @@
+{
+  "dataset_version": "context-fixture-0.6-v1",
+  "contacts": [
+    {"name":"Rahul","email":"rahul@example.com","kind":"person","notes":"Project partner; reviews proposals."},
+    {"name":"Maya","email":"maya@example.com","kind":"person","notes":"Design reviewer."},
+    {"name":"Aisha","email":"aisha@example.com","kind":"person","notes":"Finance reviewer."},
+    {"name":"HR","email":"hr@example.com","kind":"organisation","notes":"Internship application team."},
+    {"name":"the placement coordinator","email":"coordinator@example.edu","kind":"organisation","notes":"Placement documents and interview details."},
+    {"name":"the library","email":"library@example.edu","kind":"organisation","notes":"Book reservations."}
+  ],
+  "memories": [
+    {"source_id":"memory-rahul","content":"Rahul usually reviews project proposals before the placement coordinator receives them."},
+    {"source_id":"memory-hr","content":"HR has not yet confirmed the internship start date."},
+    {"source_id":"memory-professor","content":"Professor approval is required before the final report can be submitted."},
+    {"source_id":"memory-library","content":"The library confirmed that the reserved book is ready."}
+  ]
+}

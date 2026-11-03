@@ -1,0 +1,145 @@
+{
+  "name": "ollama_capture_evaluation",
+  "status": "complete",
+  "evaluation_timestamp": "2026-11-03T10:27:43.837152+00:00",
+  "evaluation_now": "2026-11-02T10:00:00+00:00",
+  "configuration": {
+    "ollama_url": "http://127.0.0.1:11434",
+    "llm_model": "qwen2.5:7b",
+    "embedding_model": "nomic-embed-text",
+    "timezone": "UTC"
+  },
+  "ollama_version": "0.40.7",
+  "installed_models": [
+    "nomic-embed-text:latest",
+    "qwen2.5:7b",
+    "qwen2.5:3b"
+  ],
+  "embedding_dimension": 768,
+  "embedding_status": "available",
+  "dataset_size": 150,
+  "type_accuracy": 0.9,
+  "confirmation_accuracy": 0.4,
+  "deadline_presence_accuracy": 0.9533,
+  "contact_presence_accuracy": 1.0,
+  "deadline": {
+    "precision": 0.8654,
+    "recall": 1.0,
+    "f1": 0.9278
+  },
+  "contact_presence": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "extraction_detection": {
+    "precision": 0.9,
+    "recall": 0.9,
+    "f1": 0.9,
+    "definition": "The checked-in dataset labels one commitment per example but does not label a commitment count; this is prediction non-emptiness, not a multi-commitment score."
+  },
+  "multi_commitment_accuracy": null,
+  "categories": {
+    "deadline": {
+      "count": 30.0,
+      "type_accuracy": 1.0
+    },
+    "follow_up": {
+      "count": 15.0,
+      "type_accuracy": 1.0
+    },
+    "personal_task": {
+      "count": 75.0,
+      "type_accuracy": 0.8
+    },
+    "waiting_for": {
+      "count": 30.0,
+      "type_accuracy": 1.0
+    }
+  },
+  "type_confusion_matrix": {
+    "deadline": {
+      "deadline": 30
+    },
+    "waiting_for": {
+      "waiting_for": 30
+    },
+    "follow_up": {
+      "follow_up": 15
+    },
+    "personal_task": {
+      "personal_task": 60,
+      "missing": 15
+    }
+  },
+  "scenario_failures": {
+    "variant-0": {
+      "count": 15,
+      "type_failures": 0,
+      "deadline_failures": 0,
+      "contact_failures": 0
+    },
+    "variant-1": {
+      "count": 15,
+      "type_failures": 0,
+      "deadline_failures": 0,
+      "contact_failures": 0
+    },
+    "variant-2": {
+      "count": 15,
+      "type_failures": 0,
+      "deadline_failures": 0,
+      "contact_failures": 0
+    },
+    "variant-3": {
+      "count": 15,
+      "type_failures": 0,
+      "deadline_failures": 0,
+      "contact_failures": 0
+    },
+    "variant-4": {
+      "count": 15,
+      "type_failures": 0,
+      "deadline_failures": 0,
+      "contact_failures": 0
+    },
+    "variant-5": {
+      "count": 15,
+      "type_failures": 0,
+      "deadline_failures": 4,
+      "contact_failures": 0
+    },
+    "variant-6": {
+      "count": 15,
+      "type_failures": 0,
+      "deadline_failures": 3,
+      "contact_failures": 0
+    },
+    "variant-7": {
+      "count": 15,
+      "type_failures": 15,
+      "deadline_failures": 0,
+      "contact_failures": 0
+    },
+    "variant-8": {
+      "count": 15,
+      "type_failures": 0,
+      "deadline_failures": 0,
+      "contact_failures": 0
+    },
+    "variant-9": {
+      "count": 15,
+      "type_failures": 0,
+      "deadline_failures": 0,
+      "contact_failures": 0
+    }
+  },
+  "contact_value_evaluable": false,
+  "contact_value_note": "The checked-in labels contain only has_contact; expected name, email, role, and organisation/person class are absent.",
+  "latency_ms_mean": 3460.3,
+  "latency_ms_median": 2742.21,
+  "latency_ms_p95": 5313.68,
+  "empty_results": 15,
+  "prompt_version": "improved",
+  "retrieved_context_mode": "none"
+}

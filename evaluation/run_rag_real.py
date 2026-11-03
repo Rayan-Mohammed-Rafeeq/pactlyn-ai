@@ -2,11 +2,15 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import statistics
 import time
 from datetime import UTC, datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Any
+
+from sqlalchemy import text
 
 from pactlyn.app.configuration import Settings
 from pactlyn.llm.providers.ollama import OllamaProvider
@@ -18,7 +22,17 @@ from pactlyn.storage.database import create_session_factory, init_database, make
 from pactlyn.vectorstore.qdrant_local import LocalQdrantStore
 
 
-async def _evaluate(embedder: object, dataset: list[dict[str, str]], directory: str) -> dict[str, object]:
+def _model_matches(requested: str, installed: list[str]) -> bool:
+    return requested in installed or f"{requested}:latest" in installed
+
+
+async def _evaluate(
+    embedder: object,
+    dataset: list[dict[str, str]],
+    directory: str,
+    *,
+    mode: str = "hybrid",
+) -> dict[str, object]:
     engine = make_engine(f"sqlite:///{Path(directory) / 'rag.sqlite3'}")
     init_database(engine)
     session = create_session_factory(engine)()
@@ -29,7 +43,14 @@ async def _evaluate(embedder: object, dataset: list[dict[str, str]], directory: 
         await ingestion.ingest(
             SourceDocument(row["source_type"], row["id"], row["content"], {})
         )
-    retriever = HybridRetriever(session, vectors, embedder)
+    session.execute(text("DROP TABLE IF EXISTS rag_benchmark_fts"))
+    session.execute(text("CREATE VIRTUAL TABLE rag_benchmark_fts USING fts5(source_id UNINDEXED, content)"))
+    for row in dataset:
+        session.execute(
+            text("INSERT INTO rag_benchmark_fts(source_id, content) VALUES (:source_id, :content)"),
+            {"source_id": row["id"], "content": row["content"]},
+        )
+    session.commit()
     ranks: list[int] = []
     latencies: list[float] = []
     empty = 0
@@ -37,7 +58,27 @@ async def _evaluate(embedder: object, dataset: list[dict[str, str]], directory: 
     retrieved_at_5 = 0
     for row in dataset:
         started = time.perf_counter()
-        evidence = await retriever.search(row["query"], limit=10)
+        if mode == "hybrid":
+            evidence = await HybridRetriever(session, vectors, embedder).search(row["query"], limit=10)
+        elif mode == "dense":
+            query_vector = (await embedder.embed([row["query"]]))[0]  # type: ignore[attr-defined]
+            hits = vectors.search("personal_knowledge", query_vector, limit=10)
+            evidence = [
+                type("Evidence", (), {"source_id": str(hit.payload.get("source_id", hit.id))})()
+                for hit in hits
+            ]
+        elif mode == "fts5":
+            tokens = [token for token in row["query"].replace('"', "").split() if token]
+            fts_query = " OR ".join(f'"{token}"' for token in tokens) or '""'
+            matches: list[Any] = list(session.execute(
+                text(
+                    "SELECT source_id FROM rag_benchmark_fts WHERE rag_benchmark_fts MATCH :query LIMIT :limit"
+                ),
+                {"query": fts_query, "limit": 10},
+            ).scalars().all())
+            evidence = [type("Evidence", (), {"source_id": str(source_id)})() for source_id in matches]
+        else:
+            raise ValueError(f"Unknown retrieval mode: {mode}")
         latencies.append((time.perf_counter() - started) * 1000)
         ids = [item.source_id.split(":chunk:")[0] for item in evidence]
         retrieved_at_5 += min(5, len(ids))
@@ -48,10 +89,20 @@ async def _evaluate(embedder: object, dataset: list[dict[str, str]], directory: 
         if row["relevant"] in ids:
             ranks.append(ids.index(row["relevant"]) + 1)
     count = len(dataset)
+    embedder_any: Any = embedder
+    probe_vector = (await embedder_any.embed([dataset[0]["query"]]))[0] if dataset else []
+    qdrant_dimension = vectors.dimension("personal_knowledge")
+    vectors.close()
+    reopened = LocalQdrantStore(Path(directory) / "qdrant")
+    persistence_hits = reopened.search("personal_knowledge", probe_vector, limit=1) if probe_vector else []
+    reopened.close()
     report = {
         "dataset_size": count,
         "embedding_model": getattr(embedder, "model_name", type(embedder).__name__),
+        "retrieval_mode": mode,
         "embedding_dimension": getattr(embedder, "dimension", None),
+        "qdrant_dimension": qdrant_dimension,
+        "qdrant_persistence_verified": bool(persistence_hits),
         "recall_at_5": round(precision_hits / count, 4),
         "recall_at_10": round(len(ranks) / count, 4),
         "precision_at_5": round(precision_hits / retrieved_at_5, 4) if retrieved_at_5 else 0.0,
@@ -62,20 +113,23 @@ async def _evaluate(embedder: object, dataset: list[dict[str, str]], directory: 
         "latency_ms_median": round(statistics.median(latencies), 2),
         "latency_ms_p95": round(sorted(latencies)[max(0, int(len(latencies) * 0.95) - 1)], 2),
     }
-    vectors.close()
     session.close()
     engine.dispose()
     return report
 
 
 async def run() -> dict[str, object]:
+    dataset_path = Path(os.environ.get("PACTLYN_RAG_DATASET", Path(__file__).parent / "datasets" / "retrieval.json"))
     dataset = json.loads(
-        (Path(__file__).parent / "datasets" / "retrieval.json").read_text(encoding="utf-8")
+        dataset_path.read_text(encoding="utf-8")
     )
     settings = Settings()
     deterministic_report: dict[str, object]
     with TemporaryDirectory(prefix="pactlyn-rag-real-") as directory:
-        deterministic_report = await _evaluate(DeterministicTestEmbedding(), dataset, directory)
+        deterministic_report = {
+            mode: await _evaluate(DeterministicTestEmbedding(), dataset, directory, mode=mode)
+            for mode in ("dense", "fts5", "hybrid")
+        }
     provider = OllamaProvider(
         settings.ollama_url, settings.ollama_model, settings.ollama_embedding_model
     )
@@ -86,6 +140,8 @@ async def run() -> dict[str, object]:
             "ollama_url": settings.ollama_url,
             "embedding_model": settings.ollama_embedding_model,
         },
+        "dataset": str(dataset_path),
+        "dataset_size": len(dataset),
         "deterministic": deterministic_report,
         "real_ollama": None,
         "note": "Deterministic results are a harness check only and are not semantic-model evidence.",
@@ -94,11 +150,14 @@ async def run() -> dict[str, object]:
         result["missing"] = "Ollama server is not reachable"
         return result
     models = await provider.list_models()
-    if settings.ollama_embedding_model not in models:
+    if not _model_matches(settings.ollama_embedding_model, models):
         result["missing"] = [settings.ollama_embedding_model]
         return result
     with TemporaryDirectory(prefix="pactlyn-rag-ollama-") as directory:
-        real_report = await _evaluate(provider, dataset, directory)
+        real_report = {
+            mode: await _evaluate(provider, dataset, directory, mode=mode)
+            for mode in ("dense", "fts5", "hybrid")
+        }
     result["status"] = "complete"
     result["real_ollama"] = real_report
     return result

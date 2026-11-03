@@ -1,0 +1,56 @@
+{
+  "timestamp": "2026-11-03T11:14:30.916491+00:00",
+  "ollama_url": "http://127.0.0.1:11434",
+  "models": [
+    {
+      "model": "qwen2.5:7b",
+      "model_details": {
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "7.6B",
+          "quantization_level": "Q4_K_M"
+        }
+      },
+      "runtime": {
+        "name": "qwen2.5:7b",
+        "size": 4755397016,
+        "size_vram": 4755397016,
+        "context_length": 4096,
+        "expires_at": "2026-11-03T16:49:31.37135625+05:30"
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_details": {
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "3.1B",
+          "quantization_level": "Q4_K_M"
+        }
+      },
+      "runtime": {
+        "name": "qwen2.5:3b",
+        "size": 2163568803,
+        "size_vram": 2163568803,
+        "context_length": 4096,
+        "expires_at": "2026-11-03T16:49:34.734002767+05:30"
+      }
+    }
+  ],
+  "system_ram_kb": {
+    "MemTotal": 23694336,
+    "MemAvailable": 13518176
+  },
+  "gpu": "unavailable in evaluation environment",
+  "status": "complete"
+}

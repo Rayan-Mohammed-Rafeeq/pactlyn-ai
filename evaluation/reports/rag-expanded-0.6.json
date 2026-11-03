@@ -1,0 +1,1613 @@
+{
+  "dataset": "/run/media/rayan/Workspace1/01_Projects/pactlyn-ai/evaluation/datasets/rag-0.6.json",
+  "dataset_version": "rag-0.6-v1",
+  "source_count": 28,
+  "query_count": 12,
+  "deterministic": {
+    "dense": {
+      "metrics": {
+        "dataset_size": 12,
+        "retrieval_mode": "dense",
+        "embedding_dimension": 64,
+        "recall_at_5": 0.8182,
+        "recall_at_10": 0.9091,
+        "precision_at_5": 0.75,
+        "mrr": 0.7424,
+        "empty_result_rate": 0.0,
+        "no_answer_queries": 1,
+        "no_answer_returned_evidence_rate": 1.0,
+        "latency_ms_mean": 0.21,
+        "latency_ms_p95": 0.24,
+        "qdrant_persistence_verified": true
+      },
+      "rows": [
+        {
+          "id": "q-001",
+          "query": "What am I waiting for from Rahul?",
+          "relevant": [
+            "c-rahul-proposal",
+            "e-rahul-budget"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-rahul-budget",
+            "e-coordinator",
+            "c-postponed-license",
+            "e-library",
+            "document-dependency",
+            "c-hr-response",
+            "m-followup-preference",
+            "c-library-followup",
+            "m-tone",
+            "c-deployment"
+          ]
+        },
+        {
+          "id": "q-002",
+          "query": "Which tasks cannot proceed until Professor Mehta responds?",
+          "relevant": [
+            "c-professor-approval",
+            "c-report-submit",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-hr-response",
+            "c-postponed-license",
+            "c-completed-tax",
+            "c-hr-followup",
+            "c-deployment",
+            "contact-professor",
+            "c-rahul-proposal",
+            "c-professor-approval",
+            "m-postponed-license",
+            "e-daniel"
+          ]
+        },
+        {
+          "id": "q-003",
+          "query": "Have I already contacted the placement coordinator?",
+          "relevant": [
+            "e-coordinator",
+            "c-coordinator-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-coordinator",
+            "c-report-share",
+            "memory-no-answer",
+            "e-hr",
+            "contact-daniel",
+            "c-deployment",
+            "c-rahul-proposal",
+            "c-coordinator-followup",
+            "c-library-followup",
+            "c-unrelated"
+          ]
+        },
+        {
+          "id": "q-004",
+          "query": "What commitments did I make after the internship email?",
+          "relevant": [
+            "e-hr",
+            "c-hr-response",
+            "c-hr-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-hr-response",
+            "c-rahul-proposal",
+            "c-postponed-license",
+            "e-rahul-budget",
+            "m-completed-tax",
+            "c-deployment",
+            "c-hr-followup",
+            "c-report-share",
+            "c-professor-approval",
+            "c-library-followup"
+          ]
+        },
+        {
+          "id": "q-005",
+          "query": "Which follow-ups have I postponed more than once?",
+          "relevant": [
+            "c-postponed-license",
+            "m-postponed-license"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-postponed-license",
+            "e-rahul-budget",
+            "m-tone",
+            "c-hr-response",
+            "c-report-submit",
+            "e-coordinator",
+            "c-review-proposal",
+            "c-hr-followup",
+            "c-professor-approval",
+            "memory-no-answer"
+          ]
+        },
+        {
+          "id": "q-006",
+          "query": "Does the report submission depend on anyone else's approval?",
+          "relevant": [
+            "c-report-submit",
+            "c-professor-approval",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-professor-approval",
+            "c-coordinator-followup",
+            "c-report-share",
+            "e-rahul-budget",
+            "c-deployment",
+            "c-rahul-proposal",
+            "m-followup-preference",
+            "c-unrelated",
+            "m-tone",
+            "c-report-submit"
+          ]
+        },
+        {
+          "id": "q-007",
+          "query": "What should I do after the library reservation email?",
+          "relevant": [
+            "e-library",
+            "c-library-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-library-followup",
+            "c-deployment",
+            "e-rahul-budget",
+            "c-rahul-proposal",
+            "c-hr-response",
+            "e-daniel",
+            "c-report-share",
+            "c-postponed-license",
+            "c-hr-followup",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-008",
+          "query": "Which record says the tax filing is complete?",
+          "relevant": [
+            "c-completed-tax",
+            "m-completed-tax"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-completed-tax",
+            "contact-office",
+            "e-rahul-budget",
+            "c-rahul-proposal",
+            "c-library-followup",
+            "c-coordinator-followup",
+            "memory-no-answer",
+            "c-daniel-send",
+            "m-postponed-license",
+            "e-daniel"
+          ]
+        },
+        {
+          "id": "q-009",
+          "query": "Who should receive the compliance evidence package?",
+          "relevant": [
+            "contact-daniel",
+            "e-daniel",
+            "c-daniel-send"
+          ],
+          "answerable": true,
+          "ids": [
+            "memory-no-answer",
+            "c-daniel-send",
+            "e-daniel",
+            "c-deployment",
+            "c-rahul-proposal",
+            "c-report-share",
+            "c-completed-tax",
+            "c-review-proposal",
+            "contact-daniel",
+            "m-completed-tax"
+          ]
+        },
+        {
+          "id": "q-010",
+          "query": "What is the preferred tone for a local email draft?",
+          "relevant": [
+            "m-tone"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-library-followup",
+            "c-coordinator-followup",
+            "contact-daniel",
+            "contact-office",
+            "e-library",
+            "e-rahul-budget",
+            "c-professor-approval",
+            "memory-no-answer",
+            "e-hr",
+            "c-report-share"
+          ]
+        },
+        {
+          "id": "q-011",
+          "query": "What blocks the public announcement?",
+          "relevant": [
+            "document-dependency",
+            "c-deployment"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-report-share",
+            "c-deployment",
+            "c-professor-approval",
+            "m-tone",
+            "c-report-submit",
+            "memory-no-answer",
+            "c-postponed-license",
+            "contact-daniel",
+            "m-followup-preference",
+            "c-rahul-proposal"
+          ]
+        },
+        {
+          "id": "q-012",
+          "query": "Do I have a local record that I contacted the bank about the mortgage?",
+          "relevant": [],
+          "answerable": false,
+          "ids": [
+            "memory-no-answer",
+            "c-report-share",
+            "e-rahul-budget",
+            "c-library-followup",
+            "c-deployment",
+            "e-daniel",
+            "c-daniel-send",
+            "m-followup-preference",
+            "c-rahul-proposal",
+            "e-coordinator"
+          ]
+        }
+      ]
+    },
+    "fts5": {
+      "metrics": {
+        "dataset_size": 12,
+        "retrieval_mode": "fts5",
+        "embedding_dimension": 64,
+        "recall_at_5": 0.3636,
+        "recall_at_10": 0.5455,
+        "precision_at_5": 0.3333,
+        "mrr": 0.2569,
+        "empty_result_rate": 0.0,
+        "no_answer_queries": 1,
+        "no_answer_returned_evidence_rate": 1.0,
+        "latency_ms_mean": 0.11,
+        "latency_ms_p95": 0.11,
+        "qdrant_persistence_verified": true
+      },
+      "rows": [
+        {
+          "id": "q-001",
+          "query": "What am I waiting for from Rahul?",
+          "relevant": [
+            "c-rahul-proposal",
+            "e-rahul-budget"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "e-rahul-budget",
+            "e-coordinator",
+            "c-hr-response",
+            "e-hr",
+            "e-library",
+            "c-library-followup",
+            "contact-daniel",
+            "e-daniel"
+          ]
+        },
+        {
+          "id": "q-002",
+          "query": "Which tasks cannot proceed until Professor Mehta responds?",
+          "relevant": [
+            "c-professor-approval",
+            "c-report-submit",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-professor-approval",
+            "c-report-submit",
+            "contact-professor",
+            "c-postponed-license"
+          ]
+        },
+        {
+          "id": "q-003",
+          "query": "Have I already contacted the placement coordinator?",
+          "relevant": [
+            "e-coordinator",
+            "c-coordinator-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-004",
+          "query": "What commitments did I make after the internship email?",
+          "relevant": [
+            "e-hr",
+            "c-hr-response",
+            "c-hr-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-005",
+          "query": "Which follow-ups have I postponed more than once?",
+          "relevant": [
+            "c-postponed-license",
+            "m-postponed-license"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-review-proposal",
+            "e-rahul-budget",
+            "c-report-submit",
+            "c-postponed-license"
+          ]
+        },
+        {
+          "id": "q-006",
+          "query": "Does the report submission depend on anyone else's approval?",
+          "relevant": [
+            "c-report-submit",
+            "c-professor-approval",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-007",
+          "query": "What should I do after the library reservation email?",
+          "relevant": [
+            "e-library",
+            "c-library-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-008",
+          "query": "Which record says the tax filing is complete?",
+          "relevant": [
+            "c-completed-tax",
+            "m-completed-tax"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-009",
+          "query": "Who should receive the compliance evidence package?",
+          "relevant": [
+            "contact-daniel",
+            "e-daniel",
+            "c-daniel-send"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-010",
+          "query": "What is the preferred tone for a local email draft?",
+          "relevant": [
+            "m-tone"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-011",
+          "query": "What blocks the public announcement?",
+          "relevant": [
+            "document-dependency",
+            "c-deployment"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-012",
+          "query": "Do I have a local record that I contacted the bank about the mortgage?",
+          "relevant": [],
+          "answerable": false,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        }
+      ]
+    },
+    "hybrid": {
+      "metrics": {
+        "dataset_size": 12,
+        "retrieval_mode": "hybrid",
+        "embedding_dimension": 64,
+        "recall_at_5": 0.8182,
+        "recall_at_10": 0.9091,
+        "precision_at_5": 0.75,
+        "mrr": 0.4197,
+        "empty_result_rate": 0.0,
+        "no_answer_queries": 1,
+        "no_answer_returned_evidence_rate": 1.0,
+        "latency_ms_mean": 0.38,
+        "latency_ms_p95": 0.42,
+        "qdrant_persistence_verified": true
+      },
+      "rows": [
+        {
+          "id": "q-001",
+          "query": "What am I waiting for from Rahul?",
+          "relevant": [
+            "c-rahul-proposal",
+            "e-rahul-budget"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-rahul-budget",
+            "e-coordinator",
+            "c-hr-response",
+            "e-library",
+            "e-hr",
+            "c-library-followup",
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-postponed-license",
+            "document-dependency"
+          ]
+        },
+        {
+          "id": "q-002",
+          "query": "Which tasks cannot proceed until Professor Mehta responds?",
+          "relevant": [
+            "c-professor-approval",
+            "c-report-submit",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-postponed-license",
+            "c-professor-approval",
+            "contact-professor",
+            "c-report-submit",
+            "c-hr-response",
+            "c-completed-tax",
+            "c-hr-followup",
+            "c-deployment",
+            "c-rahul-proposal",
+            "c-report-share"
+          ]
+        },
+        {
+          "id": "q-003",
+          "query": "Have I already contacted the placement coordinator?",
+          "relevant": [
+            "e-coordinator",
+            "c-coordinator-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-coordinator",
+            "c-rahul-proposal",
+            "c-coordinator-followup",
+            "e-hr",
+            "c-report-share",
+            "c-review-proposal",
+            "memory-no-answer",
+            "e-rahul-budget",
+            "contact-daniel",
+            "c-deployment"
+          ]
+        },
+        {
+          "id": "q-004",
+          "query": "What commitments did I make after the internship email?",
+          "relevant": [
+            "e-hr",
+            "c-hr-response",
+            "c-hr-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-hr-response",
+            "e-rahul-budget",
+            "c-hr-followup",
+            "c-professor-approval",
+            "c-review-proposal",
+            "c-postponed-license",
+            "c-coordinator-followup",
+            "m-completed-tax",
+            "e-coordinator"
+          ]
+        },
+        {
+          "id": "q-005",
+          "query": "Which follow-ups have I postponed more than once?",
+          "relevant": [
+            "c-postponed-license",
+            "m-postponed-license"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-rahul-budget",
+            "c-postponed-license",
+            "c-review-proposal",
+            "c-report-submit",
+            "m-tone",
+            "c-hr-response",
+            "e-coordinator",
+            "c-hr-followup",
+            "c-professor-approval",
+            "memory-no-answer"
+          ]
+        },
+        {
+          "id": "q-006",
+          "query": "Does the report submission depend on anyone else's approval?",
+          "relevant": [
+            "c-report-submit",
+            "c-professor-approval",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-coordinator-followup",
+            "c-rahul-proposal",
+            "e-rahul-budget",
+            "c-professor-approval",
+            "m-followup-preference",
+            "c-review-proposal",
+            "c-report-share",
+            "c-deployment",
+            "e-coordinator",
+            "c-hr-response"
+          ]
+        },
+        {
+          "id": "q-007",
+          "query": "What should I do after the library reservation email?",
+          "relevant": [
+            "e-library",
+            "c-library-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "e-rahul-budget",
+            "c-hr-response",
+            "c-hr-followup",
+            "c-professor-approval",
+            "c-library-followup",
+            "c-deployment",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-coordinator"
+          ]
+        },
+        {
+          "id": "q-008",
+          "query": "Which record says the tax filing is complete?",
+          "relevant": [
+            "c-completed-tax",
+            "m-completed-tax"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "e-rahul-budget",
+            "c-coordinator-followup",
+            "c-completed-tax",
+            "contact-office",
+            "c-review-proposal",
+            "e-coordinator",
+            "c-library-followup",
+            "m-followup-preference",
+            "memory-no-answer"
+          ]
+        },
+        {
+          "id": "q-009",
+          "query": "Who should receive the compliance evidence package?",
+          "relevant": [
+            "contact-daniel",
+            "e-daniel",
+            "c-daniel-send"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "memory-no-answer",
+            "c-daniel-send",
+            "e-daniel",
+            "c-coordinator-followup",
+            "c-deployment",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference"
+          ]
+        },
+        {
+          "id": "q-010",
+          "query": "What is the preferred tone for a local email draft?",
+          "relevant": [
+            "m-tone"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "c-professor-approval",
+            "e-hr",
+            "c-library-followup",
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "contact-daniel",
+            "contact-office",
+            "e-library"
+          ]
+        },
+        {
+          "id": "q-011",
+          "query": "What blocks the public announcement?",
+          "relevant": [
+            "document-dependency",
+            "c-deployment"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-professor-approval",
+            "m-followup-preference",
+            "c-report-share",
+            "c-deployment",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "m-tone",
+            "e-rahul-budget",
+            "c-report-submit"
+          ]
+        },
+        {
+          "id": "q-012",
+          "query": "Do I have a local record that I contacted the bank about the mortgage?",
+          "relevant": [],
+          "answerable": false,
+          "ids": [
+            "e-rahul-budget",
+            "c-rahul-proposal",
+            "m-followup-preference",
+            "e-hr",
+            "memory-no-answer",
+            "c-report-share",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "c-library-followup",
+            "c-deployment"
+          ]
+        }
+      ]
+    }
+  },
+  "real_ollama": {
+    "dense": {
+      "metrics": {
+        "dataset_size": 12,
+        "retrieval_mode": "dense",
+        "embedding_dimension": 768,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "precision_at_5": 0.9167,
+        "mrr": 0.9091,
+        "empty_result_rate": 0.0,
+        "no_answer_queries": 1,
+        "no_answer_returned_evidence_rate": 1.0,
+        "latency_ms_mean": 44.36,
+        "latency_ms_p95": 54.77,
+        "qdrant_persistence_verified": true
+      },
+      "rows": [
+        {
+          "id": "q-001",
+          "query": "What am I waiting for from Rahul?",
+          "relevant": [
+            "c-rahul-proposal",
+            "e-rahul-budget"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-review-proposal",
+            "c-rahul-proposal",
+            "e-rahul-budget",
+            "e-coordinator",
+            "contact-professor",
+            "c-report-submit",
+            "e-library",
+            "c-professor-approval",
+            "c-hr-response",
+            "e-hr"
+          ]
+        },
+        {
+          "id": "q-002",
+          "query": "Which tasks cannot proceed until Professor Mehta responds?",
+          "relevant": [
+            "c-professor-approval",
+            "c-report-submit",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "contact-professor",
+            "c-professor-approval",
+            "c-report-submit",
+            "e-rahul-budget",
+            "c-rahul-proposal",
+            "m-followup-preference",
+            "e-coordinator",
+            "m-postponed-license",
+            "c-review-proposal",
+            "c-coordinator-followup"
+          ]
+        },
+        {
+          "id": "q-003",
+          "query": "Have I already contacted the placement coordinator?",
+          "relevant": [
+            "e-coordinator",
+            "c-coordinator-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-coordinator-followup",
+            "e-coordinator",
+            "c-review-proposal",
+            "c-hr-followup",
+            "c-hr-response",
+            "e-hr",
+            "document-dependency",
+            "e-rahul-budget",
+            "c-library-followup",
+            "e-daniel"
+          ]
+        },
+        {
+          "id": "q-004",
+          "query": "What commitments did I make after the internship email?",
+          "relevant": [
+            "e-hr",
+            "c-hr-response",
+            "c-hr-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-hr-followup",
+            "m-completed-tax",
+            "c-hr-response",
+            "e-coordinator",
+            "e-rahul-budget",
+            "c-coordinator-followup",
+            "e-daniel",
+            "c-library-followup",
+            "e-hr",
+            "c-review-proposal"
+          ]
+        },
+        {
+          "id": "q-005",
+          "query": "Which follow-ups have I postponed more than once?",
+          "relevant": [
+            "c-postponed-license",
+            "m-postponed-license"
+          ],
+          "answerable": true,
+          "ids": [
+            "m-postponed-license",
+            "c-postponed-license",
+            "m-followup-preference",
+            "c-coordinator-followup",
+            "m-completed-tax",
+            "e-rahul-budget",
+            "c-hr-followup",
+            "e-hr",
+            "c-rahul-proposal",
+            "e-coordinator"
+          ]
+        },
+        {
+          "id": "q-006",
+          "query": "Does the report submission depend on anyone else's approval?",
+          "relevant": [
+            "c-report-submit",
+            "c-professor-approval",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-report-share",
+            "c-report-submit",
+            "c-professor-approval",
+            "contact-office",
+            "document-dependency",
+            "e-rahul-budget",
+            "contact-professor",
+            "e-hr",
+            "c-rahul-proposal",
+            "c-coordinator-followup"
+          ]
+        },
+        {
+          "id": "q-007",
+          "query": "What should I do after the library reservation email?",
+          "relevant": [
+            "e-library",
+            "c-library-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-library-followup",
+            "e-library",
+            "e-rahul-budget",
+            "e-coordinator",
+            "e-daniel",
+            "c-hr-followup",
+            "e-hr",
+            "c-rahul-proposal",
+            "m-postponed-license",
+            "m-followup-preference"
+          ]
+        },
+        {
+          "id": "q-008",
+          "query": "Which record says the tax filing is complete?",
+          "relevant": [
+            "c-completed-tax",
+            "m-completed-tax"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-completed-tax",
+            "e-hr",
+            "c-professor-approval",
+            "memory-no-answer",
+            "contact-office",
+            "e-library",
+            "c-report-submit",
+            "e-coordinator",
+            "m-completed-tax",
+            "c-report-share"
+          ]
+        },
+        {
+          "id": "q-009",
+          "query": "Who should receive the compliance evidence package?",
+          "relevant": [
+            "contact-daniel",
+            "e-daniel",
+            "c-daniel-send"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-daniel",
+            "c-daniel-send",
+            "contact-daniel",
+            "c-report-share",
+            "e-coordinator",
+            "e-rahul-budget",
+            "contact-office",
+            "c-professor-approval",
+            "document-dependency",
+            "c-report-submit"
+          ]
+        },
+        {
+          "id": "q-010",
+          "query": "What is the preferred tone for a local email draft?",
+          "relevant": [
+            "m-tone"
+          ],
+          "answerable": true,
+          "ids": [
+            "m-tone",
+            "e-daniel",
+            "e-rahul-budget",
+            "m-followup-preference",
+            "e-hr",
+            "e-coordinator",
+            "document-dependency",
+            "c-daniel-send",
+            "c-library-followup",
+            "c-deployment"
+          ]
+        },
+        {
+          "id": "q-011",
+          "query": "What blocks the public announcement?",
+          "relevant": [
+            "document-dependency",
+            "c-deployment"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-deployment",
+            "document-dependency",
+            "m-postponed-license",
+            "m-completed-tax",
+            "e-coordinator",
+            "e-daniel",
+            "c-completed-tax",
+            "c-postponed-license",
+            "m-followup-preference",
+            "e-hr"
+          ]
+        },
+        {
+          "id": "q-012",
+          "query": "Do I have a local record that I contacted the bank about the mortgage?",
+          "relevant": [],
+          "answerable": false,
+          "ids": [
+            "memory-no-answer",
+            "c-library-followup",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "c-report-share",
+            "e-daniel",
+            "c-completed-tax",
+            "e-coordinator",
+            "e-hr",
+            "c-hr-followup"
+          ]
+        }
+      ]
+    },
+    "fts5": {
+      "metrics": {
+        "dataset_size": 12,
+        "retrieval_mode": "fts5",
+        "embedding_dimension": 768,
+        "recall_at_5": 0.3636,
+        "recall_at_10": 0.5455,
+        "precision_at_5": 0.3333,
+        "mrr": 0.2569,
+        "empty_result_rate": 0.0,
+        "no_answer_queries": 1,
+        "no_answer_returned_evidence_rate": 1.0,
+        "latency_ms_mean": 0.11,
+        "latency_ms_p95": 0.13,
+        "qdrant_persistence_verified": true
+      },
+      "rows": [
+        {
+          "id": "q-001",
+          "query": "What am I waiting for from Rahul?",
+          "relevant": [
+            "c-rahul-proposal",
+            "e-rahul-budget"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "e-rahul-budget",
+            "e-coordinator",
+            "c-hr-response",
+            "e-hr",
+            "e-library",
+            "c-library-followup",
+            "contact-daniel",
+            "e-daniel"
+          ]
+        },
+        {
+          "id": "q-002",
+          "query": "Which tasks cannot proceed until Professor Mehta responds?",
+          "relevant": [
+            "c-professor-approval",
+            "c-report-submit",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-professor-approval",
+            "c-report-submit",
+            "contact-professor",
+            "c-postponed-license"
+          ]
+        },
+        {
+          "id": "q-003",
+          "query": "Have I already contacted the placement coordinator?",
+          "relevant": [
+            "e-coordinator",
+            "c-coordinator-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-004",
+          "query": "What commitments did I make after the internship email?",
+          "relevant": [
+            "e-hr",
+            "c-hr-response",
+            "c-hr-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-005",
+          "query": "Which follow-ups have I postponed more than once?",
+          "relevant": [
+            "c-postponed-license",
+            "m-postponed-license"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-review-proposal",
+            "e-rahul-budget",
+            "c-report-submit",
+            "c-postponed-license"
+          ]
+        },
+        {
+          "id": "q-006",
+          "query": "Does the report submission depend on anyone else's approval?",
+          "relevant": [
+            "c-report-submit",
+            "c-professor-approval",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-007",
+          "query": "What should I do after the library reservation email?",
+          "relevant": [
+            "e-library",
+            "c-library-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-008",
+          "query": "Which record says the tax filing is complete?",
+          "relevant": [
+            "c-completed-tax",
+            "m-completed-tax"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-009",
+          "query": "Who should receive the compliance evidence package?",
+          "relevant": [
+            "contact-daniel",
+            "e-daniel",
+            "c-daniel-send"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-010",
+          "query": "What is the preferred tone for a local email draft?",
+          "relevant": [
+            "m-tone"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-011",
+          "query": "What blocks the public announcement?",
+          "relevant": [
+            "document-dependency",
+            "c-deployment"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-012",
+          "query": "Do I have a local record that I contacted the bank about the mortgage?",
+          "relevant": [],
+          "answerable": false,
+          "ids": [
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "m-followup-preference",
+            "c-hr-response",
+            "c-hr-followup",
+            "e-hr",
+            "c-professor-approval"
+          ]
+        }
+      ]
+    },
+    "hybrid": {
+      "metrics": {
+        "dataset_size": 12,
+        "retrieval_mode": "hybrid",
+        "embedding_dimension": 768,
+        "recall_at_5": 0.9091,
+        "recall_at_10": 1.0,
+        "precision_at_5": 0.8333,
+        "mrr": 0.5387,
+        "empty_result_rate": 0.0,
+        "no_answer_queries": 1,
+        "no_answer_returned_evidence_rate": 1.0,
+        "latency_ms_mean": 48.72,
+        "latency_ms_p95": 54.63,
+        "qdrant_persistence_verified": true
+      },
+      "rows": [
+        {
+          "id": "q-001",
+          "query": "What am I waiting for from Rahul?",
+          "relevant": [
+            "c-rahul-proposal",
+            "e-rahul-budget"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-review-proposal",
+            "c-rahul-proposal",
+            "e-rahul-budget",
+            "e-coordinator",
+            "c-hr-response",
+            "e-library",
+            "e-hr",
+            "contact-professor",
+            "c-report-submit",
+            "c-professor-approval"
+          ]
+        },
+        {
+          "id": "q-002",
+          "query": "Which tasks cannot proceed until Professor Mehta responds?",
+          "relevant": [
+            "c-professor-approval",
+            "c-report-submit",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-professor-approval",
+            "contact-professor",
+            "c-report-submit",
+            "e-rahul-budget",
+            "c-postponed-license",
+            "c-rahul-proposal",
+            "m-followup-preference",
+            "e-coordinator",
+            "m-postponed-license",
+            "c-review-proposal"
+          ]
+        },
+        {
+          "id": "q-003",
+          "query": "Have I already contacted the placement coordinator?",
+          "relevant": [
+            "e-coordinator",
+            "c-coordinator-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-coordinator-followup",
+            "c-review-proposal",
+            "e-coordinator",
+            "c-hr-followup",
+            "e-rahul-budget",
+            "c-hr-response",
+            "e-hr",
+            "c-rahul-proposal",
+            "m-followup-preference",
+            "document-dependency"
+          ]
+        },
+        {
+          "id": "q-004",
+          "query": "What commitments did I make after the internship email?",
+          "relevant": [
+            "e-hr",
+            "c-hr-response",
+            "c-hr-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-hr-followup",
+            "c-coordinator-followup",
+            "e-coordinator",
+            "e-rahul-budget",
+            "c-hr-response",
+            "c-review-proposal",
+            "e-hr",
+            "c-rahul-proposal",
+            "m-completed-tax",
+            "m-followup-preference"
+          ]
+        },
+        {
+          "id": "q-005",
+          "query": "Which follow-ups have I postponed more than once?",
+          "relevant": [
+            "c-postponed-license",
+            "m-postponed-license"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-postponed-license",
+            "e-rahul-budget",
+            "m-postponed-license",
+            "c-review-proposal",
+            "m-followup-preference",
+            "c-report-submit",
+            "c-coordinator-followup",
+            "m-completed-tax",
+            "c-hr-followup",
+            "e-hr"
+          ]
+        },
+        {
+          "id": "q-006",
+          "query": "Does the report submission depend on anyone else's approval?",
+          "relevant": [
+            "c-report-submit",
+            "c-professor-approval",
+            "contact-professor"
+          ],
+          "answerable": true,
+          "ids": [
+            "c-rahul-proposal",
+            "e-rahul-budget",
+            "c-professor-approval",
+            "c-coordinator-followup",
+            "e-hr",
+            "c-report-share",
+            "c-report-submit",
+            "c-review-proposal",
+            "contact-office",
+            "document-dependency"
+          ]
+        },
+        {
+          "id": "q-007",
+          "query": "What should I do after the library reservation email?",
+          "relevant": [
+            "e-library",
+            "c-library-followup"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-rahul-budget",
+            "c-rahul-proposal",
+            "e-coordinator",
+            "c-hr-followup",
+            "m-followup-preference",
+            "e-hr",
+            "c-library-followup",
+            "e-library",
+            "c-review-proposal",
+            "c-coordinator-followup"
+          ]
+        },
+        {
+          "id": "q-008",
+          "query": "Which record says the tax filing is complete?",
+          "relevant": [
+            "c-completed-tax",
+            "m-completed-tax"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-hr",
+            "c-professor-approval",
+            "e-coordinator",
+            "c-completed-tax",
+            "c-rahul-proposal",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "memory-no-answer",
+            "e-rahul-budget",
+            "contact-office"
+          ]
+        },
+        {
+          "id": "q-009",
+          "query": "Who should receive the compliance evidence package?",
+          "relevant": [
+            "contact-daniel",
+            "e-daniel",
+            "c-daniel-send"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-rahul-budget",
+            "e-coordinator",
+            "c-professor-approval",
+            "e-daniel",
+            "c-rahul-proposal",
+            "c-daniel-send",
+            "c-review-proposal",
+            "contact-daniel",
+            "c-coordinator-followup",
+            "c-report-share"
+          ]
+        },
+        {
+          "id": "q-010",
+          "query": "What is the preferred tone for a local email draft?",
+          "relevant": [
+            "m-tone"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-rahul-budget",
+            "m-followup-preference",
+            "e-coordinator",
+            "e-hr",
+            "m-tone",
+            "c-rahul-proposal",
+            "e-daniel",
+            "c-review-proposal",
+            "c-coordinator-followup",
+            "document-dependency"
+          ]
+        },
+        {
+          "id": "q-011",
+          "query": "What blocks the public announcement?",
+          "relevant": [
+            "document-dependency",
+            "c-deployment"
+          ],
+          "answerable": true,
+          "ids": [
+            "e-coordinator",
+            "m-followup-preference",
+            "e-hr",
+            "c-deployment",
+            "c-rahul-proposal",
+            "document-dependency",
+            "c-review-proposal",
+            "m-postponed-license",
+            "c-coordinator-followup",
+            "m-completed-tax"
+          ]
+        },
+        {
+          "id": "q-012",
+          "query": "Do I have a local record that I contacted the bank about the mortgage?",
+          "relevant": [],
+          "answerable": false,
+          "ids": [
+            "c-coordinator-followup",
+            "e-rahul-budget",
+            "e-coordinator",
+            "c-hr-followup",
+            "e-hr",
+            "memory-no-answer",
+            "c-rahul-proposal",
+            "c-library-followup",
+            "c-review-proposal",
+            "c-report-share"
+          ]
+        }
+      ]
+    }
+  },
+  "status": "complete"
+}
