@@ -39,14 +39,27 @@ class RecommendationEngine:
                 )
             )
         )
+        terminal = {
+            CommitmentStatus.COMPLETED,
+            CommitmentStatus.CANCELLED,
+            CommitmentStatus.RESPONSE_RECEIVED,
+        }
         for commitment in active:
             for relation, related in self.commitments.related(commitment.id):
-                if relation.commitment_id != commitment.id:
+                outgoing = relation.commitment_id == commitment.id
+                incoming = relation.related_commitment_id == commitment.id
+                if not outgoing and not incoming:
+                    continue
+                if relation.relationship == CommitmentRelationshipType.SUPERSEDES:
+                    if incoming and related.status not in {CommitmentStatus.CANCELLED, CommitmentStatus.COMPLETED}:
+                        # The older endpoint is no longer actionable while its
+                        # replacement remains active.
+                        break
                     continue
                 if relation.relationship in {
                     CommitmentRelationshipType.BLOCKED_BY,
                     CommitmentRelationshipType.DEPENDS_ON,
-                } and related.status not in {CommitmentStatus.COMPLETED, CommitmentStatus.CANCELLED}:
+                } and outgoing and related.status not in terminal:
                     recommendations.append(
                         FollowThroughRecommendation(
                             title=f"Blocked: {commitment.title}",
@@ -54,16 +67,51 @@ class RecommendationEngine:
                             commitment_ids=(commitment.id, related.id),
                         )
                     )
-                elif (
-                    relation.relationship == CommitmentRelationshipType.FOLLOWED_BY
-                    and related.status == CommitmentStatus.COMPLETED
-                    and commitment.status not in {CommitmentStatus.COMPLETED, CommitmentStatus.CANCELLED}
-                ):
+                elif relation.relationship == CommitmentRelationshipType.FOLLOWED_BY and incoming and related.status in terminal:
                     recommendations.append(
                         FollowThroughRecommendation(
                             title=f"Now possible: {commitment.title}",
                             explanation=f"The preceding commitment {related.title} is complete.",
                             commitment_ids=(commitment.id, related.id),
+                        )
+                    )
+                elif (
+                    relation.relationship == CommitmentRelationshipType.RESPONSE_REQUIRED_FROM
+                    and outgoing
+                ):
+                    if related.status in terminal:
+                        recommendations.append(
+                            FollowThroughRecommendation(
+                                title=f"Now possible: {commitment.title}",
+                                explanation=f"The required response for {commitment.title} was received from {related.title}.",
+                                commitment_ids=(commitment.id, related.id),
+                            )
+                        )
+                    else:
+                        recommendations.append(
+                            FollowThroughRecommendation(
+                                title=f"Conditional follow-up held: {commitment.title}",
+                                explanation=f"{commitment.title} should wait for a response on {related.title} before it is recommended.",
+                                commitment_ids=(commitment.id, related.id),
+                            )
+                        )
+            if commitment.condition:
+                related_conditions = [
+                    (relation, related)
+                    for relation, related in self.commitments.related(commitment.id)
+                    if relation.commitment_id == commitment.id
+                    and relation.relationship in {
+                        CommitmentRelationshipType.DEPENDS_ON,
+                        CommitmentRelationshipType.BLOCKED_BY,
+                        CommitmentRelationshipType.RESPONSE_REQUIRED_FROM,
+                    }
+                ]
+                if related_conditions and any(related.status not in terminal for _, related in related_conditions):
+                    recommendations.append(
+                        FollowThroughRecommendation(
+                            title=f"Condition not met: {commitment.title}",
+                            explanation=f"The condition for {commitment.title} has not been satisfied yet.",
+                            commitment_ids=(commitment.id, related_conditions[0][1].id),
                         )
                     )
             if commitment.status == CommitmentStatus.WAITING and commitment.due_at and commitment.due_at <= now:
