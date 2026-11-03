@@ -27,14 +27,23 @@ def build_capture_graph(
 
     def extract(state: PactlynState) -> dict[str, object]:
         result = extraction.extract(state["input_text"], timezone_name=state.get("timezone", "UTC"))
-        return {"candidates": result.candidates, "explanation": result.explanation, "status": "extracted"}
+        return {
+            "candidates": result.candidates,
+            "relationships": result.relationships,
+            "explanation": result.explanation,
+            "status": "extracted",
+        }
 
     def validate(state: PactlynState) -> dict[str, object]:
         candidates = state.get("candidates", [])
         if not candidates:
             return {"status": "invalid", "errors": ["No commitment was found"]}
-        candidate = candidates[0]
-        return {"selected_candidate": candidate, "needs_confirmation": candidate.needs_confirmation, "status": "validated"}
+        needs_confirmation = any(candidate.needs_confirmation for candidate in candidates)
+        return {
+            "selected_candidate": candidates[0],
+            "needs_confirmation": needs_confirmation,
+            "status": "validated",
+        }
 
     def route(state: PactlynState) -> str:
         return "persist" if state.get("confirmation") or not state.get("needs_confirmation", True) else "approval"
