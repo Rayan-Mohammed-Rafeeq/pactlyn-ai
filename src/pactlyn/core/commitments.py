@@ -3,7 +3,7 @@ from __future__ import annotations
 import builtins
 import re
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import Any, Literal
 from zoneinfo import ZoneInfo
 
 from dateutil import parser as date_parser
@@ -14,6 +14,8 @@ from sqlalchemy.orm import Session
 from pactlyn.storage.models import (
     Commitment,
     CommitmentEvent,
+    CommitmentRelationship,
+    CommitmentRelationshipType,
     CommitmentStatus,
     CommitmentType,
     Contact,
@@ -31,6 +33,25 @@ class CommitmentCandidate(BaseModel):
     type: CommitmentType = CommitmentType.PERSONAL_TASK
     person: str | None = None
     contact_email: str | None = None
+    contact_kind: Literal["person", "organisation", "unknown"] = "unknown"
+    contact_role: Literal["recipient", "mentioned", "responsible", "unknown"] = "unknown"
+    contact_status: Literal["resolved", "ambiguous", "unresolved"] = "unresolved"
+    extraction_status: Literal["active", "completed", "postponed", "cancelled"] = "active"
+    event_id: str | None = None
+    source_span: str = ""
+    actor: str | None = None
+    object: str | None = None
+    beneficiary: str | None = None
+    deadline_owner: str | None = None
+    condition: str | None = None
+    responsibility: Literal[
+        "USER_PERFORMS",
+        "OTHER_PARTY_PERFORMS",
+        "USER_WAITING_FOR",
+        "USER_CONTACTS",
+        "CONDITIONALLY_EXECUTES",
+        "UNKNOWN",
+    ] = "UNKNOWN"
     action: str | None = None
     expected_recipient: str | None = None
     reminder_preference: str | None = None
@@ -64,13 +85,56 @@ class CommitmentCandidate(BaseModel):
         return self
 
 
+class CommitmentRelationshipCandidate(BaseModel):
+    """An edge between candidates in the same capture, addressed by zero-based indexes."""
+
+    source_index: int = Field(ge=0)
+    target_index: int = Field(ge=0)
+    source_event_id: str | None = None
+    target_event_id: str | None = None
+    relationship: CommitmentRelationshipType
+    evidence: str = ""
+    confidence: float = Field(default=0.7, ge=0.0, le=1.0)
+
+
 class CaptureResult(BaseModel):
     candidates: list[CommitmentCandidate]
+    relationships: list[CommitmentRelationshipCandidate] = Field(default_factory=list)
     explanation: str = ""
     used_local_model: bool = False
     used_fallback: bool = False
     provider_name: str | None = None
     provider_error: str | None = None
+    relationship_warnings: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def normalize_event_graph(self) -> CaptureResult:
+        for index, candidate in enumerate(self.candidates):
+            candidate.event_id = candidate.event_id or f"event-{index + 1}"
+            candidate.source_span = candidate.source_span or candidate.evidence or candidate.description
+        unique: list[CommitmentRelationshipCandidate] = []
+        seen: set[tuple[int, int, CommitmentRelationshipType]] = set()
+        for relation in self.relationships:
+            if relation.source_index >= len(self.candidates) or relation.target_index >= len(self.candidates):
+                self.relationship_warnings.append(
+                    f"Relationship {relation.relationship.value} references a missing event"
+                )
+                continue
+            if relation.source_index == relation.target_index:
+                self.relationship_warnings.append(
+                    f"Relationship {relation.relationship.value} cannot reference itself"
+                )
+                continue
+            key = (relation.source_index, relation.target_index, relation.relationship)
+            if key in seen:
+                self.relationship_warnings.append(f"Duplicate relationship removed: {relation.relationship.value}")
+                continue
+            seen.add(key)
+            relation.source_event_id = self.candidates[relation.source_index].event_id
+            relation.target_event_id = self.candidates[relation.target_index].event_id
+            unique.append(relation)
+        self.relationships = unique
+        return self
 
 
 class CommitmentExtractor:
@@ -89,8 +153,172 @@ class CommitmentExtractor:
         re.IGNORECASE,
     )
     _email_pattern = re.compile(r"\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+\b")
+    _contact_patterns = (
+        re.compile(r"\bwait(?:ing)? for\s+(?:the\s+)?(.+?)(?=\s+to\b|\s+that\b|\s+who\b|\s+reply\b|\s*$)", re.I),
+        re.compile(r"\bfollow(?: |-)?up with\s+(.+?)(?=\s+if\b|\s+by\b|\s+on\b|\s+next\b|\s+(?:today|tomorrow)\b|\s*$)", re.I),
+        re.compile(r"\bpromised\s+(.+?)(?=\s+that\b|\s+to\b|\s+i\s+would\b|\s*,\b|\s*$)", re.I),
+        re.compile(r"\bremember that\s+(.+?)\s+owes\b", re.I),
+        re.compile(r"\b([A-Za-z][A-Za-z .'-]{1,80})\s+owes me\b", re.I),
+        re.compile(r"\bexpecting\s+(?:the\s+)?(.+?)(?=\s+to\b|\s*$)", re.I),
+        re.compile(r"\bthe\s+([A-Za-z][A-Za-z .'-]{1,80})\s+(?:should|must|will)\b", re.I),
+        re.compile(r"\bthe\s+([A-Za-z][A-Za-z .'-]{1,80})\s+(?:has not|hasn't|did not|didn't)\s+repl", re.I),
+        re.compile(r"\bask\s+(.+?)\s+for\b", re.I),
+        re.compile(r"\bask\s+(.+?)\s+to\b", re.I),
+        re.compile(r"\bcall\s+(.+?)(?=\s+about\b|\s+after\b|\s+tomorrow\b|\s*$)", re.I),
+        re.compile(r"\b(?:with|from|contact|email)\s+([A-Za-z][A-Za-z .'-]{1,80}?)(?=\s+for\b|\s+after\b|\s+before\b|\s+next\b|\s+on\b|\s+by\b|\s+(?:today|tomorrow)\b|\s*$)", re.I),
+    )
 
     def extract(self, text: str, *, now: datetime | None = None, timezone_name: str = "UTC") -> CaptureResult:
+        """Extract one or more commitments while preserving their source order."""
+        special = self._extract_structured_multi(text, now=now, timezone_name=timezone_name)
+        if special is not None:
+            return special
+        segments = self._split_commitments(text)
+        if len(segments) <= 1:
+            return self._extract_single(text, now=now, timezone_name=timezone_name)
+        results = [self._extract_single(segment, now=now, timezone_name=timezone_name) for segment in segments]
+        candidates = [item.candidates[0] for item in results if item.candidates]
+        relationships: list[CommitmentRelationshipCandidate] = []
+        for index in range(len(candidates) - 1):
+            relationships.append(
+                CommitmentRelationshipCandidate(
+                    source_index=index,
+                    target_index=index + 1,
+                    relationship=CommitmentRelationshipType.FOLLOWED_BY,
+                    evidence=segments[index + 1],
+                    confidence=0.65,
+                )
+            )
+        return CaptureResult(
+            candidates=candidates,
+            relationships=relationships,
+            explanation="Deterministic extraction of multiple source actions; confirmation is required for uncertain fields",
+        )
+
+    @staticmethod
+    def _extract_structured_multi(
+        source: str,
+        *,
+        now: datetime | None,
+        timezone_name: str,
+    ) -> CaptureResult | None:
+        """Handle high-signal relationship language without inventing entities."""
+        current = now or datetime.now(UTC)
+        conditional = re.search(
+            r"(?:if\s+)?(?P<name>[A-Z][A-Za-z'-]+)\s+(?:does not|doesn't)\s+(?P<action>.+?)\s+by\s+(?P<first>\w+)[,.]?\s+"
+            r"I\s+will\s+(?P<follow>contact|call|email|follow up with)\s+(?:him|her|them|(?P<same>[A-Z][A-Za-z'-]+))\s+on\s+(?P<second>\w+)",
+            source,
+            re.IGNORECASE,
+        )
+        if conditional:
+            name = conditional.group("name")
+            waiting = CommitmentCandidate(
+                title=f"Wait for {name}",
+                description=source,
+                type=CommitmentType.WAITING_FOR,
+                person=name,
+                contact_kind="person",
+                contact_role="responsible",
+                contact_status="resolved",
+                needs_confirmation=True,
+                evidence=source,
+            )
+            follow_text = f"I will {conditional.group('follow')} {name} on {conditional.group('second')}"
+            follow = CommitmentExtractor()._extract_single(follow_text, now=current, timezone_name=timezone_name).candidates[0]
+            follow.type = CommitmentType.FOLLOW_UP
+            follow.person = name
+            follow.contact_kind = "person"
+            follow.contact_role = "recipient"
+            follow.contact_status = "resolved"
+            follow.evidence = source
+            return CaptureResult(
+                candidates=[waiting, follow],
+                relationships=[
+                    CommitmentRelationshipCandidate(source_index=0, target_index=1, relationship=CommitmentRelationshipType.FOLLOWED_BY, evidence=source, confidence=0.9),
+                    CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.RESPONSE_REQUIRED_FROM, evidence=source, confidence=0.9),
+                ],
+                explanation="Extracted waiting and conditional follow-up commitments.",
+            )
+        waiting_fallback = re.search(
+            r"I\s+am\s+waiting\s+for\s+(?P<name>[A-Z][A-Za-z'-]+)(?:'s|\s+)?.*?\.\s*"
+            r"If\s+they\s+(?:do not|don't)\s+respond,\s+I\s+will\s+(?P<action>call|contact|email)\s+them\s+on\s+(?P<date>\w+)",
+            source,
+            re.IGNORECASE,
+        )
+        if waiting_fallback:
+            name = waiting_fallback.group("name")
+            waiting = CommitmentCandidate(
+                title=f"Wait for {name}", description=source, type=CommitmentType.WAITING_FOR,
+                person=name, contact_kind="person", contact_role="responsible", contact_status="resolved",
+                needs_confirmation=True, evidence=source,
+            )
+            follow_text = f"I will {waiting_fallback.group('action')} {name} on {waiting_fallback.group('date')}"
+            follow = CommitmentExtractor()._extract_single(follow_text, now=current, timezone_name=timezone_name).candidates[0]
+            follow.type = CommitmentType.FOLLOW_UP
+            follow.person = name
+            follow.contact_kind = "person"
+            follow.contact_role = "recipient"
+            follow.evidence = source
+            return CaptureResult(
+                candidates=[waiting, follow],
+                relationships=[
+                    CommitmentRelationshipCandidate(source_index=0, target_index=1, relationship=CommitmentRelationshipType.FOLLOWED_BY, evidence=source, confidence=0.9),
+                    CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.RESPONSE_REQUIRED_FROM, evidence=source, confidence=0.9),
+                ],
+                explanation="Extracted waiting and conditional follow-up commitments.",
+            )
+        approval = re.match(
+            r"Once\s+(?P<owner>.+?)\s+(?:confirms|approves|responds),?\s+I\s+will\s+(?P<action>.+)",
+            source.strip().rstrip(".!?"),
+            re.IGNORECASE,
+        )
+        if approval:
+            owner = approval.group("owner").strip()
+            task = CommitmentExtractor()._extract_single(
+                f"I will {approval.group('action')}", now=current, timezone_name=timezone_name
+            ).candidates[0]
+            waiting = CommitmentCandidate(
+                title=f"Wait for {owner} approval",
+                description=owner,
+                type=CommitmentType.WAITING_FOR,
+                person=owner,
+                contact_kind=CommitmentExtractor._contact_kind(owner),
+                contact_role="responsible",
+                contact_status="unresolved",
+                needs_confirmation=True,
+                evidence=source,
+            )
+            task.evidence = source
+            return CaptureResult(
+                candidates=[waiting, task],
+                relationships=[CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.DEPENDS_ON, evidence=source, confidence=0.9)],
+                explanation="Extracted approval dependency.",
+            )
+        correction = re.match(r"I said I would (?P<old>.+?), but correction:\s*I will (?P<new>.+)", source.strip(), re.I)
+        if correction:
+            old = CommitmentExtractor()._extract_single(f"I will {correction.group('old')}", now=current, timezone_name=timezone_name).candidates[0]
+            old.extraction_status = "cancelled"
+            new = CommitmentExtractor()._extract_single(f"I will {correction.group('new')}", now=current, timezone_name=timezone_name).candidates[0]
+            return CaptureResult(
+                candidates=[old, new],
+                relationships=[CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.SUPERSEDES, evidence=source, confidence=0.95)],
+                explanation="Extracted correction and superseding commitment.",
+            )
+        return None
+
+    @staticmethod
+    def _split_commitments(source: str) -> list[str]:
+        if not re.search(r"\b(?:,\s*and\s+|\band\s+|;\s*|\bthen\s+)", source, re.I):
+            return [source]
+        parts = re.split(
+            r"(?:,\s*(?:and\s+)?|\s+and\s+|;\s*|\s+then\s+)(?=(?:i(?:'ll| will| need to| have to)|ask|email|send|submit|follow|contact|call|review|complete|wait|once)\b)",
+            source,
+            flags=re.IGNORECASE,
+        )
+        cleaned = [part.strip(" .,!?") for part in parts if part.strip(" .,!?")]
+        return cleaned if len(cleaned) > 1 else [source]
+
+    def _extract_single(self, text: str, *, now: datetime | None = None, timezone_name: str = "UTC") -> CaptureResult:
         now = now or datetime.now(UTC)
         try:
             now = now.astimezone(ZoneInfo(timezone_name))
@@ -100,8 +328,12 @@ class CommitmentExtractor:
         if not source:
             return CaptureResult(candidates=[], explanation="Empty capture")
         lowered = source.lower()
+        if re.search(r"\b(?:no action|nothing to do|no need to|do not need to)\b", lowered):
+            return CaptureResult(candidates=[], explanation="No active user commitment was stated")
         commitment_type = CommitmentType.PERSONAL_TASK
-        if any(phrase in lowered for phrase in ("waiting for", "expecting", "owed", "reply from")):
+        if re.match(r"^[A-Z][A-Za-z'-]+\s+(?:will|should|must)\b", source):
+            commitment_type = CommitmentType.WAITING_FOR
+        elif any(phrase in lowered for phrase in ("waiting for", "wait for", "expecting", "owed", "owes me", "reply from")):
             commitment_type = CommitmentType.WAITING_FOR
         elif any(phrase in lowered for phrase in ("follow up", "follow-up", "check with")):
             commitment_type = CommitmentType.FOLLOW_UP
@@ -111,6 +343,7 @@ class CommitmentExtractor:
         due_at = self._parse_relative_date(source, now)
         email_match = self._email_pattern.search(source)
         person = self._infer_person(source)
+        contact_kind = self._contact_kind(person or (email_match.group(0) if email_match else None))
         needs_confirmation = due_at is None or (due_at < now) or (
             commitment_type in {CommitmentType.WAITING_FOR, CommitmentType.FOLLOW_UP}
             and (person is None or email_match is None)
@@ -122,6 +355,13 @@ class CommitmentExtractor:
             type=commitment_type,
             person=person,
             contact_email=email_match.group(0) if email_match else None,
+            contact_kind=contact_kind,
+            contact_role=self._contact_role(source, person),
+            contact_status=(
+                "resolved"
+                if email_match or (person and re.fullmatch(r"(?:Dr\s+)?[A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+)*", person))
+                else "unresolved"
+            ),
             due_at=due_at,
             timezone=timezone_name,
             reminder_at=due_at - timedelta(hours=24) if due_at else None,
@@ -130,6 +370,15 @@ class CommitmentExtractor:
             evidence=source,
             action=self._infer_action(source),
             expected_recipient=person,
+            actor=(person if commitment_type == CommitmentType.WAITING_FOR else "user"),
+            action=self._infer_action(source),
+            deadline_owner=(person if commitment_type == CommitmentType.WAITING_FOR else "user") if due_at else None,
+            condition=(re.search(r"\bif\s+(.+)", source, re.IGNORECASE).group(0) if re.search(r"\bif\s+(.+)", source, re.IGNORECASE) else None),
+            responsibility=(
+                "USER_WAITING_FOR" if commitment_type == CommitmentType.WAITING_FOR else
+                "USER_CONTACTS" if commitment_type == CommitmentType.FOLLOW_UP else
+                "USER_PERFORMS"
+            ),
         )
         return CaptureResult(candidates=[candidate], explanation="Deterministic local extraction; confirmation is required for uncertain fields")
 
@@ -172,6 +421,16 @@ class CommitmentExtractor:
 
     @staticmethod
     def _infer_person(source: str) -> str | None:
+        leading = re.match(r"^([A-Z][A-Za-z'-]+)\s+(?:will|should|must)\b", source)
+        if leading:
+            return leading.group(1)
+        for pattern in CommitmentExtractor._contact_patterns:
+            match = pattern.search(source)
+            if match:
+                value = match.group(1).strip(" .,!?:;\"")
+                value = re.sub(r"^(?:the|a|an)\s+", "", value, flags=re.I)
+                if value and not value.lower().startswith(("me ", "them", "him", "her", "someone", "somebody")):
+                    return value
         match = re.search(r"\b(?:with|from|to|ask|contact|email)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)", source)
         if match:
             return match.group(1)
@@ -181,6 +440,33 @@ class CommitmentExtractor:
             re.IGNORECASE,
         )
         return waiting_match.group(1) if waiting_match else None
+
+    @staticmethod
+    def _contact_kind(person: str | None) -> Literal["person", "organisation", "unknown"]:
+        if not person:
+            return "unknown"
+        lowered = person.lower()
+        if "@" in person:
+            return "person"
+        if any(word in lowered.split() for word in (
+            "team", "library", "clinic", "company", "organisation", "organization", "office",
+            "vendor", "registrar", "university", "insurance", "insurer", "procurement", "billing",
+        )):
+            return "organisation"
+        if lowered.startswith(("my professor", "my landlord", "my project partner")):
+            return "person"
+        if lowered in {"placement coordinator", "professor", "landlord", "project partner"}:
+            return "person"
+        return "person" if re.fullmatch(r"[A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+)*", person) else "unknown"
+
+    @staticmethod
+    def _contact_role(source: str, person: str | None) -> Literal["recipient", "mentioned", "responsible", "unknown"]:
+        lowered = source.lower()
+        if re.search(r"\b(?:ask|contact|email|follow(?: |-)?up with|promised)\b", lowered):
+            return "recipient"
+        if re.search(r"\b(?:wait(?:ing)? for|owes me|reply from|expecting)\b", lowered):
+            return "responsible"
+        return "mentioned" if person else "unknown"
 
     @staticmethod
     def _infer_action(source: str) -> str | None:
@@ -208,6 +494,12 @@ class CommitmentService:
         status = CommitmentStatus.ACTIVE if confirmed and not candidate.needs_confirmation else CommitmentStatus.NEEDS_CONFIRMATION
         if candidate.type == CommitmentType.WAITING_FOR and confirmed:
             status = CommitmentStatus.WAITING
+        if candidate.extraction_status == "completed":
+            status = CommitmentStatus.COMPLETED
+        elif candidate.extraction_status == "cancelled":
+            status = CommitmentStatus.CANCELLED
+        elif candidate.extraction_status == "postponed":
+            status = CommitmentStatus.POSTPONED
         contact_email = candidate.contact_email
         if candidate.person and not contact_email:
             contact = self.session.scalar(
@@ -221,6 +513,15 @@ class CommitmentService:
             status=status,
             person=candidate.person,
             contact_email=contact_email,
+            event_id=candidate.event_id,
+            actor=candidate.actor,
+            action=candidate.action,
+            object=candidate.object,
+            beneficiary=candidate.beneficiary,
+            deadline_owner=candidate.deadline_owner,
+            condition=candidate.condition,
+            responsibility=candidate.responsibility,
+            source_span=candidate.source_span,
             due_at=candidate.due_at,
             timezone=candidate.timezone,
             reminder_at=candidate.reminder_at,
@@ -236,6 +537,122 @@ class CommitmentService:
         if confirmed and candidate.reminder_at:
             self.schedule_reminder(commitment.id, candidate.reminder_at)
         return commitment
+
+    def create_many(
+        self,
+        candidates: list[CommitmentCandidate],
+        relationships: list[CommitmentRelationshipCandidate] | None = None,
+        *,
+        source: str = "manual",
+    ) -> list[Commitment]:
+        """Persist a capture atomically, then attach validated candidate relationships."""
+        commitments = [
+            self.create(candidate, confirmed=not candidate.needs_confirmation, source=source)
+            for candidate in candidates
+        ]
+        for relation in relationships or []:
+            if relation.source_index >= len(commitments) or relation.target_index >= len(commitments):
+                continue
+            if relation.source_index == relation.target_index:
+                continue
+            self.add_relationship(
+                commitments[relation.source_index].id,
+                commitments[relation.target_index].id,
+                relation.relationship,
+            )
+            self._update_fts(commitments[relation.source_index])
+            self._update_fts(commitments[relation.target_index])
+        return commitments
+
+    def add_relationship(
+        self,
+        commitment_id: str,
+        related_commitment_id: str,
+        relationship: CommitmentRelationshipType | str,
+    ) -> CommitmentRelationship:
+        if commitment_id == related_commitment_id:
+            raise ValueError("A commitment cannot relate to itself")
+        self._required(commitment_id)
+        self._required(related_commitment_id)
+        relation_type = CommitmentRelationshipType(str(relationship))
+        existing = self.session.scalar(
+            select(CommitmentRelationship).where(
+                CommitmentRelationship.commitment_id == commitment_id,
+                CommitmentRelationship.related_commitment_id == related_commitment_id,
+                CommitmentRelationship.relationship == relation_type,
+            )
+        )
+        if existing:
+            return existing
+        relation = CommitmentRelationship(
+            commitment_id=commitment_id,
+            related_commitment_id=related_commitment_id,
+            relationship=relation_type,
+        )
+        self.session.add(relation)
+        self.session.flush()
+        return relation
+
+    def related(
+        self,
+        commitment_id: str,
+        *,
+        relationship: CommitmentRelationshipType | str | None = None,
+    ) -> list[tuple[CommitmentRelationship, Commitment]]:
+        """Return outgoing and incoming edges with their related records."""
+        self._required(commitment_id)
+        outgoing = list(
+            self.session.scalars(
+                select(CommitmentRelationship).where(
+                    CommitmentRelationship.commitment_id == commitment_id
+                )
+            )
+        )
+        incoming = list(
+            self.session.scalars(
+                select(CommitmentRelationship).where(
+                    CommitmentRelationship.related_commitment_id == commitment_id
+                )
+            )
+        )
+        relations = outgoing + incoming
+        if relationship is not None:
+            relation_type = CommitmentRelationshipType(str(relationship))
+            relations = [item for item in relations if item.relationship == relation_type]
+        values: list[tuple[CommitmentRelationship, Commitment]] = []
+        for item in relations:
+            related_id = (
+                item.related_commitment_id
+                if item.commitment_id == commitment_id
+                else item.commitment_id
+            )
+            related = self.get(related_id)
+            if related:
+                values.append((item, related))
+        return values
+
+    def search_related(self, query_text: str, *, limit: int = 50) -> list[tuple[CommitmentRelationship, Commitment, Commitment]]:
+        """Search relationship labels and both endpoint text for local assistant queries."""
+        pattern = f"%{query_text.strip()}%"
+        relations = list(
+            self.session.scalars(
+                select(CommitmentRelationship).where(
+                    CommitmentRelationship.relationship.ilike(pattern)
+                ).limit(limit)
+            )
+        )
+        if not relations:
+            relations = list(self.session.scalars(select(CommitmentRelationship).limit(limit)))
+        result: list[tuple[CommitmentRelationship, Commitment, Commitment]] = []
+        for relation in relations:
+            left = self.get(relation.commitment_id)
+            right = self.get(relation.related_commitment_id)
+            if left and right and (
+                not query_text.strip()
+                or query_text.casefold() in f"{left.title} {left.description} {right.title} {right.description}".casefold()
+            ):
+                result.append((relation, left, right))
+        return result[:limit]
 
     def list(self, *, status: CommitmentStatus | None = None, limit: int = 100) -> list[Commitment]:
         query = select(Commitment).order_by(Commitment.due_at.is_(None), Commitment.due_at).limit(limit)
@@ -387,7 +804,11 @@ class CommitmentService:
 
     def _update_fts(self, commitment: Commitment) -> None:
         self.session.execute(text("DELETE FROM commitment_fts WHERE commitment_id = :id"), {"id": commitment.id})
+        related_text = " ".join(
+            f"{relation.relationship.value} {related.title} {related.description}"
+            for relation, related in self.related(commitment.id)
+        )
         self.session.execute(text("INSERT INTO commitment_fts(commitment_id, title, description, person, content) VALUES (:id, :title, :description, :person, :content)"), {
             "id": commitment.id, "title": commitment.title, "description": commitment.description,
-            "person": commitment.person or "", "content": f"{commitment.title} {commitment.description}",
+            "person": commitment.person or "", "content": f"{commitment.title} {commitment.description} {related_text}",
         })
