@@ -3,8 +3,8 @@
 Revision ID: 29f280f98050
 Revises: eab2673c38b3
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 revision = '29f280f98050'
 down_revision = 'eab2673c38b3'

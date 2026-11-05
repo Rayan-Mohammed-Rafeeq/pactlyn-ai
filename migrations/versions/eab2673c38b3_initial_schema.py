@@ -3,8 +3,8 @@
 Revision ID: eab2673c38b3
 Revises: 
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 revision = 'eab2673c38b3'
 down_revision = None
