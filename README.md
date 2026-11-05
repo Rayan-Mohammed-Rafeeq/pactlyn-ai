@@ -10,13 +10,14 @@ reminder. It is designed to remain useful offline after local model setup.
 
 ## Current release
 
-The repository contains a working 0.8 local-first foundation: a PySide6 desktop
+The repository contains the 0.9 local-first foundation: a PySide6 desktop
 shell, SQLite/SQLAlchemy persistence, Qdrant local-mode storage, a deterministic
 capture baseline, Ollama and explicit OpenRouter gateways, a LangGraph capture
-workflow, reminder recovery, provenance-aware memory, settings-driven Resend
-outbound email and inbound polling. Desktop capture runs Ollama asynchronously,
-supports editable multi-commitment review, and only offers a clearly labelled
-offline fallback after a model failure.
+workflow, reminder recovery, provenance-aware memory, an interactive native
+Memory knowledge graph, settings-driven Resend outbound email and inbound
+polling. Desktop capture runs Ollama asynchronously, supports editable
+multi-commitment review, and only offers a clearly labelled offline fallback
+after a model failure.
 
 The desktop app does not silently use a cloud model. Resend delivery is only
 possible after a user approves an exact payload.
@@ -87,6 +88,33 @@ Saved Settings → Email values take precedence over environment variables.
 first save. See [Resend setup](docs/resend-setup.md) for details and
 troubleshooting.
 
+## Memory
+
+**Memory** is an interactive knowledge graph over the records already stored in
+SQLite. It opens on the Graph view and also provides Records and Timeline views.
+The graph is drawn with native PySide6 `QGraphicsScene`/`QGraphicsView` items;
+there is no embedded web page or JavaScript UI.
+
+![Memory graph](docs/images/memory-graph.png)
+
+Nodes represent real People, Commitments, **Personal Facts**, Emails/threads,
+Events, Documents and independent Memories. Typed relationship edges keep their
+direction, including `BLOCKED_BY`, `DEPENDS_ON`, `FOLLOWED_BY`,
+`RESPONSE_REQUIRED_FROM`, `RELATED_TO` and `SUPERSEDES`. Person responsibility,
+email participants, email/commitment associations and attachment links are derived
+from stored fields. Personal facts connect from the user profile node with
+semantic edge types such as `HAS_BIRTHDAY`, `STUDIES_AT`, `WORKS_ON` and
+`PREFERS`.
+
+The Graph view supports selection, dragging, panning, zoom, fit, reset,
+relationship-aware layout, neighbour highlighting, expand/collapse, search,
+entity/status/relationship filters, details and navigation to the existing
+Commitments and Email Centre pages. Qdrant semantic search can suggest related
+memories, but semantic similarity never creates a causal graph edge.
+
+See [Memory knowledge graph](docs/memory.md) for node/edge mappings, interaction
+details, limits and sample screenshots.
+
 ## Offline behavior
 
 SQLite, Qdrant local mode, reminders, memory and email drafts work without
@@ -122,6 +150,7 @@ run by the default test suite.
 See:
 
 * [Architecture](docs/architecture.md)
+* [Memory knowledge graph](docs/memory.md)
 * [Linux setup](docs/setup-linux.md)
 * [Offline mode](docs/offline-mode.md)
 * [Resend setup](docs/resend-setup.md)
@@ -130,6 +159,7 @@ See:
 * [Testing and evaluation](docs/evaluation.md)
 * [0.2 validation report](docs/validation-0.2.md)
 * [0.3 validation report](docs/validation-0.3.md)
+* [0.9 validation report](docs/validation-0.9.md)
 * [Roadmap](docs/roadmap.md)
 
 ## License
