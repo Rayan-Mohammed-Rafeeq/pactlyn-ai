@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import asyncio
+import base64
+import mimetypes
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal, cast
@@ -14,8 +16,10 @@ from PySide6.QtWidgets import (
     QComboBox,
     QDialog,
     QDialogButtonBox,
+    QFileDialog,
     QFormLayout,
     QFrame,
+    QGroupBox,
     QHBoxLayout,
     QInputDialog,
     QLabel,
@@ -45,6 +49,8 @@ from pactlyn.core.commitments import (
 from pactlyn.core.connectivity import ConnectivityMonitor, ConnectivityState
 from pactlyn.core.recommendations import RecommendationEngine
 from pactlyn.core.scheduler import ReminderScheduler
+from pactlyn.email.addresses import email_address, is_valid_email_address
+from pactlyn.email.composer import DraftDefaults
 from pactlyn.email.inbound_sync import InboundEmailSync
 from pactlyn.platform.linux.autostart import LinuxAutostart
 from pactlyn.rag.retrieval import HybridRetriever
@@ -53,25 +59,25 @@ from pactlyn.storage.backup import BackupError, BackupService
 from pactlyn.storage.models import (
     CommitmentStatus,
     CommitmentType,
+    Contact,
     EmailSendAction,
+    EmailState,
     EmailThread,
     MemoryKind,
 )
+from pactlyn.ui.email_settings import EmailSettingsPage
+from pactlyn.ui.theme import (
+    COLOR_PINE,
+    COLOR_TERRACOTTA,
+    BrandWidget,
+    ThemeMode,
+    get_saved_theme,
+    get_stylesheet,
+    save_theme,
+    status_color,
+)
 
-STYLE = """
-QMainWindow, QWidget { background: #f7f8fc; color: #1d2433; font-family: Inter, sans-serif; }
-QFrame#sidebar { background: #20283a; }
-QLabel#brand { color: #ffffff; font-size: 24px; font-weight: 700; padding: 16px 12px; }
-QPushButton#nav { color: #d9e0ef; background: transparent; text-align: left; border: 0; padding: 12px; border-radius: 7px; }
-QPushButton#nav:hover, QPushButton#nav:checked { background: #36425b; color: white; }
-QLabel#title { font-size: 28px; font-weight: 700; }
-QLabel#muted { color: #68738a; }
-QFrame#card { background: white; border: 1px solid #e4e8f1; border-radius: 10px; padding: 14px; }
-QPushButton#primary { color: white; background: #5267df; border: 0; border-radius: 7px; padding: 10px 16px; font-weight: 600; }
-QPushButton#secondary { color: #34405d; background: #e9ecf7; border: 0; border-radius: 7px; padding: 9px 14px; }
-QLineEdit, QTextEdit { background: white; border: 1px solid #d9deeb; border-radius: 7px; padding: 9px; }
-QListWidget { background: white; border: 1px solid #e4e8f1; border-radius: 8px; padding: 5px; }
-"""
+STYLE = get_stylesheet("light")
 
 
 class Card(QFrame):
@@ -131,12 +137,14 @@ class CapturePersistenceWorker(QThread):
         container: AppContainer,
         candidates: list[CommitmentCandidate],
         relationships: list[CommitmentRelationshipCandidate],
+        rejected_relationships: list[CommitmentRelationshipCandidate],
         source: str,
     ):
         super().__init__()
         self.container = container
         self.candidates = candidates
         self.relationships = relationships
+        self.rejected_relationships = rejected_relationships
         self.source = source
 
     def run(self) -> None:
@@ -149,6 +157,7 @@ class CapturePersistenceWorker(QThread):
                 commitments = service.create_many(
                     self.candidates,
                     self.relationships,
+                    rejected_relationships=self.rejected_relationships,
                     source=self.source,
                 )
                 for candidate, commitment in zip(self.candidates, commitments, strict=True):
@@ -226,9 +235,18 @@ class EmailSyncWorker(QThread):
     finished = Signal(object)
     failed = Signal(str)
 
-    def __init__(self, container: AppContainer):
+    def __init__(
+        self,
+        container: AppContainer,
+        account_id: str | None = None,
+        receiving_address: str | None = None,
+        silent: bool = False,
+    ):
         super().__init__()
         self.container = container
+        self.account_id = account_id
+        self.receiving_address = receiving_address
+        self.silent = silent
 
     def run(self) -> None:
         if not self.container.email_provider:
@@ -236,7 +254,14 @@ class EmailSyncWorker(QThread):
             return
         session = self.container.session()
         try:
-            result = asyncio.run(InboundEmailSync(session, self.container.email_provider).sync())
+            result = asyncio.run(
+                InboundEmailSync(
+                    session,
+                    self.container.email_provider,
+                    account_id=self.account_id,
+                    receiving_address=self.receiving_address,
+                ).sync()
+            )
             self.finished.emit(result)
         except Exception as exc:
             session.rollback()
@@ -262,48 +287,152 @@ class EmailDraftDialog(QDialog):
         self,
         parent: QWidget,
         commitments: list[Any],
+        contacts: list[Contact],
+        defaults: DraftDefaults | None = None,
         action: EmailSendAction | None = None,
     ):
         super().__init__(parent)
+        defaults = defaults or DraftDefaults()
         self.setWindowTitle("Edit email draft" if action else "New email draft")
-        self.resize(700, 620)
+        self.resize(720, 700)
+        self._signature = defaults.signature
+        self._headers = dict(action.headers if action else defaults.headers)
+        self._attachments = [dict(item) for item in (action.attachments if action else defaults.attachments)]
         layout = QFormLayout(self)
-        self.email_sender = QLineEdit(action.sender if action else "")
-        self.recipients = QLineEdit(", ".join(action.recipients) if action else "")
-        self.cc = QLineEdit(", ".join(action.cc) if action else "")
-        self.bcc = QLineEdit(", ".join(action.bcc) if action else "")
-        self.reply_to = QLineEdit(action.reply_to or "" if action else "")
-        self.subject = QLineEdit(action.subject if action else "")
-        self.body = QTextEdit(action.body_text if action else "")
+        sender_value = action.sender if action else defaults.sender
+        recipients_value = action.recipients if action else defaults.recipients
+        cc_value = action.cc if action else defaults.cc
+        bcc_value = action.bcc if action else defaults.bcc
+        reply_to_value = action.reply_to if action else defaults.reply_to
+        subject_value = action.subject if action else defaults.subject
+        body_value = action.body_text if action else defaults.body_text
+        self.email_sender = QLineEdit(sender_value)
+        self.email_sender.setReadOnly(bool(sender_value))
+        self.email_sender.setToolTip(
+            "The configured Resend sender. Its domain must be verified in Resend."
+        )
+        self.recipients = QLineEdit(", ".join(recipients_value))
+        self.cc = QLineEdit(", ".join(cc_value))
+        self.bcc = QLineEdit(", ".join(bcc_value))
+        self.reply_to = QLineEdit(reply_to_value or "")
+        self.subject = QLineEdit(subject_value)
+        self.body = QTextEdit(body_value)
         self.body.setMinimumHeight(220)
+        self.contact_picker = QComboBox()
+        self.contact_picker.addItem("Choose a Pactlyn contact…", None)
+        for contact in sorted(contacts, key=lambda item: item.name.lower()):
+            if contact.email:
+                self.contact_picker.addItem(
+                    f"{contact.name} <{contact.email}>", contact.email
+                )
+        self.contact_picker.activated.connect(self._add_contact)
+        self.signature = QCheckBox("Append my default signature")
+        self.signature.setChecked(bool(self._signature) and action is None)
+        self.tone_label = QLabel(str(defaults.tone).title())
+        self.tone_label.setObjectName("muted")
+        self.attachment_list = QListWidget()
+        self.attachment_list.setMaximumHeight(80)
+        attachment_buttons = QHBoxLayout()
+        add_attachment = QPushButton("Add file…")
+        add_attachment.setObjectName("secondary")
+        add_attachment.clicked.connect(self._add_attachment)
+        remove_attachment = QPushButton("Remove")
+        remove_attachment.setObjectName("secondary")
+        remove_attachment.clicked.connect(self._remove_attachment)
+        attachment_buttons.addWidget(add_attachment)
+        attachment_buttons.addWidget(remove_attachment)
+        attachment_buttons.addStretch()
+        attachment_widget = QWidget()
+        attachment_layout = QVBoxLayout(attachment_widget)
+        attachment_layout.setContentsMargins(0, 0, 0, 0)
+        attachment_layout.addWidget(self.attachment_list)
+        attachment_layout.addLayout(attachment_buttons)
         self.commitment = QComboBox()
         self.commitment.addItem("No related commitment", None)
         for commitment in commitments:
             self.commitment.addItem(commitment.title, commitment.id)
-        if action and action.commitment_id:
-            index = self.commitment.findData(action.commitment_id)
+        selected_commitment = action.commitment_id if action else defaults.commitment_id
+        if selected_commitment:
+            index = self.commitment.findData(selected_commitment)
             if index >= 0:
                 self.commitment.setCurrentIndex(index)
         layout.addRow("Sender", self.email_sender)
+        layout.addRow("Add contact", self.contact_picker)
         layout.addRow("To (comma-separated)", self.recipients)
         layout.addRow("CC", self.cc)
         layout.addRow("BCC", self.bcc)
         layout.addRow("Reply-to", self.reply_to)
         layout.addRow("Subject", self.subject)
+        layout.addRow("Preferred tone", self.tone_label)
         layout.addRow("Related commitment", self.commitment)
         layout.addRow("Body", self.body)
+        layout.addRow("", self.signature)
+        layout.addRow("Attachments", attachment_widget)
         buttons = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Save
         )
         buttons.accepted.connect(self._validate_and_accept)
         buttons.rejected.connect(self.reject)
         layout.addRow(buttons)
+        self._refresh_attachment_list()
 
     @staticmethod
     def _addresses(value: str) -> list[str]:
         return [address.strip() for address in value.split(",") if address.strip()]
 
+    def _add_contact(self, index: int) -> None:
+        email = self.contact_picker.itemData(index)
+        if not email:
+            return
+        existing = self._addresses(self.recipients.text())
+        if email not in existing:
+            existing.append(str(email))
+            self.recipients.setText(", ".join(existing))
+        self.contact_picker.setCurrentIndex(0)
+
+    def _refresh_attachment_list(self) -> None:
+        self.attachment_list.clear()
+        for item in self._attachments:
+            filename = str(item.get("filename", "attachment"))
+            size = len(str(item.get("content_base64", ""))) * 3 // 4
+            self.attachment_list.addItem(f"{filename} ({size // 1024 or 1} KB)")
+
+    def _add_attachment(self) -> None:
+        path, _filter = QFileDialog.getOpenFileName(self, "Attach a file")
+        if not path:
+            return
+        source = Path(path)
+        try:
+            content = source.read_bytes()
+        except OSError as exc:
+            QMessageBox.warning(self, "Could not read file", str(exc))
+            return
+        if len(content) > 20 * 1024 * 1024:
+            QMessageBox.warning(
+                self, "Attachment too large", "Attachments are limited to 20 MB each."
+            )
+            return
+        content_type = mimetypes.guess_type(source.name)[0] or "application/octet-stream"
+        self._attachments.append(
+            {
+                "filename": source.name,
+                "content_type": content_type,
+                "content_base64": base64.b64encode(content).decode("ascii"),
+            }
+        )
+        self._refresh_attachment_list()
+
+    def _remove_attachment(self) -> None:
+        row = self.attachment_list.currentRow()
+        if 0 <= row < len(self._attachments):
+            self._attachments.pop(row)
+            self._refresh_attachment_list()
+
     def values(self) -> dict[str, Any]:
+        body = self.body.toPlainText()
+        if self.signature.isChecked() and self._signature.strip():
+            if not body.rstrip().endswith(self._signature.strip()):
+                body = f"{body.rstrip()}\n\n{self._signature.strip()}".strip()
         return {
             "sender": self.email_sender.text().strip(),
             "recipients": self._addresses(self.recipients.text()),
@@ -311,8 +440,10 @@ class EmailDraftDialog(QDialog):
             "bcc": self._addresses(self.bcc.text()),
             "reply_to": self.reply_to.text().strip() or None,
             "subject": self.subject.text().strip(),
-            "body_text": self.body.toPlainText(),
+            "body_text": body,
             "commitment_id": self.commitment.currentData(),
+            "headers": dict(self._headers),
+            "attachments": [dict(item) for item in self._attachments],
         }
 
     def _validate_and_accept(self) -> None:
@@ -329,7 +460,70 @@ class EmailDraftDialog(QDialog):
                 "Sender, recipient, subject and body are required.",
             )
             return
+        addresses = [
+            *values["recipients"],
+            *values["cc"],
+            *values["bcc"],
+            values["reply_to"] or "",
+        ]
+        invalid = [address for address in addresses if address and not is_valid_email_address(address)]
+        if invalid or not is_valid_email_address(values["sender"]):
+            QMessageBox.warning(
+                self,
+                "Check addresses",
+                "One or more email addresses are invalid:\n"
+                + "\n".join(invalid or [values["sender"]]),
+            )
+            return
         self.accept()
+
+
+class EmailApprovalDialog(QDialog):
+    def __init__(self, parent: QWidget, action: EmailSendAction):
+        super().__init__(parent)
+        self.setWindowTitle("Approve exact email payload")
+        self.resize(680, 600)
+        layout = QVBoxLayout(self)
+        layout.addWidget(
+            QLabel(
+                "Review the complete payload. Approval is bound to these exact values; "
+                "editing the draft afterwards invalidates it."
+            )
+        )
+        preview = QTextEdit()
+        preview.setReadOnly(True)
+        attachments = (
+            "\n".join(
+                f"- {item.get('filename', 'attachment')} "
+                f"({item.get('content_type', 'application/octet-stream')})"
+                for item in action.attachments
+            )
+            or "None"
+        )
+        headers = "\n".join(
+            f"- {name}: {value}" for name, value in sorted(action.headers.items())
+        ) or "None"
+        preview.setPlainText(
+            f"From: {action.sender}\n"
+            f"To: {', '.join(action.recipients)}\n"
+            f"CC: {', '.join(action.cc) or 'None'}\n"
+            f"BCC: {', '.join(action.bcc) or 'None'}\n"
+            f"Reply-To: {action.reply_to or 'None'}\n"
+            f"Subject: {action.subject}\n"
+            f"Headers:\n{headers}\n"
+            f"Attachments:\n{attachments}\n\n"
+            f"{action.body_text}"
+        )
+        layout.addWidget(preview, 1)
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Ok
+        )
+        approve_button = buttons.button(QDialogButtonBox.StandardButton.Ok)
+        if approve_button is not None:
+            approve_button.setText("Approve exact payload")
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+        layout.addWidget(buttons)
 
 
 class CommitmentReviewDialog(QDialog):
@@ -555,7 +749,9 @@ class PactlynWindow(QMainWindow):
         self.container = container
         self.setWindowTitle("Pactlyn — Remember what matters")
         self.resize(1180, 760)
-        self.setStyleSheet(STYLE)
+        self.theme_mode: ThemeMode = get_saved_theme()
+        icon = QIcon(str(Path(__file__).with_name("pactlyn.svg")))
+        self.setWindowIcon(icon)
         self.pages = QStackedWidget()
         self.nav: list[QPushButton] = []
         self.capture_worker: CaptureWorker | None = None
@@ -565,13 +761,17 @@ class PactlynWindow(QMainWindow):
         self.email_sync_worker: EmailSyncWorker | None = None
         self.connectivity = ConnectivityMonitor()
         self.connectivity_worker: ConnectivityWorker | None = None
+        self._shutdown_complete = False
         root = QWidget()
+        root.setObjectName("central_widget")
         root_layout = QHBoxLayout(root)
         root_layout.setContentsMargins(0, 0, 0, 0)
+        root_layout.setSpacing(0)
         root_layout.addWidget(self._sidebar())
         root_layout.addWidget(self.pages, 1)
         self.setCentralWidget(root)
         self._add_pages()
+        self.apply_theme(self.theme_mode)
         self._setup_tray()
         self._refresh()
         timer = QTimer(self)
@@ -582,24 +782,52 @@ class PactlynWindow(QMainWindow):
         connectivity_timer.timeout.connect(self._probe_connectivity)
         connectivity_timer.start(300_000)
         self._connectivity_timer = connectivity_timer
+        inbound_timer = QTimer(self)
+        inbound_timer.timeout.connect(self._maybe_auto_sync)
+        inbound_timer.start(60_000)
+        self._inbound_timer = inbound_timer
         QTimer.singleShot(100, self._probe_connectivity)
+        QTimer.singleShot(5_000, self._maybe_auto_sync)
+
+    def apply_theme(self, mode: ThemeMode) -> None:
+        self.theme_mode = mode
+        save_theme(mode)
+        self.setStyleSheet(get_stylesheet(mode))
+        if hasattr(self, "brand_widget"):
+            self.brand_widget.set_mode(mode)
+        if hasattr(self, "theme_combo"):
+            idx = 1 if mode == "dark" else 0
+            if self.theme_combo.currentIndex() != idx:
+                self.theme_combo.blockSignals(True)
+                self.theme_combo.setCurrentIndex(idx)
+                self.theme_combo.blockSignals(False)
+        if hasattr(self, "email_settings_page"):
+            self.email_settings_page.set_theme(mode)
+        self._refresh()
+
+    def _on_theme_combo_changed(self, index: int) -> None:
+        mode = cast(ThemeMode, self.theme_combo.itemData(index))
+        if mode and mode != self.theme_mode:
+            self.apply_theme(mode)
 
     def _sidebar(self) -> QWidget:
         sidebar = QFrame()
         sidebar.setObjectName("sidebar")
-        sidebar.setFixedWidth(220)
+        sidebar.setFixedWidth(240)
         layout = QVBoxLayout(sidebar)
-        brand = QLabel("Pactlyn")
-        brand.setObjectName("brand")
-        layout.addWidget(brand)
-        layout.addWidget(self._nav_button("⌂  Home", 0))
-        layout.addWidget(self._nav_button("✓  Commitments", 1))
-        layout.addWidget(self._nav_button("◷  Waiting For", 2))
-        layout.addWidget(self._nav_button("✉  Email Centre", 3))
-        layout.addWidget(self._nav_button("▣  Memory", 4))
-        layout.addWidget(self._nav_button("✦  Assistant", 5))
+        layout.setContentsMargins(12, 14, 12, 16)
+        layout.setSpacing(4)
+        self.brand_widget = BrandWidget(self.theme_mode)
+        layout.addWidget(self.brand_widget)
+        layout.addSpacing(6)
+        layout.addWidget(self._nav_button("⌂   Home", 0))
+        layout.addWidget(self._nav_button("✓   Commitments", 1))
+        layout.addWidget(self._nav_button("◷   Waiting For", 2))
+        layout.addWidget(self._nav_button("✉   Email Centre", 3))
+        layout.addWidget(self._nav_button("▣   Memory", 4))
+        layout.addWidget(self._nav_button("✦   Assistant", 5))
         layout.addStretch()
-        layout.addWidget(self._nav_button("⚙  Settings", 6))
+        layout.addWidget(self._nav_button("⚙   Settings", 6))
         return sidebar
 
     def _nav_button(self, label: str, index: int) -> QPushButton:
@@ -622,6 +850,8 @@ class PactlynWindow(QMainWindow):
 
     def _header(self, title: str, subtitle: str) -> QVBoxLayout:
         layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 10)
+        layout.setSpacing(4)
         title_label = QLabel(title)
         title_label.setObjectName("title")
         layout.addWidget(title_label)
@@ -632,35 +862,120 @@ class PactlynWindow(QMainWindow):
 
     def _home_page(self) -> QWidget:
         page = QWidget()
-        layout = self._header("Good morning", "Pactlyn keeps the promises you make to yourself and others.")
-        quick = QHBoxLayout()
+        page_layout = QVBoxLayout(page)
+        page_layout.setContentsMargins(28, 24, 28, 24)
+        page_layout.setSpacing(16)
+
+        hour = datetime.now().hour
+        greeting = (
+            "Good morning"
+            if hour < 12
+            else ("Good afternoon" if hour < 18 else "Good evening")
+        )
+        page_layout.addLayout(
+            self._header(greeting, "Pactlyn keeps the promises you make to yourself and others.")
+        )
+
+        quick_card = QFrame()
+        quick_card.setObjectName("card")
+        quick_layout = QHBoxLayout(quick_card)
+        quick_layout.setContentsMargins(14, 10, 14, 10)
+        quick_layout.setSpacing(10)
         self.quick_capture = QLineEdit()
-        self.quick_capture.setPlaceholderText("Quick capture — type a commitment and press Enter")
+        self.quick_capture.setPlaceholderText(
+            "What would you like Pactlyn to remember? (Type and press Enter)"
+        )
         self.quick_capture.returnPressed.connect(lambda: self._capture(self.quick_capture.text()))
-        quick.addWidget(self.quick_capture, 1)
-        capture = QPushButton("Capture")
+        quick_layout.addWidget(self.quick_capture, 1)
+        capture = QPushButton("✦  Capture")
         capture.setObjectName("primary")
         capture.clicked.connect(lambda: self._capture(self.quick_capture.text()))
-        quick.addWidget(capture)
-        layout.addLayout(quick)
+        quick_layout.addWidget(capture)
+        page_layout.addWidget(quick_card)
+
+        # KPI metric cards row
+        metrics_layout = QHBoxLayout()
+        metrics_layout.setSpacing(14)
+
+        self.card_active = QFrame()
+        self.card_active.setObjectName("metric_card")
+        active_l = QVBoxLayout(self.card_active)
+        active_l.setContentsMargins(16, 12, 16, 12)
+        active_l.setSpacing(2)
+        self.stat_active_num = QLabel("0")
+        self.stat_active_num.setStyleSheet(
+            f"font-size: 26px; font-weight: 800; color: {COLOR_TERRACOTTA};"
+        )
+        active_l.addWidget(self.stat_active_num)
+        lbl_act = QLabel("Active Commitments")
+        lbl_act.setObjectName("muted")
+        active_l.addWidget(lbl_act)
+        metrics_layout.addWidget(self.card_active, 1)
+
+        self.card_overdue = QFrame()
+        self.card_overdue.setObjectName("metric_card")
+        overdue_l = QVBoxLayout(self.card_overdue)
+        overdue_l.setContentsMargins(16, 12, 16, 12)
+        overdue_l.setSpacing(2)
+        self.stat_overdue_num = QLabel("0")
+        self.stat_overdue_num.setStyleSheet(
+            f"font-size: 26px; font-weight: 800; color: {status_color('error', self.theme_mode)};"
+        )
+        overdue_l.addWidget(self.stat_overdue_num)
+        lbl_od = QLabel("Overdue / Attention")
+        lbl_od.setObjectName("muted")
+        overdue_l.addWidget(lbl_od)
+        metrics_layout.addWidget(self.card_overdue, 1)
+
+        self.card_waiting = QFrame()
+        self.card_waiting.setObjectName("metric_card")
+        waiting_l = QVBoxLayout(self.card_waiting)
+        waiting_l.setContentsMargins(16, 12, 16, 12)
+        waiting_l.setSpacing(2)
+        self.stat_waiting_num = QLabel("0")
+        self.stat_waiting_num.setStyleSheet(
+            f"font-size: 26px; font-weight: 800; color: {status_color('info', self.theme_mode)};"
+        )
+        waiting_l.addWidget(self.stat_waiting_num)
+        lbl_wt = QLabel("Waiting For Others")
+        lbl_wt.setObjectName("muted")
+        waiting_l.addWidget(lbl_wt)
+        metrics_layout.addWidget(self.card_waiting, 1)
+
+        page_layout.addLayout(metrics_layout)
+
+        # Status and connectivity
+        status_row = QHBoxLayout()
         self.home_summary = QLabel()
         self.home_summary.setWordWrap(True)
-        layout.addWidget(self.home_summary)
-        self.connectivity_label = QLabel("Connectivity: checking…")
+        self.home_summary.setObjectName("muted")
+        status_row.addWidget(self.home_summary, 1)
+        self.connectivity_label = QLabel("● Connectivity: checking…")
         self.connectivity_label.setObjectName("muted")
-        layout.addWidget(self.connectivity_label)
-        layout.addWidget(QLabel("Suggested next actions"))
+        status_row.addWidget(self.connectivity_label)
+        page_layout.addLayout(status_row)
+
+        sec1 = QLabel("✦  Suggested Next Actions")
+        sec1.setStyleSheet("font-weight: 600; font-size: 14px;")
+        page_layout.addWidget(sec1)
         self.home_recommendations = QListWidget()
-        self.home_recommendations.setMaximumHeight(120)
-        layout.addWidget(self.home_recommendations)
+        self.home_recommendations.setMaximumHeight(110)
+        page_layout.addWidget(self.home_recommendations)
+
+        sec2 = QLabel("✓  Recent Commitments")
+        sec2.setStyleSheet("font-weight: 600; font-size: 14px;")
+        page_layout.addWidget(sec2)
         self.home_list = QListWidget()
-        layout.addWidget(self.home_list, 1)
-        page.setLayout(layout)
+        page_layout.addWidget(self.home_list, 1)
+
+        page.setLayout(page_layout)
         return page
 
     def _commitments_page(self) -> QWidget:
         page = QWidget()
         layout = self._header("Commitments", "Every item stays local until you choose an external service.")
+        layout.setContentsMargins(28, 24, 28, 24)
+        layout.setSpacing(14)
         actions = QHBoxLayout()
         add = QPushButton("+ New commitment")
         add.setObjectName("primary")
@@ -698,7 +1013,9 @@ class PactlynWindow(QMainWindow):
         self.commitment_list = QListWidget()
         self.commitment_list.currentItemChanged.connect(lambda _current, _previous: self._refresh_related())
         self.commitment_list.itemDoubleClicked.connect(lambda _item: self._complete_selected())
-        layout.addWidget(QLabel("Double-click an item to mark it complete."))
+        tip = QLabel("💡 Tip: Double-click an item to mark it complete.")
+        tip.setObjectName("muted")
+        layout.addWidget(tip)
         layout.addWidget(self.commitment_list, 1)
         layout.addWidget(QLabel("Related commitments"))
         self.related_commitment_list = QListWidget()
@@ -710,6 +1027,8 @@ class PactlynWindow(QMainWindow):
     def _waiting_page(self) -> QWidget:
         page = QWidget()
         layout = self._header("Waiting For", "Responses and hand-offs that deserve a gentle follow-up.")
+        layout.setContentsMargins(28, 24, 28, 24)
+        layout.setSpacing(14)
         self.waiting_list = QListWidget()
         layout.addWidget(self.waiting_list, 1)
         page.setLayout(layout)
@@ -718,18 +1037,21 @@ class PactlynWindow(QMainWindow):
     def _email_page(self) -> QWidget:
         page = QWidget()
         layout = self._header("Email Centre", "Drafts need explicit approval before they can enter the delivery queue.")
+        layout.setContentsMargins(28, 24, 28, 24)
+        layout.setSpacing(14)
         self.email_status = QLabel()
         self.email_status.setObjectName("muted")
         layout.addWidget(self.email_status)
         controls = QHBoxLayout()
         for label, handler in (
             ("+ New draft", self._new_email),
+            ("Reply", self._reply_to_selected_thread),
             ("Edit", self._edit_email),
             ("Approve", self._approve_email),
             ("Send queue", self._send_email),
             ("Retry failed", self._retry_email),
             ("Cancel", self._cancel_email),
-            ("Sync incoming", self._sync_email),
+            ("Sync incoming", lambda: self._sync_email()),
         ):
             button = QPushButton(label)
             button.setObjectName("primary" if label in {"+ New draft", "Approve", "Send queue"} else "secondary")
@@ -750,6 +1072,8 @@ class PactlynWindow(QMainWindow):
     def _memory_page(self) -> QWidget:
         page = QWidget()
         layout = self._header("Memory", "Pactlyn keeps provenance with every remembered fact.")
+        layout.setContentsMargins(28, 24, 28, 24)
+        layout.setSpacing(14)
         self.memory_list = QListWidget()
         layout.addWidget(self.memory_list, 1)
         page.setLayout(layout)
@@ -758,6 +1082,8 @@ class PactlynWindow(QMainWindow):
     def _assistant_page(self) -> QWidget:
         page = QWidget()
         layout = self._header("Assistant", "Ask about what is due, waiting, or worth doing next.")
+        layout.setContentsMargins(28, 24, 28, 24)
+        layout.setSpacing(14)
         self.assistant_input = QTextEdit()
         self.assistant_input.setPlaceholderText("Capture a commitment or ask: What am I waiting for?")
         layout.addWidget(self.assistant_input)
@@ -781,17 +1107,43 @@ class PactlynWindow(QMainWindow):
 
     def _settings_page(self) -> QWidget:
         page = QWidget()
-        layout = self._header("Settings", "Local-first by default. Provider credentials are kept in the OS credential store.")
-        layout.addWidget(QLabel(f"Data directory: {self.container.settings.expanded_data_dir()}"))
-        layout.addWidget(QLabel(f"Ollama endpoint: {self.container.settings.ollama_url}"))
-        provider = QLabel("Local model: Ollama (connection is checked when AI is used)\nCloud model: disabled unless explicitly configured")
+        layout = self._header(
+            "Settings",
+            "Local-first by default. Provider credentials are kept in the OS credential store.",
+        )
+        layout.setContentsMargins(28, 24, 28, 24)
+        layout.setSpacing(14)
+        tabs = QTabWidget()
+        general = QWidget()
+        general_layout = QVBoxLayout(general)
+        general_layout.setSpacing(14)
+
+        # Appearance & Theme
+        appearance_group = QGroupBox("Appearance")
+        appearance_form = QFormLayout(appearance_group)
+        self.theme_combo = QComboBox()
+        self.theme_combo.addItem("☀️  Light Theme (Warm Sand & Forest Pine)", "light")
+        self.theme_combo.addItem("🌙  Dark Theme (Midnight Obsidian Pine & Terracotta)", "dark")
+        self.theme_combo.setCurrentIndex(1 if self.theme_mode == "dark" else 0)
+        self.theme_combo.currentIndexChanged.connect(self._on_theme_combo_changed)
+        appearance_form.addRow("Color Theme:", self.theme_combo)
+        general_layout.addWidget(appearance_group)
+
+        general_layout.addWidget(
+            QLabel(f"Data directory: {self.container.settings.expanded_data_dir()}")
+        )
+        general_layout.addWidget(QLabel(f"Ollama endpoint: {self.container.settings.ollama_url}"))
+        provider = QLabel(
+            "Local model: Ollama (connection is checked when AI is used)\n"
+            "Cloud model: disabled unless explicitly configured"
+        )
         provider.setObjectName("muted")
-        layout.addWidget(provider)
+        general_layout.addWidget(provider)
         self.autostart = QCheckBox("Start Pactlyn in the system tray when I log in")
         autostart = LinuxAutostart()
         self.autostart.setChecked(autostart.enabled())
         self.autostart.toggled.connect(lambda enabled: self._set_autostart(autostart, enabled))
-        layout.addWidget(self.autostart)
+        general_layout.addWidget(self.autostart)
         backup_row = QHBoxLayout()
         backup = QPushButton("Create backup")
         backup.setObjectName("secondary")
@@ -802,8 +1154,14 @@ class PactlynWindow(QMainWindow):
         backup_row.addWidget(backup)
         backup_row.addWidget(restore)
         backup_row.addStretch()
-        layout.addLayout(backup_row)
-        layout.addStretch()
+        general_layout.addLayout(backup_row)
+        general_layout.addStretch()
+        tabs.addTab(general, "General")
+        self.email_settings_page = EmailSettingsPage(self.container)
+        self.email_settings_page.settingsSaved.connect(self._email_settings_saved)
+        self.email_settings_page.syncRequested.connect(self._sync_email)
+        tabs.addTab(self.email_settings_page, "Email")
+        layout.addWidget(tabs, 1)
         page.setLayout(layout)
         return page
 
@@ -850,6 +1208,8 @@ class PactlynWindow(QMainWindow):
         self.pages.setCurrentIndex(index)
         for current, button in enumerate(self.nav):
             button.setChecked(current == index)
+        if index == 6 and hasattr(self, "email_settings_page"):
+            self.email_settings_page.refresh()
         self._refresh()
 
     def _capture(self, initial: str = "") -> None:
@@ -904,8 +1264,8 @@ class PactlynWindow(QMainWindow):
 
     def _connectivity_finished(self, worker: ConnectivityWorker, state: ConnectivityState) -> None:
         was_offline = self.connectivity.state == ConnectivityState.OFFLINE
-        self.connectivity.set_state(state)
-        self.connectivity_label.setText(f"Connectivity: {state.value}")
+        dot = "● " if state == ConnectivityState.ONLINE else "○ "
+        self.connectivity_label.setText(f"{dot}Connectivity: {state.value}")
         worker.deleteLater()
         if self.connectivity_worker is worker:
             self.connectivity_worker = None
@@ -969,6 +1329,7 @@ class PactlynWindow(QMainWindow):
             self.container,
             dialog.candidates(),
             result.relationships,
+            result.rejected_relationships,
             "ollama" if result.used_local_model else "offline_fallback",
         )
         worker.finished.connect(lambda _ids: self._capture_persisted(worker, text))
@@ -999,6 +1360,22 @@ class PactlynWindow(QMainWindow):
             if hasattr(self, "home_summary"):
                 overdue = sum(item.status == CommitmentStatus.OVERDUE for item in active)
                 waiting = sum(item.status == CommitmentStatus.WAITING for item in active)
+                if hasattr(self, "stat_active_num"):
+                    self.stat_active_num.setText(str(len(active)))
+                if hasattr(self, "stat_overdue_num"):
+                    self.stat_overdue_num.setText(str(overdue))
+                    err_col = status_color("error", self.theme_mode)
+                    muted_col = status_color("muted", self.theme_mode)
+                    self.stat_overdue_num.setStyleSheet(
+                        f"font-size: 26px; font-weight: 800; color: {err_col if overdue > 0 else muted_col};"
+                    )
+                if hasattr(self, "stat_waiting_num"):
+                    self.stat_waiting_num.setText(str(waiting))
+                    info_col = status_color("info", self.theme_mode)
+                    muted_col = status_color("muted", self.theme_mode)
+                    self.stat_waiting_num.setStyleSheet(
+                        f"font-size: 26px; font-weight: 800; color: {info_col if waiting > 0 else muted_col};"
+                    )
                 self.home_summary.setText(f"{len(active)} active commitments  ·  {overdue} overdue  ·  {waiting} waiting for a response")
                 self.home_recommendations.clear()
                 for suggestion in RecommendationEngine(session).recommend(limit=5):
@@ -1025,11 +1402,22 @@ class PactlynWindow(QMainWindow):
                     email_item = QListWidgetItem(self._email_text(action))
                     email_item.setData(Qt.ItemDataRole.UserRole, action.id)
                     self.email_list.addItem(email_item)
-                self.email_status.setText(
-                    "Resend configured — approved messages can be sent."
-                    if self.container.email_provider
-                    else "Resend is not configured. Drafts remain local and approved messages stay queued."
-                )
+                preferences = self.container.effective_email_settings()
+                if self.container.email_provider and preferences.sender_email:
+                    self.email_status.setText(
+                        f"Resend configured for {preferences.sender}. "
+                        "Approved messages can be sent."
+                    )
+                elif self.container.email_provider:
+                    self.email_status.setText(
+                        "A Resend API key is saved, but no verified sender is configured. "
+                        "Complete Settings → Email before sending."
+                    )
+                else:
+                    self.email_status.setText(
+                        "Resend is not configured. Drafts remain local and approved "
+                        "messages stay queued."
+                    )
                 self.email_thread_list.clear()
                 threads = list(
                     session.scalars(
@@ -1119,15 +1507,18 @@ class PactlynWindow(QMainWindow):
                 f"\n\nAssociation confidence: {thread.association_confidence:.0%}"
                 f"\nNeeds review: {'yes' if thread.needs_review else 'no'}"
             )
+            subject = thread.subject
+            needs_review = thread.needs_review
+            commitment_id = thread.commitment_id
         finally:
             session.close()
-        QMessageBox.information(self, thread.subject or "Conversation", messages + association)
-        if thread.needs_review:
+        QMessageBox.information(self, subject or "Conversation", messages + association)
+        if needs_review:
             self._review_thread_association(str(thread_id))
-        elif thread.commitment_id:
+        elif commitment_id:
             session = self.container.session()
             try:
-                commitment = self.container.commitments(session).get(thread.commitment_id)
+                commitment = self.container.commitments(session).get(commitment_id)
                 response_received = commitment and commitment.status == CommitmentStatus.RESPONSE_RECEIVED
             finally:
                 session.close()
@@ -1141,7 +1532,7 @@ class PactlynWindow(QMainWindow):
                 if outcome == QMessageBox.StandardButton.Yes:
                     session = self.container.session()
                     try:
-                        self.container.commitments(session).complete(thread.commitment_id)
+                        self.container.commitments(session).complete(commitment_id)
                         session.commit()
                     finally:
                         session.close()
@@ -1187,13 +1578,44 @@ class PactlynWindow(QMainWindow):
     def _email_commitments(self, session: Any) -> list[Any]:
         return self.container.commitments(session).list(limit=200)
 
+    @staticmethod
+    def _email_contacts(session: Any) -> list[Contact]:
+        return list(session.scalars(select(Contact).order_by(Contact.name)))
+
+    def _require_email_ready(self) -> bool:
+        preferences = self.container.effective_email_settings()
+        if not preferences.sender_email:
+            QMessageBox.information(
+                self,
+                "Email not configured",
+                "Open Settings → Email and configure a verified Resend sender before "
+                "drafting or sending email.",
+            )
+            self._navigate(6)
+            return False
+        if self.container.email_provider is None:
+            self.container.refresh_email_provider()
+        if self.container.email_provider is None:
+            QMessageBox.information(
+                self,
+                "Resend API key missing",
+                "Save a Resend API key in Settings → Email before sending. Drafts can "
+                "still be created locally without a key.",
+            )
+        return True
+
     def _new_email(self) -> None:
+        if not self._require_email_ready():
+            return
         session = self.container.session()
         try:
             commitments = self._email_commitments(session)
+            contacts = self._email_contacts(session)
+            composer = self.container.email_composer(session)
+            defaults = composer.defaults()
         finally:
             session.close()
-        dialog = EmailDraftDialog(self, commitments)
+        dialog = EmailDraftDialog(self, commitments, contacts, defaults=defaults)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
         values = dialog.values()
@@ -1201,6 +1623,54 @@ class PactlynWindow(QMainWindow):
         try:
             service = self.container.email(session)
             service.draft(**values)
+            session.commit()
+        finally:
+            session.close()
+        self._refresh()
+
+    def _reply_to_selected_thread(self) -> None:
+        item = self.email_thread_list.currentItem()
+        if not item:
+            QMessageBox.information(
+                self, "Select a conversation", "Select a conversation to reply to."
+            )
+            return
+        if not self._require_email_ready():
+            return
+        thread_id = str(item.data(Qt.ItemDataRole.UserRole) or "")
+        if not thread_id:
+            return
+        session = self.container.session()
+        try:
+            thread = session.get(EmailThread, thread_id)
+            if not thread:
+                return
+            preferences = self.container.effective_email_settings()
+            sender_address = email_address(preferences.sender_email)
+            inbound = [
+                message
+                for message in sorted(thread.messages, key=lambda item: item.received_at)
+                if email_address(message.sender) != sender_address
+            ]
+            if not inbound:
+                QMessageBox.information(
+                    self,
+                    "No reply target",
+                    "This conversation has no inbound message to reply to.",
+                )
+                return
+            defaults = self.container.email_composer(session).reply_defaults(inbound[-1])
+            commitments = self._email_commitments(session)
+            contacts = self._email_contacts(session)
+        finally:
+            session.close()
+        dialog = EmailDraftDialog(self, commitments, contacts, defaults=defaults)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        values = dialog.values()
+        session = self.container.session()
+        try:
+            self.container.email(session).draft(**values)
             session.commit()
         finally:
             session.close()
@@ -1214,11 +1684,16 @@ class PactlynWindow(QMainWindow):
         try:
             action = session.get(EmailSendAction, action_id)
             commitments = self._email_commitments(session)
+            contacts = self._email_contacts(session)
+            preferences = self.container.effective_email_settings()
+            defaults = DraftDefaults(
+                signature=preferences.signature, tone=preferences.tone.value
+            )
         finally:
             session.close()
         if not action:
             return
-        dialog = EmailDraftDialog(self, commitments, action)
+        dialog = EmailDraftDialog(self, commitments, contacts, defaults=defaults, action=action)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
         values = dialog.values()
@@ -1234,6 +1709,8 @@ class PactlynWindow(QMainWindow):
                 subject=values["subject"],
                 body_text=values["body_text"],
                 commitment_id=values["commitment_id"],
+                headers=values["headers"],
+                attachments=values["attachments"],
             )
             session.commit()
         except Exception as exc:
@@ -1249,8 +1726,23 @@ class PactlynWindow(QMainWindow):
             return
         session = self.container.session()
         try:
-            action = self.container.email(session).approve(action_id)
-            QMessageBox.information(self, "Email approved", f"Approved exact payload for {', '.join(action.recipients)}. It is now queued.")
+            action = session.get(EmailSendAction, action_id)
+            if not action:
+                return
+            if action.state in {EmailState.SENT, EmailState.DELIVERED, EmailState.CANCELLED}:
+                QMessageBox.information(
+                    self, "Cannot approve", "This email can no longer be approved."
+                )
+                return
+            dialog = EmailApprovalDialog(self, action)
+            if dialog.exec() != QDialog.DialogCode.Accepted:
+                return
+            approved = self.container.email(session).approve(action_id)
+            QMessageBox.information(
+                self,
+                "Email approved",
+                f"Approved exact payload for {', '.join(approved.recipients)}. It is now queued.",
+            )
         except Exception as exc:
             session.rollback()
             QMessageBox.warning(self, "Could not approve", str(exc))
@@ -1259,8 +1751,16 @@ class PactlynWindow(QMainWindow):
         self._refresh()
 
     def _send_email(self) -> None:
-        if not self.container.email_provider:
-            QMessageBox.information(self, "Resend unavailable", "Configure a Resend API key and verified sender before sending.")
+        if self.email_worker and self.email_worker.isRunning():
+            return
+        preferences = self.container.effective_email_settings()
+        if not self.container.email_provider or not preferences.sender_email:
+            QMessageBox.information(
+                self,
+                "Resend unavailable",
+                "Configure a Resend API key and verified sender in Settings → Email "
+                "before sending.",
+            )
             return
         worker = EmailQueueWorker(self.container)
         worker.finished.connect(lambda _result: self._email_worker_done(worker))
@@ -1303,25 +1803,92 @@ class PactlynWindow(QMainWindow):
             session.close()
         self._refresh()
 
-    def _sync_email(self) -> None:
-        if not self.container.email_provider:
-            QMessageBox.information(self, "Resend unavailable", "Configure Resend before synchronising incoming mail.")
+    def _email_settings_saved(self) -> None:
+        self._refresh()
+        if hasattr(self, "email_settings_page"):
+            self.email_settings_page.refresh_status()
+
+    def _sync_email(self, silent: bool = False) -> None:
+        if self.email_sync_worker and self.email_sync_worker.isRunning():
             return
-        worker = EmailSyncWorker(self.container)
-        worker.finished.connect(lambda _result: self._email_sync_done(worker))
+        preferences = self.container.effective_email_settings()
+        if silent and not preferences.inbound_enabled:
+            return
+        if not self.container.email_provider:
+            if not silent:
+                QMessageBox.information(
+                    self,
+                    "Resend unavailable",
+                    "Configure Resend before synchronising incoming mail.",
+                )
+            return
+        if not preferences.receiving_email:
+            if not silent:
+                QMessageBox.information(
+                    self,
+                    "Receiving address missing",
+                    "Configure a Resend receiving address in Settings → Email.",
+                )
+            return
+        session = self.container.session()
+        try:
+            account_id = self.container.email_settings(session).account_id()
+        finally:
+            session.close()
+        worker = EmailSyncWorker(
+            self.container,
+            account_id=account_id,
+            receiving_address=preferences.receiving_email,
+            silent=silent,
+        )
+        worker.finished.connect(lambda result: self._email_sync_done(worker, result))
         worker.failed.connect(lambda error: self._email_sync_failed(worker, error))
         self.email_sync_worker = worker
         worker.start()
 
-    def _email_sync_done(self, worker: EmailSyncWorker) -> None:
+    def _maybe_auto_sync(self) -> None:
+        if self.email_sync_worker and self.email_sync_worker.isRunning():
+            return
+        preferences = self.container.effective_email_settings()
+        if not preferences.inbound_enabled or not preferences.receiving_email:
+            return
+        if not self.container.email_provider:
+            return
+        session = self.container.session()
+        try:
+            last_sync = self.container.email_settings(session).last_synced_at()
+        finally:
+            session.close()
+        if last_sync is not None:
+            elapsed = (datetime.utcnow() - last_sync).total_seconds()
+            if elapsed < preferences.sync_interval_minutes * 60:
+                return
+        self._sync_email(silent=True)
+
+    def _email_sync_done(self, worker: EmailSyncWorker, result: object) -> None:
         worker.deleteLater()
         if self.email_sync_worker is worker:
             self.email_sync_worker = None
+        if hasattr(self, "email_settings_page"):
+            self.email_settings_page.refresh_status()
         self._refresh()
+        if not worker.silent:
+            count = result[0] if isinstance(result, tuple) and result else 0
+            QMessageBox.information(
+                self,
+                "Incoming mail",
+                f"Synchronised {count} new message{'s' if count != 1 else ''}.",
+            )
 
     def _email_sync_failed(self, worker: EmailSyncWorker, error: str) -> None:
-        self._email_sync_done(worker)
-        QMessageBox.warning(self, "Incoming mail", error)
+        worker.deleteLater()
+        if self.email_sync_worker is worker:
+            self.email_sync_worker = None
+        if hasattr(self, "email_settings_page"):
+            self.email_settings_page.refresh_status()
+        self._refresh()
+        if not worker.silent:
+            QMessageBox.warning(self, "Incoming mail", error)
 
     def _complete_selected(self) -> None:
         commitment_id = self._selected_commitment_id()
@@ -1487,6 +2054,8 @@ class PactlynWindow(QMainWindow):
         event.ignore()
 
     def shutdown(self) -> None:
+        if self._shutdown_complete:
+            return
         if self.capture_worker and self.capture_worker.isRunning():
             self.capture_worker.quit()
             self.capture_worker.wait(2000)
@@ -1499,7 +2068,11 @@ class PactlynWindow(QMainWindow):
         if self.connectivity_worker and self.connectivity_worker.isRunning():
             self.connectivity_worker.quit()
             self.connectivity_worker.wait(2000)
+        if hasattr(self, "email_settings_page"):
+            self.email_settings_page.shutdown()
         self._timer.stop()
         self._connectivity_timer.stop()
+        self._inbound_timer.stop()
         self.tray.hide()
         self.container.vectors.close()
+        self._shutdown_complete = True
