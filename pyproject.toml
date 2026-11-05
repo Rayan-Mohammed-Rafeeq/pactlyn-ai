@@ -59,7 +59,10 @@ select = ["E", "F", "I", "B", "UP"]
 ignore = ["E501"]
 
 [tool.mypy]
-python_version = "3.11"
+# Check with the recommended Python 3.12+ environment. The runtime package
+# still supports Python 3.11; newer third-party stubs (for example numpy 2.5)
+# use syntax that mypy refuses to parse when targeting 3.11.
+python_version = "3.12"
 strict = true
 ignore_missing_imports = true
 packages = ["pactlyn"]
@@ -70,4 +73,5 @@ dev = [
   "pytest>=8.3,<9",
   "pytest-asyncio>=0.23,<1",
   "ruff>=0.6,<1",
+  "types-python-dateutil>=2.9,<3",
 ]

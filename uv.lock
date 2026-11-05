@@ -1566,6 +1566,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "ruff" },
+    { name = "types-python-dateutil" },
 ]
 
 [package.metadata]
@@ -1597,6 +1598,7 @@ dev = [
     { name = "pytest", specifier = ">=8.3,<9" },
     { name = "pytest-asyncio", specifier = ">=0.23,<1" },
     { name = "ruff", specifier = ">=0.6,<1" },
+    { name = "types-python-dateutil", specifier = ">=2.9,<3" },
 ]
 
 [[package]]
