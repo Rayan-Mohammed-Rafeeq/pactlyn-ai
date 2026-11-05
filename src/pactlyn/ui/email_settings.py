@@ -170,6 +170,11 @@ class TestEmailDialog(QDialog):
         send_button = buttons.button(QDialogButtonBox.StandardButton.Ok)
         if send_button is not None:
             send_button.setText("Send test email")
+            send_button.setObjectName("primary")
+            send_button.setDefault(True)
+        cancel_button = buttons.button(QDialogButtonBox.StandardButton.Cancel)
+        if cancel_button is not None:
+            cancel_button.setObjectName("secondary")
         buttons.accepted.connect(self._validate_and_accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
@@ -845,7 +850,7 @@ class EmailSettingsPage(QWidget):
         restricted: bool = False,
         mode: ThemeMode | None = None,
     ) -> str:
-        current_mode = mode or getattr(self, "theme_mode", "light")
+        current_mode: ThemeMode = self.theme_mode if mode is None else mode
         if status == ConnectionStatus.CONNECTED and not restricted:
             return status_color("success", current_mode)
         if status in {
