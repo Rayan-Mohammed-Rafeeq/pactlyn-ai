@@ -3,15 +3,14 @@
 from __future__ import annotations
 
 import sys
-from pathlib import Path
-from PySide6.QtCore import QSettings
+
 from PySide6.QtWidgets import QApplication
 
 from pactlyn.ui.theme import (
     COLOR_PINE,
     COLOR_TERRACOTTA,
-    LIGHT_BG,
     DARK_BG,
+    LIGHT_BG,
     BrandWidget,
     get_saved_theme,
     get_stylesheet,
@@ -69,3 +68,25 @@ def test_brand_widget_rendering_and_mode_switching() -> None:
     widget.set_mode("dark")
     assert "pact" in widget.title_label.text()
     assert "lyn" in widget.title_label.text()
+
+
+def test_sidebar_state_persistence() -> None:
+    _ensure_qapp()
+    from pactlyn.ui.theme import get_saved_sidebar_state, save_sidebar_state
+
+    save_sidebar_state(False)
+    assert get_saved_sidebar_state() is False
+
+    save_sidebar_state(True)
+    assert get_saved_sidebar_state() is True
+
+
+def test_create_sidebar_icon() -> None:
+    _ensure_qapp()
+    from pactlyn.ui.theme import create_sidebar_icon
+
+    icon_light = create_sidebar_icon("#193A35", 18)
+    assert not icon_light.isNull()
+
+    icon_dark = create_sidebar_icon("#FFFFFF", 18)
+    assert not icon_dark.isNull()

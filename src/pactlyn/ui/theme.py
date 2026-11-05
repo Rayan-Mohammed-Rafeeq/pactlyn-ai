@@ -15,8 +15,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
-from PySide6.QtCore import QSettings, Qt
-from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtCore import QByteArray, QSettings, Qt
+from PySide6.QtGui import QIcon, QPainter, QPixmap
+from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import (
     QFrame,
     QHBoxLayout,
@@ -38,6 +39,7 @@ COLOR_TERRACOTTA_HOVER = "#D77B5C"
 COLOR_TERRACOTTA_PRESSED = "#B05C3F"
 COLOR_TERRACOTTA_LIGHT = "#F4DDD4"
 COLOR_TERRACOTTA_TINT_DARK = "#3D241C"
+_CHECK_ICON = Path(__file__).with_name("check.svg").as_posix()
 
 # Light theme tokens
 LIGHT_BG = "#F5F1E8"
@@ -99,6 +101,34 @@ def save_theme(mode: ThemeMode) -> None:
     settings.setValue("ui/theme", mode)
 
 
+def get_saved_sidebar_state() -> bool:
+    settings = QSettings("Pactlyn", "Pactlyn")
+    value = str(settings.value("ui/sidebar_visible", "true")).lower()
+    return value == "true"
+
+
+def save_sidebar_state(visible: bool) -> None:
+    settings = QSettings("Pactlyn", "Pactlyn")
+    settings.setValue("ui/sidebar_visible", "true" if visible else "false")
+
+
+def create_sidebar_icon(color: str = "#FFFFFF", size: int = 18) -> QIcon:
+    """Generate a clean SVG sidebar toggle icon rendered in the given color."""
+    fill_rect = f'<path d="M4 4h4v16H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" fill="{color}" opacity="0.3"/>'
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      {fill_rect}
+      <rect x="3" y="3" width="18" height="18" rx="3" ry="3"/>
+      <line x1="9" y1="3" x2="9" y2="21"/>
+    </svg>'''
+    renderer = QSvgRenderer(QByteArray(svg.encode("utf-8")))
+    pixmap = QPixmap(size, size)
+    pixmap.fill(Qt.GlobalColor.transparent)
+    painter = QPainter(pixmap)
+    renderer.render(painter)
+    painter.end()
+    return QIcon(pixmap)
+
+
 def status_color(name: str, mode: ThemeMode = "light") -> str:
     palette = STATUS_COLORS.get(mode, STATUS_COLORS["light"])
     return palette.get(name, palette["muted"])
@@ -151,7 +181,7 @@ QPushButton#nav {{
     text-align: left;
     border: 0;
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 7px 12px;
     font-size: 13px;
     font-weight: 500;
 }}
@@ -166,6 +196,14 @@ QPushButton#nav:checked {{
     color: #FFFFFF;
     font-weight: 600;
     border-left: 3px solid {COLOR_TERRACOTTA};
+}}
+
+QFrame#sidebar_divider {{
+    color: rgba(255, 255, 255, 0.10);
+    background-color: rgba(255, 255, 255, 0.10);
+    border: none;
+    max-height: 1px;
+    min-height: 1px;
 }}
 
 /* Brand & Typography */
@@ -206,26 +244,57 @@ QFrame#metric_card:hover {{
 }}
 
 /* Buttons */
-QPushButton#primary {{
+QPushButton {{
+    color: {DARK_TEXT_PRIMARY};
+    background-color: {DARK_CARD_ALT};
+    border: 1px solid {DARK_BORDER};
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 13px;
+    min-height: 18px;
+}}
+
+QPushButton:hover {{
+    background-color: #26433C;
+    border-color: #395E55;
+    color: #FFFFFF;
+}}
+
+QPushButton:pressed {{
+    background-color: #172B26;
+}}
+
+QPushButton:disabled {{
+    background-color: #152421;
+    color: #4D645E;
+    border-color: #1D332D;
+}}
+
+QPushButton:default, QPushButton#primary {{
     color: #FFFFFF;
     background-color: {COLOR_TERRACOTTA};
-    border: 0;
+    border: 1px solid {COLOR_TERRACOTTA};
     border-radius: 8px;
-    padding: 9px 18px;
+    padding: 8px 18px;
     font-weight: 600;
     font-size: 13px;
 }}
 
-QPushButton#primary:hover {{
+QPushButton:default:hover, QPushButton#primary:hover {{
     background-color: {COLOR_TERRACOTTA_HOVER};
+    border-color: {COLOR_TERRACOTTA_HOVER};
+    color: #FFFFFF;
 }}
 
-QPushButton#primary:pressed {{
+QPushButton:default:pressed, QPushButton#primary:pressed {{
     background-color: {COLOR_TERRACOTTA_PRESSED};
+    border-color: {COLOR_TERRACOTTA_PRESSED};
 }}
 
-QPushButton#primary:disabled {{
+QPushButton:default:disabled, QPushButton#primary:disabled {{
     background-color: #384F49;
+    border-color: #384F49;
     color: #7A908A;
 }}
 
@@ -235,7 +304,7 @@ QPushButton#secondary {{
     border: 1px solid {DARK_BORDER};
     border-radius: 8px;
     padding: 8px 15px;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 13px;
 }}
 
@@ -255,11 +324,40 @@ QPushButton#secondary:disabled {{
     border-color: #1D332D;
 }}
 
+/* Sidebar Toggle Buttons */
+QPushButton#sidebar_toggle_btn {{
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 3px;
+    min-width: 24px;
+    min-height: 24px;
+}}
+
+QPushButton#sidebar_toggle_btn:hover {{
+    background-color: #1A322C;
+    border: 1px solid #2B574F;
+}}
+
+QPushButton#sidebar_toggle_btn:pressed {{
+    background-color: #213C36;
+}}
+
+QWidget#top_bar QPushButton#sidebar_toggle_btn {{
+    background-color: #172A26;
+    border: 1px solid #26433C;
+}}
+
+QWidget#top_bar QPushButton#sidebar_toggle_btn:hover {{
+    background-color: #1F3631;
+    border: 1px solid {COLOR_TERRACOTTA};
+}}
 
 /* Inputs & Forms */
 QLineEdit, QTextEdit, QPlainTextEdit {{
     background-color: {DARK_INPUT_BG};
     color: {DARK_TEXT_PRIMARY};
+    placeholder-text-color: #839790;
     border: 1.5px solid {DARK_BORDER};
     border-radius: 8px;
     padding: 8px 12px;
@@ -272,7 +370,7 @@ QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {{
 
 QLineEdit:read-only, QTextEdit:read-only {{
     background-color: #121F1C;
-    color: {DARK_TEXT_MUTED};
+    color: {DARK_TEXT_PRIMARY};
     border-color: {DARK_BORDER_SUBTLE};
 }}
 
@@ -382,6 +480,7 @@ QCheckBox::indicator {{
 }}
 
 QCheckBox::indicator:checked {{
+    image: url("{_CHECK_ICON}");
     background-color: {COLOR_TERRACOTTA};
     border-color: {COLOR_TERRACOTTA};
 }}
@@ -439,10 +538,70 @@ QGroupBox::title {{
     background-color: {DARK_BG};
 }}
 
-/* Dialogs */
-QDialog {{
+/* Dialogs & Popups */
+QDialog, QMessageBox, QInputDialog, QFileDialog {{
     background-color: {DARK_BG};
     color: {DARK_TEXT_PRIMARY};
+}}
+
+QDialog QLabel, QMessageBox QLabel, QInputDialog QLabel {{
+    color: {DARK_TEXT_PRIMARY};
+    background: transparent;
+    font-size: 13px;
+}}
+
+QLabel#dialog_prompt {{
+    font-size: 14px;
+    font-weight: 600;
+    color: {DARK_TEXT_PRIMARY};
+    padding-bottom: 4px;
+}}
+
+QDialogButtonBox {{
+    background: transparent;
+    border: none;
+}}
+
+QDialogButtonBox QPushButton {{
+    min-width: 82px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+}}
+
+/* Tooltips & Menus */
+QToolTip {{
+    background-color: {DARK_CARD_ALT};
+    color: {DARK_TEXT_PRIMARY};
+    border: 1px solid {DARK_BORDER};
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+}}
+
+QMenu {{
+    background-color: {DARK_CARD_BG};
+    color: {DARK_TEXT_PRIMARY};
+    border: 1px solid {DARK_BORDER};
+    border-radius: 8px;
+    padding: 4px;
+}}
+
+QMenu::item {{
+    padding: 7px 18px;
+    border-radius: 6px;
+    color: {DARK_TEXT_PRIMARY};
+}}
+
+QMenu::item:selected {{
+    background-color: {COLOR_TERRACOTTA};
+    color: #FFFFFF;
+}}
+
+QMenu::separator {{
+    height: 1px;
+    background-color: {DARK_BORDER};
+    margin: 4px 8px;
 }}
 
 QScrollArea {{
@@ -500,7 +659,7 @@ QPushButton#nav {{
     text-align: left;
     border: 0;
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 7px 12px;
     font-size: 13px;
     font-weight: 500;
 }}
@@ -515,6 +674,14 @@ QPushButton#nav:checked {{
     color: #FFFFFF;
     font-weight: 600;
     border-left: 3px solid {COLOR_TERRACOTTA};
+}}
+
+QFrame#sidebar_divider {{
+    color: rgba(255, 255, 255, 0.10);
+    background-color: rgba(255, 255, 255, 0.10);
+    border: none;
+    max-height: 1px;
+    min-height: 1px;
 }}
 
 /* Brand & Typography */
@@ -555,26 +722,57 @@ QFrame#metric_card:hover {{
 }}
 
 /* Buttons */
-QPushButton#primary {{
+QPushButton {{
+    color: {COLOR_PINE};
+    background-color: {LIGHT_CARD_ALT};
+    border: 1px solid {LIGHT_BORDER};
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 13px;
+    min-height: 18px;
+}}
+
+QPushButton:hover {{
+    background-color: #E6DECE;
+    border-color: #D3C7B2;
+    color: {COLOR_PINE};
+}}
+
+QPushButton:pressed {{
+    background-color: #DDD4C3;
+}}
+
+QPushButton:disabled {{
+    background-color: #ECE7DD;
+    color: #A3A29B;
+    border-color: #E2DDD3;
+}}
+
+QPushButton:default, QPushButton#primary {{
     color: #FFFFFF;
     background-color: {COLOR_TERRACOTTA};
-    border: 0;
+    border: 1px solid {COLOR_TERRACOTTA};
     border-radius: 8px;
-    padding: 9px 18px;
+    padding: 8px 18px;
     font-weight: 600;
     font-size: 13px;
 }}
 
-QPushButton#primary:hover {{
+QPushButton:default:hover, QPushButton#primary:hover {{
     background-color: {COLOR_TERRACOTTA_HOVER};
+    border-color: {COLOR_TERRACOTTA_HOVER};
+    color: #FFFFFF;
 }}
 
-QPushButton#primary:pressed {{
+QPushButton:default:pressed, QPushButton#primary:pressed {{
     background-color: {COLOR_TERRACOTTA_PRESSED};
+    border-color: {COLOR_TERRACOTTA_PRESSED};
 }}
 
-QPushButton#primary:disabled {{
+QPushButton:default:disabled, QPushButton#primary:disabled {{
     background-color: #C8BFAF;
+    border-color: #C8BFAF;
     color: #FFFFFF;
 }}
 
@@ -584,7 +782,7 @@ QPushButton#secondary {{
     border: 1px solid {LIGHT_BORDER};
     border-radius: 8px;
     padding: 8px 15px;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 13px;
 }}
 
@@ -603,11 +801,49 @@ QPushButton#secondary:disabled {{
     border-color: #E2DDD3;
 }}
 
+/* Sidebar Toggle Buttons */
+QPushButton#sidebar_toggle_btn {{
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 3px;
+    min-width: 24px;
+    min-height: 24px;
+}}
+
+QFrame#sidebar QPushButton#sidebar_toggle_btn {{
+    background-color: transparent;
+    border: 1px solid transparent;
+}}
+
+QFrame#sidebar QPushButton#sidebar_toggle_btn:hover {{
+    background-color: #234D46;
+    border: 1px solid #2B574F;
+}}
+
+QFrame#sidebar QPushButton#sidebar_toggle_btn:pressed {{
+    background-color: #29574F;
+}}
+
+QWidget#top_bar QPushButton#sidebar_toggle_btn {{
+    background-color: #EFE9DC;
+    border: 1px solid #E3DAC9;
+}}
+
+QWidget#top_bar QPushButton#sidebar_toggle_btn:hover {{
+    background-color: #E6DECE;
+    border: 1px solid {COLOR_TERRACOTTA};
+}}
+
+QWidget#top_bar QPushButton#sidebar_toggle_btn:pressed {{
+    background-color: #DDD4C3;
+}}
 
 /* Inputs & Forms */
 QLineEdit, QTextEdit, QPlainTextEdit {{
     background-color: {LIGHT_INPUT_BG};
     color: {LIGHT_TEXT_PRIMARY};
+    placeholder-text-color: #7E8C85;
     border: 1.5px solid {LIGHT_BORDER};
     border-radius: 8px;
     padding: 8px 12px;
@@ -619,9 +855,9 @@ QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {{
 }}
 
 QLineEdit:read-only, QTextEdit:read-only {{
-    background-color: #F8F6F0;
-    color: {LIGHT_TEXT_MUTED};
-    border-color: {LIGHT_BORDER_SUBTLE};
+    background-color: #FAF8F2;
+    color: {LIGHT_TEXT_PRIMARY};
+    border-color: {LIGHT_BORDER};
 }}
 
 QComboBox {{
@@ -731,6 +967,7 @@ QCheckBox::indicator {{
 }}
 
 QCheckBox::indicator:checked {{
+    image: url("{_CHECK_ICON}");
     background-color: {COLOR_TERRACOTTA};
     border-color: {COLOR_TERRACOTTA};
 }}
@@ -788,10 +1025,70 @@ QGroupBox::title {{
     background-color: {LIGHT_BG};
 }}
 
-/* Dialogs */
-QDialog {{
+/* Dialogs & Popups */
+QDialog, QMessageBox, QInputDialog, QFileDialog {{
     background-color: {LIGHT_BG};
     color: {LIGHT_TEXT_PRIMARY};
+}}
+
+QDialog QLabel, QMessageBox QLabel, QInputDialog QLabel {{
+    color: {LIGHT_TEXT_PRIMARY};
+    background: transparent;
+    font-size: 13px;
+}}
+
+QLabel#dialog_prompt {{
+    font-size: 14px;
+    font-weight: 600;
+    color: {COLOR_PINE};
+    padding-bottom: 4px;
+}}
+
+QDialogButtonBox {{
+    background: transparent;
+    border: none;
+}}
+
+QDialogButtonBox QPushButton {{
+    min-width: 82px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+}}
+
+/* Tooltips & Menus */
+QToolTip {{
+    background-color: #FFFFFF;
+    color: {COLOR_PINE};
+    border: 1px solid {LIGHT_BORDER};
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+}}
+
+QMenu {{
+    background-color: {LIGHT_CARD_BG};
+    color: {LIGHT_TEXT_PRIMARY};
+    border: 1px solid {LIGHT_BORDER};
+    border-radius: 8px;
+    padding: 4px;
+}}
+
+QMenu::item {{
+    padding: 7px 18px;
+    border-radius: 6px;
+    color: {LIGHT_TEXT_PRIMARY};
+}}
+
+QMenu::item:selected {{
+    background-color: {COLOR_TERRACOTTA};
+    color: #FFFFFF;
+}}
+
+QMenu::separator {{
+    height: 1px;
+    background-color: {LIGHT_BORDER};
+    margin: 4px 8px;
 }}
 
 QScrollArea {{
@@ -824,22 +1121,22 @@ class BrandWidget(QWidget):
 
     def _setup_ui(self) -> None:
         main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(8, 14, 8, 14)
-        main_layout.setSpacing(6)
+        main_layout.setContentsMargins(2, 2, 2, 4)
+        main_layout.setSpacing(3)
 
         # Top row: Icon + wordmark
         top_row = QHBoxLayout()
-        top_row.setSpacing(10)
+        top_row.setSpacing(8)
         top_row.setContentsMargins(0, 0, 0, 0)
 
         # Icon
         self.icon_label = QLabel()
         self.icon_label.setObjectName("brand_icon")
         self.icon_label.setStyleSheet("background: transparent; border: none;")
-        self.icon_label.setFixedSize(38, 38)
+        self.icon_label.setFixedSize(30, 30)
         svg_path = Path(__file__).with_name("pactlyn.svg")
         if svg_path.exists():
-            pixmap = QIcon(str(svg_path)).pixmap(38, 38)
+            pixmap = QIcon(str(svg_path)).pixmap(30, 30)
             self.icon_label.setPixmap(pixmap)
             self.icon_label.setScaledContents(True)
         top_row.addWidget(self.icon_label)
@@ -877,8 +1174,8 @@ class BrandWidget(QWidget):
 
         self.title_label.setText(
             f'<div style="line-height: 1.0;">'
-            f'<span style="font-size: 21px; font-weight: 800; color: {pact_color}; letter-spacing: -0.5px;">pact</span>'
-            f'<span style="font-size: 21px; font-weight: 800; color: {COLOR_TERRACOTTA}; letter-spacing: -0.5px;">lyn</span>'
+            f'<span style="font-size: 18px; font-weight: 800; color: {pact_color}; letter-spacing: -0.5px;">pact</span>'
+            f'<span style="font-size: 18px; font-weight: 800; color: {COLOR_TERRACOTTA}; letter-spacing: -0.5px;">lyn</span>'
             f'</div>'
         )
 
