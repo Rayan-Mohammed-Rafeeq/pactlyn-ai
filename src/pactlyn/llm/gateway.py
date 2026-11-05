@@ -6,7 +6,7 @@ import re
 from datetime import UTC, datetime, timedelta
 from typing import Any, TypeVar
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
 from pactlyn.core.commitments import (
     CaptureResult,
@@ -366,6 +366,24 @@ class LLMGateway:
         source_has_date = bool(CommitmentExtractor._date_pattern.search(source))
         lowered_source = source.casefold()
         is_postponement = bool(re.search(r"\b(?:postpone|postponed|postponement)\b", lowered_source))
+
+        # Personal-fact guard: birthday / date-of-birth statements are not
+        # commitments.  Suppress commitment extraction entirely so the
+        # personal-fact pipeline handles them exclusively.
+        _is_birthday_statement = bool(
+            re.search(
+                r"\bbirthday\b|\bborn\s+on\b|\bdate\s+of\s+birth\b|\bdob\b",
+                lowered_source,
+            )
+        )
+        if _is_birthday_statement:
+            result.candidates = []
+            result.explanation = (
+                "Birthday / date-of-birth statements are personal facts, not commitments. "
+                "No commitment was created."
+            )
+            return result
+
         if re.search(r"\b(?:wait(?:ing)? for|expecting|owed|owes me|reply from)\b", lowered_source):
             grounded_type = CommitmentType.WAITING_FOR
         elif re.search(r"\b(?:follow[ -]?up|check with|need to contact)\b", lowered_source):
@@ -556,3 +574,104 @@ class LLMGateway:
             if start >= 0 and end > start:
                 return output_type.model_validate(json.loads(raw[start : end + 1]))
             raise LLMUnavailable("Provider returned invalid structured output") from exc
+
+    async def extract_personal_facts(
+        self,
+        text: str,
+        *,
+        hints: list[str] | None = None,
+    ) -> PersonalFactExtractionResult:
+        """Run the personal-fact extraction stage.
+
+        hints is a list of PersonalFactHint string values that pre-focus the
+        model (e.g. ["birthday"]) so smaller local models perform better.
+        """
+        provider = self.local
+        hint_text = ""
+        if hints:
+            hint_text = f"\nExpected fact types (from pre-classifier): {', '.join(hints)}."
+        messages = [
+            {"role": "system", "content": _PERSONAL_FACT_SYSTEM_PROMPT + hint_text},
+            {"role": "user", "content": f"User input:\n<user_input>\n{text}\n</user_input>"},
+        ]
+        try:
+            if not await provider.available():
+                raise LLMUnavailable(f"{provider.name} is unavailable")
+            raw = await asyncio.wait_for(
+                provider.complete(
+                    messages,
+                    json_schema=PersonalFactExtractionResult.model_json_schema(),
+                ),
+                timeout=30,
+            )
+            result = PersonalFactExtractionResult.model_validate_json(raw)
+            # Normalise categories and attributes.
+            for fact in result.facts:
+                fact.category = fact.category.lower().strip()
+                fact.attribute = fact.attribute.lower().strip().replace(" ", "_")
+                if not fact.display_value:
+                    fact.display_value = fact.value
+                if not fact.source_text:
+                    fact.source_text = text
+            return result
+        except (LLMUnavailable, ValidationError, ValueError, TypeError, TimeoutError) as exc:
+            return PersonalFactExtractionResult(
+                facts=[],
+                explanation=f"Personal-fact extraction did not complete: {exc}",
+            )
+
+
+# ---------------------------------------------------------------------------
+# Personal-fact extraction schemas and gateway method
+# ---------------------------------------------------------------------------
+
+
+class PersonalFactCandidate(BaseModel):
+    """One personal fact extracted from user input."""
+
+    category: str = Field(
+        description=(
+            "One of: identity, birthday, education, career, preference, "
+            "contact_information, personal_relationship, other"
+        )
+    )
+    attribute: str = Field(
+        description="Machine-stable snake_case key, e.g. 'date_of_birth', 'full_name', 'university'"
+    )
+    value: str = Field(description="Structured value (ISO date for dates, plain text otherwise)")
+    display_value: str = Field(default="", description="Human-readable representation, e.g. '18 August 2005'")
+    recurrence: str | None = Field(
+        default=None,
+        description="YEARLY if the fact recurs annually (e.g. birthday), otherwise null",
+    )
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0)
+    source_text: str = Field(default="", description="Verbatim text from the user's input that establishes this fact")
+
+
+class PersonalFactExtractionResult(BaseModel):
+    """Structured output for the personal-fact extraction stage."""
+
+    facts: list[PersonalFactCandidate] = Field(default_factory=list)
+    explanation: str = ""
+
+
+_PERSONAL_FACT_SYSTEM_PROMPT = (
+    "You are Pactlyn's personal-fact extractor. Extract stable facts about the user. "
+    "A personal fact is something that is persistently true about the user: their name, "
+    "birthday, university, job, preferences, contact details, relationships, or current project. "
+    "Personal facts are NOT commitments, tasks, deadlines or reminders.\n\n"
+    "Rules:\n"
+    "- A birthday is ALWAYS category=birthday, attribute=date_of_birth, NOT a commitment.\n"
+    "- If the user says 'my birthday is 18 August 2005', value must be '2005-08-18' (ISO), "
+    "display_value must be '18 August 2005', recurrence must be 'YEARLY'.\n"
+    "- If only month and day are given (no year), set value to the MM-DD string (e.g. '08-18') "
+    "and display_value to the readable form.  Never invent a year.\n"
+    "- For names: category=identity, attribute=full_name.\n"
+    "- For university: category=education, attribute=university.\n"
+    "- For preferences: category=preference, attribute describes what is preferred.\n"
+    "- Extract only facts explicitly stated; never invent or infer.\n"
+    "- source_text must be a verbatim substring from the user input.\n"
+    "- confidence should be 1.0 for clear statements, lower for inferences.\n"
+    "- Return zero facts if the input contains no personal facts.\n"
+    "- Never create a reminder, task or deadline from a personal fact."
+)

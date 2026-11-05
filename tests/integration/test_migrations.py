@@ -19,8 +19,11 @@ def _config(database: Path) -> Config:
     return config
 
 
-def test_email_settings_migration_preserves_existing_rows(tmp_path: Path) -> None:
-    database = tmp_path / "migration.sqlite3"
+def test_email_settings_migration_preserves_existing_rows(
+    tmp_path: Path, monkeypatch
+) -> None:
+    monkeypatch.setenv("PACTLYN_DATA_DIR", str(tmp_path))
+    database = tmp_path / "pactlyn.sqlite3"
     config = _config(database)
     command.upgrade(config, "8c0_relationship_review_audit")
 
@@ -58,6 +61,8 @@ def test_email_settings_migration_preserves_existing_rows(tmp_path: Path) -> Non
         } <= account_columns
         assert "references_header" in message_columns
         assert {"headers", "attachments"} <= action_columns
+        # Verify the personal_facts table was created by the new migration.
+        assert "personal_facts" in schema.get_table_names()
     finally:
         engine.dispose()
 
@@ -69,7 +74,7 @@ def test_email_settings_migration_preserves_existing_rows(tmp_path: Path) -> Non
         ).fetchone()
         assert row == ("old@example.com", "", 15, "old@abc.resend.app")
         version = connection.execute("SELECT version_num FROM alembic_version").fetchone()
-        assert version == ("9a0_email_settings_and_payload",)
+        assert version == ("a0_personal_facts",)
     finally:
         connection.close()
 

@@ -73,6 +73,23 @@ class MemoryKind(enum.StrEnum):
     PROCEDURAL = "procedural"
 
 
+class PersonalFactCategory(enum.StrEnum):
+    IDENTITY = "identity"
+    BIRTHDAY = "birthday"
+    EDUCATION = "education"
+    CAREER = "career"
+    PREFERENCE = "preference"
+    CONTACT_INFORMATION = "contact_information"
+    PERSONAL_RELATIONSHIP = "personal_relationship"
+    OTHER = "other"
+
+
+class PersonalFactConfirmationState(enum.StrEnum):
+    CONFIRMED = "confirmed"
+    NEEDS_CONFIRMATION = "needs_confirmation"
+    CONTRADICTED = "contradicted"
+
+
 class UserProfile(Base):
     __tablename__ = "user_profiles"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
@@ -408,3 +425,56 @@ class ApprovalRequest(Base):
     payload_hash: Mapped[str] = mapped_column(String(64))
     state: Mapped[str] = mapped_column(String(50), default="pending")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+
+
+class PersonalFact(Base):
+    """A confirmed, persistent personal fact about the user.
+
+    Personal facts (birthday, name, university, preferences …) are NOT
+    commitments. They must never be forced into the Commitment model and must
+    never produce reminders or tasks unless the user explicitly requests one.
+    """
+
+    __tablename__ = "personal_facts"
+    __table_args__ = (
+        UniqueConstraint("category", "attribute", name="uq_personal_fact_attribute"),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    # The category groups related attributes together (e.g. BIRTHDAY, IDENTITY).
+    category: Mapped[PersonalFactCategory] = mapped_column(
+        Enum(PersonalFactCategory, values_callable=lambda x: [e.value for e in x]),
+        index=True,
+    )
+    # Machine-stable predicate key, e.g. "date_of_birth", "full_name", "university".
+    attribute: Mapped[str] = mapped_column(String(120))
+    # Structured value for programmatic use (ISO date, plain string, …).
+    value: Mapped[str] = mapped_column(Text)
+    # Human-readable representation shown to the user.
+    display_value: Mapped[str] = mapped_column(Text, default="")
+    # Optional: for recurring events (YEARLY / NONE).
+    recurrence: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    # Original user statement that established this fact.
+    source_text: Mapped[str] = mapped_column(Text, default="")
+    # ISO timestamp of the source statement (may differ from created_at).
+    source_timestamp: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    # Whether the fact has been confirmed by the user or inferred at high confidence.
+    confirmation_state: Mapped[PersonalFactConfirmationState] = mapped_column(
+        Enum(PersonalFactConfirmationState, values_callable=lambda x: [e.value for e in x]),
+        default=PersonalFactConfirmationState.CONFIRMED,
+    )
+    confidence: Mapped[float] = mapped_column(default=1.0)
+    # Whether the fact has been embedded and upserted into Qdrant.
+    indexed: Mapped[bool] = mapped_column(Boolean, default=False)
+    # Soft-delete timestamp for audit trail preservation.
+    deleted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=datetime.utcnow
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow
+    )

@@ -16,6 +16,7 @@ from pactlyn.email.settings import EmailPreferences, EmailSettingsRepository
 from pactlyn.llm.gateway import LLMGateway
 from pactlyn.llm.providers.ollama import OllamaProvider
 from pactlyn.llm.providers.openrouter import OpenRouterProvider
+from pactlyn.memory.facts import PersonalFactService
 from pactlyn.memory.service import MemoryService
 from pactlyn.rag.embeddings import EmbeddingModelState, activate_embedding_model
 from pactlyn.security.credentials import CredentialStore
@@ -43,6 +44,29 @@ class AppContainer:
 
     def memories(self, session: Session) -> MemoryService:
         return MemoryService(session, self.vectors, self.embedder)
+
+    def personal_facts(self, session: Session) -> PersonalFactService:
+        return PersonalFactService(session, self.vectors, self.embedder)
+
+    async def run_startup_migrations(self) -> None:
+        """Run idempotent data-quality migrations on startup.
+
+        Safe to call every time the app starts — each migration checks
+        whether its work is already done before touching any records.
+        """
+        from pactlyn.memory.migrate_facts import migrate_birthday_commitments
+
+        session = self.session()
+        try:
+            result = await migrate_birthday_commitments(session, self.vectors, self.embedder)
+            if result.reclassified:
+                import logging
+                logging.getLogger(__name__).info(
+                    "Startup migration: reclassified %d birthday commitment(s) as personal facts.",
+                    result.reclassified,
+                )
+        finally:
+            session.close()
 
     def email(self, session: Session) -> EmailService:
         return EmailService(session, self.email_provider)
