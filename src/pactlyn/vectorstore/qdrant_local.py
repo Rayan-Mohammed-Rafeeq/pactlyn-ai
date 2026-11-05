@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import weakref
 from pathlib import Path
 
 from qdrant_client import QdrantClient, models
 
 from pactlyn.vectorstore.interface import VectorHit
+
+
+def _close_client(client: QdrantClient) -> None:
+    client.close()
 
 
 class LocalQdrantStore:
@@ -13,6 +18,10 @@ class LocalQdrantStore:
     def __init__(self, path: Path):
         self.client = QdrantClient(path=str(path))
         self._dimensions: dict[str, int] = {}
+        # Qdrant's own __del__ can run after Python has torn down the import
+        # system, which makes its portalocker import fail noisily. Close the
+        # client while imports are still available if nobody did it earlier.
+        self._close_finalizer = weakref.finalize(self, _close_client, self.client)
 
     def _ensure_collection(self, collection: str, dimension: int) -> None:
         if collection in self._dimensions:
@@ -63,4 +72,4 @@ class LocalQdrantStore:
         return configured.size if isinstance(configured, models.VectorParams) else None
 
     def close(self) -> None:
-        self.client.close()
+        self._close_finalizer()
