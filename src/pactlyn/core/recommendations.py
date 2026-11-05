@@ -20,6 +20,9 @@ class FollowThroughRecommendation:
     title: str
     explanation: str
     commitment_ids: tuple[str, ...]
+    supporting_evidence: str = ""
+    triggering_condition: str | None = None
+    needs_confirmation: bool = True
 
 
 class RecommendationEngine:
@@ -65,6 +68,8 @@ class RecommendationEngine:
                             title=f"Blocked: {commitment.title}",
                             explanation=f"{commitment.title} depends on {related.title}, which is still {related.status.value}.",
                             commitment_ids=(commitment.id, related.id),
+                            supporting_evidence=relation.evidence,
+                            triggering_condition=commitment.condition,
                         )
                     )
                 elif relation.relationship == CommitmentRelationshipType.FOLLOWED_BY and incoming and related.status in terminal:
@@ -73,6 +78,8 @@ class RecommendationEngine:
                             title=f"Now possible: {commitment.title}",
                             explanation=f"The preceding commitment {related.title} is complete.",
                             commitment_ids=(commitment.id, related.id),
+                            supporting_evidence=relation.evidence,
+                            needs_confirmation=False,
                         )
                     )
                 elif (
@@ -85,6 +92,9 @@ class RecommendationEngine:
                                 title=f"Now possible: {commitment.title}",
                                 explanation=f"The required response for {commitment.title} was received from {related.title}.",
                                 commitment_ids=(commitment.id, related.id),
+                                supporting_evidence=relation.evidence,
+                                triggering_condition=commitment.condition,
+                                needs_confirmation=False,
                             )
                         )
                     else:
@@ -93,6 +103,8 @@ class RecommendationEngine:
                                 title=f"Conditional follow-up held: {commitment.title}",
                                 explanation=f"{commitment.title} should wait for a response on {related.title} before it is recommended.",
                                 commitment_ids=(commitment.id, related.id),
+                                supporting_evidence=relation.evidence,
+                                triggering_condition=commitment.condition,
                             )
                         )
             if commitment.condition:
@@ -112,14 +124,21 @@ class RecommendationEngine:
                             title=f"Condition not met: {commitment.title}",
                             explanation=f"The condition for {commitment.title} has not been satisfied yet.",
                             commitment_ids=(commitment.id, related_conditions[0][1].id),
+                            triggering_condition=commitment.condition,
                         )
                     )
-            if commitment.status == CommitmentStatus.WAITING and commitment.due_at and commitment.due_at <= now:
+            due = (
+                commitment.due_at.replace(tzinfo=UTC)
+                if (commitment.due_at and commitment.due_at.tzinfo is None)
+                else commitment.due_at
+            )
+            if commitment.status == CommitmentStatus.WAITING and due and due <= now:
                 recommendations.append(
                     FollowThroughRecommendation(
                         title=f"Follow up: {commitment.title}",
                         explanation=f"This waiting commitment reached its expected response time ({commitment.id}).",
                         commitment_ids=(commitment.id,),
+                        triggering_condition=f"due_at <= {now.isoformat()}",
                     )
                 )
             postponements = self.session.scalar(
@@ -134,6 +153,7 @@ class RecommendationEngine:
                         title=f"Review repeated postponement: {commitment.title}",
                         explanation=f"This commitment has been postponed {postponements} times.",
                         commitment_ids=(commitment.id,),
+                        triggering_condition=f"postponements >= {postponements}",
                     )
                 )
         unique: list[FollowThroughRecommendation] = []

@@ -15,6 +15,7 @@ from pactlyn.storage.models import (
     Commitment,
     CommitmentEvent,
     CommitmentRelationship,
+    CommitmentRelationshipReview,
     CommitmentRelationshipType,
     CommitmentStatus,
     CommitmentType,
@@ -86,7 +87,12 @@ class CommitmentCandidate(BaseModel):
 
 
 class CommitmentRelationshipCandidate(BaseModel):
-    """An edge between candidates in the same capture, addressed by zero-based indexes."""
+    """A directed edge between candidates in one capture.
+
+    Direction is semantic and is never changed during persistence: the source
+    is the event being described by the relationship and the target is the
+    referenced prerequisite, predecessor, response, or superseded event.
+    """
 
     source_index: int = Field(ge=0)
     target_index: int = Field(ge=0)
@@ -95,6 +101,7 @@ class CommitmentRelationshipCandidate(BaseModel):
     relationship: CommitmentRelationshipType
     evidence: str = ""
     confidence: float = Field(default=0.7, ge=0.0, le=1.0)
+    rejection_reason: str | None = None
 
 
 class CaptureResult(BaseModel):
@@ -106,12 +113,19 @@ class CaptureResult(BaseModel):
     provider_name: str | None = None
     provider_error: str | None = None
     relationship_warnings: list[str] = Field(default_factory=list)
+    rejected_relationships: list[CommitmentRelationshipCandidate] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def normalize_event_graph(self) -> CaptureResult:
         def warn(message: str) -> None:
             if message not in self.relationship_warnings:
                 self.relationship_warnings.append(message)
+
+        def reject(relation: CommitmentRelationshipCandidate, reason: str) -> None:
+            rejected = relation.model_copy(update={"rejection_reason": reason})
+            if rejected not in self.rejected_relationships:
+                self.rejected_relationships.append(rejected)
+            warn(reason)
 
         event_ids: set[str] = set()
         for index, candidate in enumerate(self.candidates):
@@ -125,28 +139,28 @@ class CaptureResult(BaseModel):
         seen: set[tuple[int, int, CommitmentRelationshipType]] = set()
         for relation in self.relationships:
             if relation.source_index >= len(self.candidates) or relation.target_index >= len(self.candidates):
-                warn(f"Relationship {relation.relationship.value} references a missing event")
+                reject(relation, f"Relationship {relation.relationship.value} references a missing event")
                 continue
             if relation.source_index == relation.target_index:
-                warn(f"Relationship {relation.relationship.value} cannot reference itself")
+                reject(relation, f"Relationship {relation.relationship.value} cannot reference itself")
                 continue
             source_event_id = self.candidates[relation.source_index].event_id
             target_event_id = self.candidates[relation.target_index].event_id
             if relation.source_event_id and relation.source_event_id != source_event_id:
-                warn(f"Relationship {relation.relationship.value} has an unresolved source event")
+                reject(relation, f"Relationship {relation.relationship.value} has an unresolved source event")
                 continue
             if relation.target_event_id and relation.target_event_id != target_event_id:
-                warn(f"Relationship {relation.relationship.value} has an unresolved target event")
+                reject(relation, f"Relationship {relation.relationship.value} has an unresolved target event")
                 continue
             if relation.relationship == CommitmentRelationshipType.FOLLOWED_BY and relation.source_index > relation.target_index:
-                warn("FOLLOWED_BY relationship has the later event as its source")
+                reject(relation, "FOLLOWED_BY relationship has the later event as its source")
                 continue
             if relation.relationship == CommitmentRelationshipType.SUPERSEDES and relation.source_index < relation.target_index:
-                warn("SUPERSEDES relationship has the older event as its source")
+                reject(relation, "SUPERSEDES relationship has the older event as its source")
                 continue
             key = (relation.source_index, relation.target_index, relation.relationship)
             if key in seen:
-                warn(f"Duplicate relationship removed: {relation.relationship.value}")
+                reject(relation, f"Duplicate relationship removed: {relation.relationship.value}")
                 continue
             seen.add(key)
             relation.source_event_id = source_event_id
@@ -182,6 +196,83 @@ class CaptureResult(BaseModel):
         for node in adjacency:
             visit(node)
         return self
+
+
+class RelationshipExtractionResult(BaseModel):
+    """Structured output for the relationship-only stage."""
+
+    relationships: list[CommitmentRelationshipCandidate] = Field(default_factory=list)
+    explanation: str = ""
+
+
+class EventExtractionResult(BaseModel):
+    """Structured output for the event-only stage."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    candidates: list[CommitmentCandidate] = Field(default_factory=list)
+    explanation: str = ""
+
+
+class RelationshipReasoner:
+    """Source-grounded, deterministic relationship candidate generation.
+
+    This is deliberately separate from event extraction. It supplies a safe
+    offline baseline and a validator for model-generated relationship edges.
+    """
+
+    @staticmethod
+    def validate(result: CaptureResult, source: str) -> CaptureResult:
+        source_lower = source.casefold()
+        if not result.candidates:
+            return result
+        for relation in result.relationships:
+            relation.evidence = relation.evidence or source
+            if relation.evidence.casefold() not in source_lower:
+                relation.evidence = source
+        return CaptureResult.model_validate(result.model_dump())
+
+    @staticmethod
+    def infer(candidates: list[CommitmentCandidate], source: str) -> RelationshipExtractionResult:
+        text = source.casefold()
+        edges: list[CommitmentRelationshipCandidate] = []
+        def add(source_index: int, target_index: int, relationship: CommitmentRelationshipType, evidence: str) -> None:
+            edges.append(CommitmentRelationshipCandidate(
+                source_index=source_index,
+                target_index=target_index,
+                relationship=relationship,
+                evidence=evidence,
+                confidence=0.82,
+            ))
+
+        if len(candidates) < 2:
+            return RelationshipExtractionResult()
+        if re.search(r"\bif\b|\bonce\b|\bafter\b|\bbefore\b|\buntil\b", text):
+            for index, candidate in enumerate(candidates):
+                if candidate.condition or candidate.responsibility == "CONDITIONALLY_EXECUTES":
+                    prerequisite = next((i for i, item in enumerate(candidates[:index]) if item.responsibility in {
+                        "USER_WAITING_FOR", "OTHER_PARTY_PERFORMS"
+                    }), None)
+                    if prerequisite is not None:
+                        add(index, prerequisite, CommitmentRelationshipType.DEPENDS_ON, source)
+        if re.search(r"\bif\b.*\b(?:doesn't|does not|fails|not)\b", text):
+            waiting = next((i for i, item in enumerate(candidates) if item.responsibility in {"USER_WAITING_FOR", "OTHER_PARTY_PERFORMS"}), None)
+            fallback = next((i for i, item in enumerate(candidates) if item.responsibility == "CONDITIONALLY_EXECUTES"), None)
+            if waiting is not None and fallback is not None:
+                add(fallback, waiting, CommitmentRelationshipType.RESPONSE_REQUIRED_FROM, source)
+        if re.search(r"\b(?:then|after|once|before|and then)\b", text):
+            for index in range(len(candidates) - 1):
+                if candidates[index].extraction_status != "completed":
+                    add(index, index + 1, CommitmentRelationshipType.FOLLOWED_BY, source)
+        if re.search(r"\b(?:correction|instead|replace|rather than)\b", text):
+            add(len(candidates) - 1, 0, CommitmentRelationshipType.SUPERSEDES, source)
+        return RelationshipExtractionResult(relationships=edges, explanation="Deterministic relationship stage")
+
+    @staticmethod
+    def candidate_pairs(candidates: list[CommitmentCandidate]) -> list[tuple[int, int]]:
+        """Generate bounded directed pairs before semantic classification."""
+        count = min(len(candidates), 8)
+        return [(source, target) for source in range(count) for target in range(count) if source != target]
 
 
 class CommitmentExtractor:
@@ -220,6 +311,9 @@ class CommitmentExtractor:
         special = self._extract_structured_multi(text, now=now, timezone_name=timezone_name)
         if special is not None:
             return special
+        historical = self._extract_historical_multi(text, now=now, timezone_name=timezone_name)
+        if historical is not None:
+            return historical
         segments = self._split_commitments(text)
         if len(segments) <= 1:
             return self._extract_single(text, now=now, timezone_name=timezone_name)
@@ -253,6 +347,52 @@ class CommitmentExtractor:
     ) -> CaptureResult | None:
         """Handle high-signal relationship language without inventing entities."""
         current = now or datetime.now(UTC)
+        waiting_fallback = re.search(
+            r"I['’]?m\s+waiting\s+for\s+(?P<name>[A-Z][A-Za-z'-]+)(?:'s|\s+to)\s+(?P<object>.+?)\s+by\s+(?P<first>\w+)\.?\s*"
+            r"If\s+(?:it|they)\s+(?:does not|doesn't)\s+arrive,?\s+I\s+will\s+(?P<action>contact|call|email)\s+(?:him|her|them)\s+(?:on\s+)?(?P<second>\w+)",
+            source,
+            re.IGNORECASE,
+        )
+        if waiting_fallback:
+            name = waiting_fallback.group("name")
+            waiting = CommitmentCandidate(
+                title=f"Wait for {name} {waiting_fallback.group('object')}",
+                description=source,
+                type=CommitmentType.WAITING_FOR,
+                person=name,
+                contact_kind="person",
+                contact_role="responsible",
+                contact_status="resolved",
+                actor=name,
+                object=waiting_fallback.group("object"),
+                responsibility="USER_WAITING_FOR",
+                deadline_owner=name,
+                due_at=CommitmentExtractor()._parse_relative_date(f"by {waiting_fallback.group('first')}", current),
+                timezone=timezone_name,
+                needs_confirmation=True,
+                evidence=source,
+            )
+            follow = CommitmentExtractor()._extract_single(
+                f"I will {waiting_fallback.group('action')} {name} on {waiting_fallback.group('second')}",
+                now=current,
+                timezone_name=timezone_name,
+            ).candidates[0]
+            follow.type = CommitmentType.FOLLOW_UP
+            follow.person = name
+            follow.contact_role = "recipient"
+            follow.responsibility = "CONDITIONALLY_EXECUTES"
+            follow.condition = f"If {name} does not send the {waiting_fallback.group('object')}"
+            follow.evidence = source
+            waiting.event_id = None
+            follow.event_id = None
+            return CaptureResult(
+                candidates=[waiting, follow],
+                relationships=[
+                    CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.RESPONSE_REQUIRED_FROM, evidence=source, confidence=0.95),
+                    CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.DEPENDS_ON, evidence=source, confidence=0.9),
+                ],
+                explanation="Extracted a waiting event and a conditional fallback in separate events.",
+            )
         conditional = re.search(
             r"(?:if\s+)?(?P<name>[A-Z][A-Za-z'-]+)\s+(?:does not|doesn't)\s+(?P<action>.+?)\s+by\s+(?P<first>\w+)[,.]?\s+"
             r"I\s+will\s+(?P<follow>contact|call|email|follow up with)\s+(?:him|her|them|(?P<same>[A-Z][A-Za-z'-]+))\s+on\s+(?P<second>\w+)",
@@ -363,6 +503,68 @@ class CommitmentExtractor:
                 relationships=[CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.DEPENDS_ON, evidence=source, confidence=0.9)],
                 explanation="Extracted approval dependency.",
             )
+        before_dependency = re.match(
+            r"(?P<owner>.+?)\s+needs\s+to\s+approve\s+(?P<object>.+?)\s+before\s+I\s+(?P<action>submit|send|file)\s+(?P<target>.+)",
+            source.strip().rstrip(".!?"),
+            re.IGNORECASE,
+        )
+        if before_dependency:
+            owner = before_dependency.group("owner").strip()
+            waiting = CommitmentCandidate(
+                title=f"{owner} approves {before_dependency.group('object')}",
+                description=source,
+                type=CommitmentType.WAITING_FOR,
+                person=owner,
+                contact_kind=CommitmentExtractor._contact_kind(owner),
+                contact_role="responsible",
+                contact_status="unresolved",
+                actor=owner,
+                object=before_dependency.group("object"),
+                responsibility="OTHER_PARTY_PERFORMS",
+                evidence=source,
+                needs_confirmation=True,
+            )
+            task = CommitmentExtractor()._extract_single(
+                f"I will {before_dependency.group('action')} {before_dependency.group('target')}",
+                now=current,
+                timezone_name=timezone_name,
+            ).candidates[0]
+            task.condition = f"before I {before_dependency.group('action')} {before_dependency.group('target')}"
+            task.responsibility = "CONDITIONALLY_EXECUTES"
+            waiting.event_id = None
+            task.event_id = None
+            return CaptureResult(
+                candidates=[waiting, task],
+                relationships=[CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.DEPENDS_ON, evidence=source, confidence=0.95)],
+                explanation="Extracted approval and submission events with a directed dependency.",
+            )
+        after_dependency = re.match(
+            r"After\s+(?P<owner>.+?)\s+(?P<action>sends|approves|confirms)\s+(?P<object>.+?),?\s+I['’]?ll\s+(?P<follow>.+)",
+            source.strip().rstrip(".!?"),
+            re.IGNORECASE,
+        )
+        if after_dependency:
+            owner = after_dependency.group("owner").strip()
+            waiting = CommitmentCandidate(
+                title=f"{owner} {after_dependency.group('action')} {after_dependency.group('object')}",
+                description=source,
+                type=CommitmentType.WAITING_FOR,
+                person=owner,
+                contact_kind=CommitmentExtractor._contact_kind(owner),
+                contact_role="responsible",
+                contact_status="unresolved",
+                actor=owner,
+                object=after_dependency.group("object"),
+                responsibility="OTHER_PARTY_PERFORMS",
+                evidence=source,
+                needs_confirmation=True,
+            )
+            task = CommitmentExtractor()._extract_single(f"I will {after_dependency.group('follow')}", now=current, timezone_name=timezone_name).candidates[0]
+            task.condition = f"after {owner} {after_dependency.group('action')} {after_dependency.group('object')}"
+            task.responsibility = "CONDITIONALLY_EXECUTES"
+            waiting.event_id = None
+            task.event_id = None
+            return CaptureResult(candidates=[waiting, task], relationships=[CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.DEPENDS_ON, evidence=source, confidence=0.9)], explanation="Extracted a response-triggered action.")
         correction = re.match(r"I said I would (?P<old>.+?), but correction:\s*I will (?P<new>.+)", source.strip(), re.I)
         if correction:
             old = CommitmentExtractor()._extract_single(f"I will {correction.group('old')}", now=current, timezone_name=timezone_name).candidates[0]
@@ -376,6 +578,33 @@ class CommitmentExtractor:
                 explanation="Extracted correction and superseding commitment.",
             )
         return None
+
+    def _extract_historical_multi(self, source: str, *, now: datetime | None, timezone_name: str) -> CaptureResult | None:
+        if not re.search(r"\b(?:yesterday|today|last\s+(?:week|month))\b", source, re.IGNORECASE):
+            return None
+        parts = re.split(r"\s*,?\s+and\s+(?=(?:I|[A-Z][A-Za-z'-]+)\s+(?:forwarded|sent|received|approved|replied|completed))", source)
+        if len(parts) < 2:
+            return None
+        candidates: list[CommitmentCandidate] = []
+        for part in parts:
+            result = self._extract_single(part, now=now, timezone_name=timezone_name)
+            if result.candidates:
+                candidate = result.candidates[0]
+                candidate.extraction_status = "completed"
+                candidate.needs_confirmation = False
+                candidate.due_at = None
+                candidate.reminder_at = None
+                candidate.event_id = None
+                if re.match(r"^[A-Z][A-Za-z'-]+\s+(?:sent|received|approved|replied)", part):
+                    actor_match = re.match(r"^(?P<actor>[A-Z][A-Za-z'-]+)", part)
+                    candidate.actor = actor_match.group("actor") if actor_match else None
+                    candidate.responsibility = "OTHER_PARTY_PERFORMS"
+                candidates.append(candidate)
+        return CaptureResult(
+            candidates=candidates,
+            relationships=[CommitmentRelationshipCandidate(source_index=index, target_index=index + 1, relationship=CommitmentRelationshipType.FOLLOWED_BY, evidence=source, confidence=0.75) for index in range(len(candidates) - 1)],
+            explanation="Recorded historical events without scheduling future reminders.",
+        ) if candidates else None
 
     @staticmethod
     def _split_commitments(source: str) -> list[str]:
@@ -451,6 +680,8 @@ class CommitmentExtractor:
                 "USER_PERFORMS"
             ),
         )
+        if re.search(r"\b(?:maybe|might|perhaps|not sure|haven't decided|have not decided)\b", lowered):
+            candidate.needs_confirmation = True
         return CaptureResult(candidates=[candidate], explanation="Deterministic local extraction; confirmation is required for uncertain fields")
 
     def _parse_relative_date(self, source: str, now: datetime) -> datetime | None:
@@ -615,6 +846,7 @@ class CommitmentService:
         relationships: list[CommitmentRelationshipCandidate] | None = None,
         *,
         source: str = "manual",
+        rejected_relationships: list[CommitmentRelationshipCandidate] | None = None,
     ) -> list[Commitment]:
         """Persist a capture atomically, then attach validated candidate relationships."""
         commitments = [
@@ -630,9 +862,25 @@ class CommitmentService:
                 commitments[relation.source_index].id,
                 commitments[relation.target_index].id,
                 relation.relationship,
+                evidence=relation.evidence,
+                confidence=relation.confidence,
             )
             self._update_fts(commitments[relation.source_index])
             self._update_fts(commitments[relation.target_index])
+        for relation in rejected_relationships or []:
+            source_commitment = commitments[relation.source_index].id if relation.source_index < len(commitments) else None
+            target_commitment = commitments[relation.target_index].id if relation.target_index < len(commitments) else None
+            self.session.add(CommitmentRelationshipReview(
+                source_commitment_id=source_commitment,
+                target_commitment_id=target_commitment,
+                source_index=relation.source_index,
+                target_index=relation.target_index,
+                source_event_id=relation.source_event_id,
+                target_event_id=relation.target_event_id,
+                relationship=relation.relationship.value,
+                evidence=relation.evidence,
+                reason=relation.rejection_reason or "Relationship rejected during validation",
+            ))
         return commitments
 
     def add_relationship(
@@ -640,6 +888,9 @@ class CommitmentService:
         commitment_id: str,
         related_commitment_id: str,
         relationship: CommitmentRelationshipType | str,
+        *,
+        evidence: str = "",
+        confidence: float = 0.0,
     ) -> CommitmentRelationship:
         if commitment_id == related_commitment_id:
             raise ValueError("A commitment cannot relate to itself")
@@ -659,6 +910,8 @@ class CommitmentService:
             commitment_id=commitment_id,
             related_commitment_id=related_commitment_id,
             relationship=relation_type,
+            evidence=evidence,
+            confidence=confidence,
         )
         self.session.add(relation)
         self.session.flush()
@@ -876,10 +1129,10 @@ class CommitmentService:
     def _update_fts(self, commitment: Commitment) -> None:
         self.session.execute(text("DELETE FROM commitment_fts WHERE commitment_id = :id"), {"id": commitment.id})
         related_text = " ".join(
-            f"{relation.relationship.value} {related.title} {related.description}"
+            f"{relation.relationship.value} {relation.evidence} {related.title} {related.description}"
             for relation, related in self.related(commitment.id)
         )
         self.session.execute(text("INSERT INTO commitment_fts(commitment_id, title, description, person, content) VALUES (:id, :title, :description, :person, :content)"), {
             "id": commitment.id, "title": commitment.title, "description": commitment.description,
-            "person": commitment.person or "", "content": f"{commitment.title} {commitment.description} {related_text}",
+            "person": commitment.person or "", "content": f"{commitment.title} {commitment.description} {commitment.actor or ''} {commitment.condition or ''} {commitment.responsibility} {related_text}",
         })
