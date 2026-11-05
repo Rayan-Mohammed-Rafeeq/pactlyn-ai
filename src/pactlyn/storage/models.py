@@ -73,23 +73,6 @@ class MemoryKind(enum.StrEnum):
     PROCEDURAL = "procedural"
 
 
-class PersonalFactCategory(enum.StrEnum):
-    IDENTITY = "identity"
-    BIRTHDAY = "birthday"
-    EDUCATION = "education"
-    CAREER = "career"
-    PREFERENCE = "preference"
-    CONTACT_INFORMATION = "contact_information"
-    PERSONAL_RELATIONSHIP = "personal_relationship"
-    OTHER = "other"
-
-
-class PersonalFactConfirmationState(enum.StrEnum):
-    CONFIRMED = "confirmed"
-    NEEDS_CONFIRMATION = "needs_confirmation"
-    CONTRADICTED = "contradicted"
-
-
 class UserProfile(Base):
     __tablename__ = "user_profiles"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
@@ -115,6 +98,27 @@ class ModelConfiguration(Base):
     enabled: Mapped[bool] = mapped_column(Boolean, default=True)
     is_cloud: Mapped[bool] = mapped_column(Boolean, default=False)
     embedding_dimension: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    # Phase 2 extensions for dynamic model management
+    model_type: Mapped[str | None] = mapped_column(String(80), nullable=True)  # "text", "vision", "embedding"
+    context_length: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    parameter_count: Mapped[str | None] = mapped_column(String(20), nullable=True)  # "7B", "3B"
+    quantization: Mapped[str | None] = mapped_column(String(40), nullable=True)  # "Q4_0"
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class ActiveModelSelection(Base):
+    """User's selected model for each AI task role."""
+
+    __tablename__ = "active_model_selections"
+    __table_args__ = (UniqueConstraint("role", name="uq_active_model_role"),)
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    role: Mapped[str] = mapped_column(String(80), index=True)  # "assistant", "extraction", "vision", "embedding"
+    provider: Mapped[str] = mapped_column(String(80), default="ollama")
+    selected_model: Mapped[str] = mapped_column(String(200))
+    validated: Mapped[bool] = mapped_column(Boolean, default=False)
+    validation_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
@@ -427,54 +431,47 @@ class ApprovalRequest(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
 
 
-class PersonalFact(Base):
-    """A confirmed, persistent personal fact about the user.
+# Document Intelligence Models
 
-    Personal facts (birthday, name, university, preferences …) are NOT
-    commitments. They must never be forced into the Commitment model and must
-    never produce reminders or tasks unless the user explicitly requests one.
-    """
 
-    __tablename__ = "personal_facts"
-    __table_args__ = (
-        UniqueConstraint("category", "attribute", name="uq_personal_fact_attribute"),
+class Document(Base):
+    """Document record for PDF and other file uploads."""
+
+    __tablename__ = "documents"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=new_id)
+    filename: Mapped[str]
+    content_hash: Mapped[str] = mapped_column(String, unique=True, index=True)
+    mime_type: Mapped[str]
+    size_bytes: Mapped[int]
+    status: Mapped[str]  # uploaded, processing, indexed, failed
+    page_count: Mapped[int | None]
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    processed_at: Mapped[datetime | None]
+    deleted_at: Mapped[datetime | None]
+    error_message: Mapped[str | None]
+    extraction_metadata: Mapped[str | None]  # JSON: extractor, warnings, structure
+
+    # Relationships
+    chunks: Mapped[list["DocumentChunk"]] = relationship(
+        back_populates="document", cascade="all, delete-orphan"
     )
 
-    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
-    # The category groups related attributes together (e.g. BIRTHDAY, IDENTITY).
-    category: Mapped[PersonalFactCategory] = mapped_column(
-        Enum(PersonalFactCategory, values_callable=lambda x: [e.value for e in x]),
-        index=True,
-    )
-    # Machine-stable predicate key, e.g. "date_of_birth", "full_name", "university".
-    attribute: Mapped[str] = mapped_column(String(120))
-    # Structured value for programmatic use (ISO date, plain string, …).
-    value: Mapped[str] = mapped_column(Text)
-    # Human-readable representation shown to the user.
-    display_value: Mapped[str] = mapped_column(Text, default="")
-    # Optional: for recurring events (YEARLY / NONE).
-    recurrence: Mapped[str | None] = mapped_column(String(40), nullable=True)
-    # Original user statement that established this fact.
-    source_text: Mapped[str] = mapped_column(Text, default="")
-    # ISO timestamp of the source statement (may differ from created_at).
-    source_timestamp: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
-    # Whether the fact has been confirmed by the user or inferred at high confidence.
-    confirmation_state: Mapped[PersonalFactConfirmationState] = mapped_column(
-        Enum(PersonalFactConfirmationState, values_callable=lambda x: [e.value for e in x]),
-        default=PersonalFactConfirmationState.CONFIRMED,
-    )
-    confidence: Mapped[float] = mapped_column(default=1.0)
-    # Whether the fact has been embedded and upserted into Qdrant.
-    indexed: Mapped[bool] = mapped_column(Boolean, default=False)
-    # Soft-delete timestamp for audit trail preservation.
-    deleted_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=datetime.utcnow
-    )
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow
-    )
+
+class DocumentChunk(Base):
+    """Chunk of document text with embedding and metadata."""
+
+    __tablename__ = "document_chunks"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=new_id)
+    document_id: Mapped[str] = mapped_column(ForeignKey("documents.id"), index=True)
+    content: Mapped[str]
+    page_numbers: Mapped[str]  # JSON: "[1, 2, 3]"
+    section_heading: Mapped[str | None]
+    chunk_index: Mapped[int]
+    char_start: Mapped[int]
+    char_end: Mapped[int]
+    chunk_type: Mapped[str] = mapped_column(default="text")  # text, table, figure_caption
+    indexed: Mapped[bool] = mapped_column(default=False)
+    vector_id: Mapped[str | None]  # Qdrant point ID
+
+    # Relationships
+    document: Mapped["Document"] = relationship(back_populates="chunks")

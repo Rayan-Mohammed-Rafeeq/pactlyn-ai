@@ -15,9 +15,7 @@ def main() -> int:
     try:
         window = PactlynWindow(build_container())
     except Exception as exc:
-        import traceback
-        tb = traceback.format_exc()
-        QMessageBox.critical(None, "Pactlyn could not start", f"{exc}\n\n{tb[-800:]}")
+        QMessageBox.critical(None, "Pactlyn could not start", str(exc))
         return 1
     app.aboutToQuit.connect(window.shutdown)
     window.show()

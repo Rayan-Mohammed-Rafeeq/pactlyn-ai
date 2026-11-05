@@ -14,9 +14,9 @@ from pactlyn.email.resend.provider import ResendProvider
 from pactlyn.email.service import EmailService
 from pactlyn.email.settings import EmailPreferences, EmailSettingsRepository
 from pactlyn.llm.gateway import LLMGateway
+from pactlyn.llm.model_config import ModelConfigurationService, ModelRole
 from pactlyn.llm.providers.ollama import OllamaProvider
 from pactlyn.llm.providers.openrouter import OpenRouterProvider
-from pactlyn.memory.facts import PersonalFactService
 from pactlyn.memory.service import MemoryService
 from pactlyn.rag.embeddings import EmbeddingModelState, activate_embedding_model
 from pactlyn.security.credentials import CredentialStore
@@ -44,29 +44,6 @@ class AppContainer:
 
     def memories(self, session: Session) -> MemoryService:
         return MemoryService(session, self.vectors, self.embedder)
-
-    def personal_facts(self, session: Session) -> PersonalFactService:
-        return PersonalFactService(session, self.vectors, self.embedder)
-
-    async def run_startup_migrations(self) -> None:
-        """Run idempotent data-quality migrations on startup.
-
-        Safe to call every time the app starts — each migration checks
-        whether its work is already done before touching any records.
-        """
-        from pactlyn.memory.migrate_facts import migrate_birthday_commitments
-
-        session = self.session()
-        try:
-            result = await migrate_birthday_commitments(session, self.vectors, self.embedder)
-            if result.reclassified:
-                import logging
-                logging.getLogger(__name__).info(
-                    "Startup migration: reclassified %d birthday commitment(s) as personal facts.",
-                    result.reclassified,
-                )
-        finally:
-            session.close()
 
     def email(self, session: Session) -> EmailService:
         return EmailService(session, self.email_provider)
@@ -109,6 +86,25 @@ class AppContainer:
         return "\n".join(lines)
 
 
+def _load_active_models(session_factory: sessionmaker[Session], settings: Settings) -> tuple[str, str]:
+    """Load active model selections from database or fall back to settings.
+    
+    Returns (assistant_model, embedding_model) tuple.
+    """
+    session = session_factory()
+    try:
+        model_config_service = ModelConfigurationService(session)
+        active = model_config_service.get_all_active_models()
+        
+        # Use persisted selections or fall back to settings (environment variables)
+        assistant_model = active.assistant_model or settings.ollama_model
+        embedding_model = active.embedding_model or settings.ollama_embedding_model
+        
+        return assistant_model, embedding_model
+    finally:
+        session.close()
+
+
 def build_container(
     settings: Settings | None = None,
     *,
@@ -117,7 +113,14 @@ def build_container(
     settings = settings or Settings()
     engine = make_engine(settings.database_url)
     init_database(engine)
-    local = OllamaProvider(settings.ollama_url, settings.ollama_model, settings.ollama_embedding_model)
+    session_factory = create_session_factory(engine)
+    
+    # Load active model selections from database
+    assistant_model, embedding_model = _load_active_models(session_factory, settings)
+    
+    # Create Ollama provider with selected models
+    local = OllamaProvider(settings.ollama_url, assistant_model, embedding_model)
+    
     # Ollama is the production embedding provider. Tests inject the explicit
     # deterministic adapter instead, so no personal data leaves the machine.
     credentials = CredentialStore()
@@ -127,7 +130,7 @@ def build_container(
     if settings.openrouter_enabled and openrouter_key and settings.openrouter_model:
         cloud = OpenRouterProvider(openrouter_key, settings.openrouter_model)
     vectors = LocalQdrantStore(settings.qdrant_path)
-    session_factory = create_session_factory(engine)
+    
     email_provider = None
     config_session = session_factory()
     try:
@@ -141,13 +144,15 @@ def build_container(
             email_provider = ResendProvider(resend_key)
     finally:
         config_session.close()
+    
     metadata_session = session_factory()
     try:
         embedding_state = activate_embedding_model(
-            metadata_session, vectors, settings.ollama_embedding_model
+            metadata_session, vectors, embedding_model
         )
     finally:
         metadata_session.close()
+    
     return AppContainer(
         settings=settings,
         session_factory=session_factory,
