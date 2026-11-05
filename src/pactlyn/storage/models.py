@@ -133,6 +133,31 @@ class CommitmentRelationship(Base):
     relationship: Mapped[CommitmentRelationshipType] = mapped_column(
         Enum(CommitmentRelationshipType), index=True
     )
+    evidence: Mapped[str] = mapped_column(Text, default="")
+    confidence: Mapped[float] = mapped_column(default=0.0)
+    validation_status: Mapped[str] = mapped_column(String(40), default="validated")
+
+
+class CommitmentRelationshipReview(Base):
+    """Audit trail for rejected or unresolved relationship edges."""
+
+    __tablename__ = "commitment_relationship_reviews"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    source_commitment_id: Mapped[str | None] = mapped_column(
+        ForeignKey("commitments.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    target_commitment_id: Mapped[str | None] = mapped_column(
+        ForeignKey("commitments.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    source_index: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    target_index: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    source_event_id: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    target_event_id: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    relationship: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    evidence: Mapped[str] = mapped_column(Text, default="")
+    reason: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
 
 
 class ReminderDelivery(Base):
@@ -227,6 +252,7 @@ class EmailMessage(Base):
     provider_message_id: Mapped[str | None] = mapped_column(String(300), unique=True, nullable=True)
     message_id_header: Mapped[str | None] = mapped_column(String(500), nullable=True)
     in_reply_to: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    references_header: Mapped[str | None] = mapped_column(String(1000), nullable=True)
     sender: Mapped[str] = mapped_column(String(320))
     recipients: Mapped[list[str]] = mapped_column(JSON, default=list)
     subject: Mapped[str] = mapped_column(String(500), default="")
@@ -240,8 +266,13 @@ class EmailAccount(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     provider: Mapped[str] = mapped_column(String(80), default="resend")
     inbound_address: Mapped[str | None] = mapped_column(String(320), nullable=True)
-    sender_address: Mapped[str] = mapped_column(String(320))
+    sender_address: Mapped[str] = mapped_column(String(320), default="")
+    sender_name: Mapped[str] = mapped_column(String(200), default="")
     enabled: Mapped[bool] = mapped_column(Boolean, default=False)
+    sync_interval_minutes: Mapped[int] = mapped_column(Integer, default=15)
+    last_test_status: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    last_test_detail: Mapped[str] = mapped_column(Text, default="")
+    last_tested_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class EmailDraft(Base):
@@ -286,6 +317,8 @@ class EmailSendAction(Base):
     subject: Mapped[str] = mapped_column(String(500))
     body_text: Mapped[str] = mapped_column(Text)
     body_html: Mapped[str | None] = mapped_column(Text, nullable=True)
+    headers: Mapped[dict[str, str]] = mapped_column(JSON, default=dict)
+    attachments: Mapped[list[dict[str, str]]] = mapped_column(JSON, default=list)
     state: Mapped[EmailState] = mapped_column(Enum(EmailState), default=EmailState.DRAFT, index=True)
     approval_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
     provider_id: Mapped[str | None] = mapped_column(String(300), nullable=True)
