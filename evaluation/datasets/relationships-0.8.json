@@ -1,0 +1,4249 @@
+{
+  "dataset_version": "relationships-0.8-v1",
+  "authoring": "independently authored relationship scenarios with manually reviewed event, direction, type, and evidence labels; no model predictions used",
+  "seed": 0,
+  "example_count": 120,
+  "relationship_example_count": 110,
+  "examples": [
+    {
+      "id": "relationship-0.8-001",
+      "category": "dependency_chain",
+      "split": "development",
+      "text": "Maya must approve the design before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Maya must approve the design",
+          "event_id": "relationship-0.8-001-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Maya approves the design",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-001-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-001-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Maya must approve the design before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Maya must approve the design before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-002",
+      "category": "dependency_chain",
+      "split": "development",
+      "text": "Daniel must approve the interview details before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Daniel must approve the interview details",
+          "event_id": "relationship-0.8-002-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Daniel approves the interview details",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-002-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-002-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Daniel must approve the interview details before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Daniel must approve the interview details before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-003",
+      "category": "dependency_chain",
+      "split": "development",
+      "text": "Priya must approve the contract before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Priya must approve the contract",
+          "event_id": "relationship-0.8-003-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Priya approves the contract",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-003-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-003-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Priya must approve the contract before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Priya must approve the contract before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-004",
+      "category": "dependency_chain",
+      "split": "development",
+      "text": "Elena must approve the application before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Elena must approve the application",
+          "event_id": "relationship-0.8-004-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Elena approves the application",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-004-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-004-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Elena must approve the application before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Elena must approve the application before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-005",
+      "category": "dependency_chain",
+      "split": "development",
+      "text": "Lina must approve the report before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Lina must approve the report",
+          "event_id": "relationship-0.8-005-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Lina approves the report",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-005-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-005-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Lina must approve the report before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Lina must approve the report before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-006",
+      "category": "dependency_chain",
+      "split": "development",
+      "text": "Maya must approve the design before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Maya must approve the design",
+          "event_id": "relationship-0.8-006-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Maya approves the design",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-006-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-006-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Maya must approve the design before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Maya must approve the design before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-007",
+      "category": "dependency_chain",
+      "split": "development",
+      "text": "Daniel must approve the interview details before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Daniel must approve the interview details",
+          "event_id": "relationship-0.8-007-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Daniel approves the interview details",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-007-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-007-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Daniel must approve the interview details before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Daniel must approve the interview details before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-008",
+      "category": "dependency_chain",
+      "split": "heldout",
+      "text": "Priya must approve the contract before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Priya must approve the contract",
+          "event_id": "relationship-0.8-008-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Priya approves the contract",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-008-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-008-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Priya must approve the contract before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Priya must approve the contract before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-009",
+      "category": "dependency_chain",
+      "split": "heldout",
+      "text": "Elena must approve the application before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Elena must approve the application",
+          "event_id": "relationship-0.8-009-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Elena approves the application",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-009-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-009-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Elena must approve the application before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Elena must approve the application before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-010",
+      "category": "dependency_chain",
+      "split": "heldout",
+      "text": "Lina must approve the report before I submit the final report, then I will archive the report.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Lina must approve the report",
+          "event_id": "relationship-0.8-010-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Lina approves the report",
+          "source_span": "I submit the final report",
+          "event_id": "relationship-0.8-010-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after submitting the report",
+          "source_span": "I will archive the report",
+          "event_id": "relationship-0.8-010-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Lina must approve the report before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "Lina must approve the report before I submit the final report, then I will archive the report.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-011",
+      "category": "conditional_fallback",
+      "split": "development",
+      "text": "I'm waiting for Maya to send the design by Friday. If it does not arrive, I will call Maya on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Maya to send the design by Friday",
+          "event_id": "relationship-0.8-011-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Maya does not send the design",
+          "source_span": "I will call Maya on Monday",
+          "event_id": "relationship-0.8-011-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Maya to send the design by Friday. If it does not arrive, I will call Maya on Monday.",
+          "conditional_trigger": "if Maya does not send the design"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Maya to send the design by Friday. If it does not arrive, I will call Maya on Monday.",
+          "conditional_trigger": "if Maya does not send the design"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-012",
+      "category": "conditional_fallback",
+      "split": "development",
+      "text": "I'm waiting for Daniel to send the interview details by Friday. If it does not arrive, I will call Daniel on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Daniel to send the interview details by Friday",
+          "event_id": "relationship-0.8-012-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Daniel does not send the interview details",
+          "source_span": "I will call Daniel on Monday",
+          "event_id": "relationship-0.8-012-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Daniel to send the interview details by Friday. If it does not arrive, I will call Daniel on Monday.",
+          "conditional_trigger": "if Daniel does not send the interview details"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Daniel to send the interview details by Friday. If it does not arrive, I will call Daniel on Monday.",
+          "conditional_trigger": "if Daniel does not send the interview details"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-013",
+      "category": "conditional_fallback",
+      "split": "development",
+      "text": "I'm waiting for Priya to send the contract by Friday. If it does not arrive, I will call Priya on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Priya to send the contract by Friday",
+          "event_id": "relationship-0.8-013-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Priya does not send the contract",
+          "source_span": "I will call Priya on Monday",
+          "event_id": "relationship-0.8-013-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Priya to send the contract by Friday. If it does not arrive, I will call Priya on Monday.",
+          "conditional_trigger": "if Priya does not send the contract"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Priya to send the contract by Friday. If it does not arrive, I will call Priya on Monday.",
+          "conditional_trigger": "if Priya does not send the contract"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-014",
+      "category": "conditional_fallback",
+      "split": "development",
+      "text": "I'm waiting for Elena to send the application by Friday. If it does not arrive, I will call Elena on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Elena to send the application by Friday",
+          "event_id": "relationship-0.8-014-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Elena does not send the application",
+          "source_span": "I will call Elena on Monday",
+          "event_id": "relationship-0.8-014-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Elena to send the application by Friday. If it does not arrive, I will call Elena on Monday.",
+          "conditional_trigger": "if Elena does not send the application"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Elena to send the application by Friday. If it does not arrive, I will call Elena on Monday.",
+          "conditional_trigger": "if Elena does not send the application"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-015",
+      "category": "conditional_fallback",
+      "split": "development",
+      "text": "I'm waiting for Lina to send the report by Friday. If it does not arrive, I will call Lina on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Lina to send the report by Friday",
+          "event_id": "relationship-0.8-015-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Lina does not send the report",
+          "source_span": "I will call Lina on Monday",
+          "event_id": "relationship-0.8-015-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Lina to send the report by Friday. If it does not arrive, I will call Lina on Monday.",
+          "conditional_trigger": "if Lina does not send the report"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Lina to send the report by Friday. If it does not arrive, I will call Lina on Monday.",
+          "conditional_trigger": "if Lina does not send the report"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-016",
+      "category": "conditional_fallback",
+      "split": "development",
+      "text": "I'm waiting for Maya to send the design by Friday. If it does not arrive, I will call Maya on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Maya to send the design by Friday",
+          "event_id": "relationship-0.8-016-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Maya does not send the design",
+          "source_span": "I will call Maya on Monday",
+          "event_id": "relationship-0.8-016-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Maya to send the design by Friday. If it does not arrive, I will call Maya on Monday.",
+          "conditional_trigger": "if Maya does not send the design"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Maya to send the design by Friday. If it does not arrive, I will call Maya on Monday.",
+          "conditional_trigger": "if Maya does not send the design"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-017",
+      "category": "conditional_fallback",
+      "split": "development",
+      "text": "I'm waiting for Daniel to send the interview details by Friday. If it does not arrive, I will call Daniel on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Daniel to send the interview details by Friday",
+          "event_id": "relationship-0.8-017-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Daniel does not send the interview details",
+          "source_span": "I will call Daniel on Monday",
+          "event_id": "relationship-0.8-017-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Daniel to send the interview details by Friday. If it does not arrive, I will call Daniel on Monday.",
+          "conditional_trigger": "if Daniel does not send the interview details"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Daniel to send the interview details by Friday. If it does not arrive, I will call Daniel on Monday.",
+          "conditional_trigger": "if Daniel does not send the interview details"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-018",
+      "category": "conditional_fallback",
+      "split": "heldout",
+      "text": "I'm waiting for Priya to send the contract by Friday. If it does not arrive, I will call Priya on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Priya to send the contract by Friday",
+          "event_id": "relationship-0.8-018-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Priya does not send the contract",
+          "source_span": "I will call Priya on Monday",
+          "event_id": "relationship-0.8-018-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Priya to send the contract by Friday. If it does not arrive, I will call Priya on Monday.",
+          "conditional_trigger": "if Priya does not send the contract"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Priya to send the contract by Friday. If it does not arrive, I will call Priya on Monday.",
+          "conditional_trigger": "if Priya does not send the contract"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-019",
+      "category": "conditional_fallback",
+      "split": "heldout",
+      "text": "I'm waiting for Elena to send the application by Friday. If it does not arrive, I will call Elena on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Elena to send the application by Friday",
+          "event_id": "relationship-0.8-019-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Elena does not send the application",
+          "source_span": "I will call Elena on Monday",
+          "event_id": "relationship-0.8-019-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Elena to send the application by Friday. If it does not arrive, I will call Elena on Monday.",
+          "conditional_trigger": "if Elena does not send the application"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Elena to send the application by Friday. If it does not arrive, I will call Elena on Monday.",
+          "conditional_trigger": "if Elena does not send the application"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-020",
+      "category": "conditional_fallback",
+      "split": "heldout",
+      "text": "I'm waiting for Lina to send the report by Friday. If it does not arrive, I will call Lina on Monday.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "Lina to send the report by Friday",
+          "event_id": "relationship-0.8-020-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "CONDITIONALLY_EXECUTES",
+          "status": "active",
+          "condition": "if Lina does not send the report",
+          "source_span": "I will call Lina on Monday",
+          "event_id": "relationship-0.8-020-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "RESPONSE_REQUIRED_FROM",
+          "evidence": "I'm waiting for Lina to send the report by Friday. If it does not arrive, I will call Lina on Monday.",
+          "conditional_trigger": "if Lina does not send the report"
+        },
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I'm waiting for Lina to send the report by Friday. If it does not arrive, I will call Lina on Monday.",
+          "conditional_trigger": "if Lina does not send the report"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-021",
+      "category": "waiting_for",
+      "split": "development",
+      "text": "I am waiting for Maya to confirm the design; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Maya to confirm the design",
+          "event_id": "relationship-0.8-021-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-021-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Maya to confirm the design; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-022",
+      "category": "waiting_for",
+      "split": "development",
+      "text": "I am waiting for Daniel to confirm the interview details; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Daniel to confirm the interview details",
+          "event_id": "relationship-0.8-022-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-022-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Daniel to confirm the interview details; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-023",
+      "category": "waiting_for",
+      "split": "development",
+      "text": "I am waiting for Priya to confirm the contract; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Priya to confirm the contract",
+          "event_id": "relationship-0.8-023-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-023-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Priya to confirm the contract; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-024",
+      "category": "waiting_for",
+      "split": "development",
+      "text": "I am waiting for Elena to confirm the application; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Elena to confirm the application",
+          "event_id": "relationship-0.8-024-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-024-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Elena to confirm the application; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-025",
+      "category": "waiting_for",
+      "split": "development",
+      "text": "I am waiting for Lina to confirm the report; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Lina to confirm the report",
+          "event_id": "relationship-0.8-025-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-025-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Lina to confirm the report; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-026",
+      "category": "waiting_for",
+      "split": "development",
+      "text": "I am waiting for Maya to confirm the design; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Maya to confirm the design",
+          "event_id": "relationship-0.8-026-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-026-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Maya to confirm the design; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-027",
+      "category": "waiting_for",
+      "split": "development",
+      "text": "I am waiting for Daniel to confirm the interview details; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Daniel to confirm the interview details",
+          "event_id": "relationship-0.8-027-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-027-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Daniel to confirm the interview details; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-028",
+      "category": "waiting_for",
+      "split": "heldout",
+      "text": "I am waiting for Priya to confirm the contract; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Priya to confirm the contract",
+          "event_id": "relationship-0.8-028-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-028-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Priya to confirm the contract; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-029",
+      "category": "waiting_for",
+      "split": "heldout",
+      "text": "I am waiting for Elena to confirm the application; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Elena to confirm the application",
+          "event_id": "relationship-0.8-029-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-029-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Elena to confirm the application; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-030",
+      "category": "waiting_for",
+      "split": "heldout",
+      "text": "I am waiting for Lina to confirm the report; I will review it when the confirmation arrives.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "USER_WAITING_FOR",
+          "status": "active",
+          "condition": null,
+          "source_span": "waiting for Lina to confirm the report",
+          "event_id": "relationship-0.8-030-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "when the confirmation arrives",
+          "source_span": "I will review it",
+          "event_id": "relationship-0.8-030-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I am waiting for Lina to confirm the report; I will review it when the confirmation arrives.",
+          "conditional_trigger": "when the confirmation arrives"
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-031",
+      "category": "multiple_contacts",
+      "split": "development",
+      "text": "I will email Maya about the design, call Aisha about the schedule, and message Daniel about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Maya about the design",
+          "event_id": "relationship-0.8-031-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Aisha about the schedule",
+          "event_id": "relationship-0.8-031-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Daniel about the deadline",
+          "event_id": "relationship-0.8-031-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-032",
+      "category": "multiple_contacts",
+      "split": "development",
+      "text": "I will email Daniel about the interview details, call Noor about the schedule, and message Priya about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Daniel about the interview details",
+          "event_id": "relationship-0.8-032-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Noor about the schedule",
+          "event_id": "relationship-0.8-032-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Priya about the deadline",
+          "event_id": "relationship-0.8-032-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-033",
+      "category": "multiple_contacts",
+      "split": "development",
+      "text": "I will email Priya about the contract, call Sam about the schedule, and message Elena about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Priya about the contract",
+          "event_id": "relationship-0.8-033-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Sam about the schedule",
+          "event_id": "relationship-0.8-033-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Elena about the deadline",
+          "event_id": "relationship-0.8-033-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-034",
+      "category": "multiple_contacts",
+      "split": "development",
+      "text": "I will email Elena about the application, call Omar about the schedule, and message Lina about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Elena about the application",
+          "event_id": "relationship-0.8-034-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Omar about the schedule",
+          "event_id": "relationship-0.8-034-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Lina about the deadline",
+          "event_id": "relationship-0.8-034-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-035",
+      "category": "multiple_contacts",
+      "split": "development",
+      "text": "I will email Lina about the report, call Rahul about the schedule, and message Maya about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Lina about the report",
+          "event_id": "relationship-0.8-035-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Rahul about the schedule",
+          "event_id": "relationship-0.8-035-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Maya about the deadline",
+          "event_id": "relationship-0.8-035-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-036",
+      "category": "multiple_contacts",
+      "split": "development",
+      "text": "I will email Maya about the design, call Aisha about the schedule, and message Daniel about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Maya about the design",
+          "event_id": "relationship-0.8-036-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Aisha about the schedule",
+          "event_id": "relationship-0.8-036-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Daniel about the deadline",
+          "event_id": "relationship-0.8-036-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-037",
+      "category": "multiple_contacts",
+      "split": "development",
+      "text": "I will email Daniel about the interview details, call Noor about the schedule, and message Priya about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Daniel about the interview details",
+          "event_id": "relationship-0.8-037-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Noor about the schedule",
+          "event_id": "relationship-0.8-037-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Priya about the deadline",
+          "event_id": "relationship-0.8-037-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-038",
+      "category": "multiple_contacts",
+      "split": "heldout",
+      "text": "I will email Priya about the contract, call Sam about the schedule, and message Elena about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Priya about the contract",
+          "event_id": "relationship-0.8-038-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Sam about the schedule",
+          "event_id": "relationship-0.8-038-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Elena about the deadline",
+          "event_id": "relationship-0.8-038-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-039",
+      "category": "multiple_contacts",
+      "split": "heldout",
+      "text": "I will email Elena about the application, call Omar about the schedule, and message Lina about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Elena about the application",
+          "event_id": "relationship-0.8-039-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Omar about the schedule",
+          "event_id": "relationship-0.8-039-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Lina about the deadline",
+          "event_id": "relationship-0.8-039-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-040",
+      "category": "multiple_contacts",
+      "split": "heldout",
+      "text": "I will email Lina about the report, call Rahul about the schedule, and message Maya about the deadline.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "email Lina about the report",
+          "event_id": "relationship-0.8-040-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Rahul about the schedule",
+          "event_id": "relationship-0.8-040-event-2"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "message Maya about the deadline",
+          "event_id": "relationship-0.8-040-event-3"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-041",
+      "category": "historical",
+      "split": "development",
+      "text": "Maya sent me the design yesterday, and I forwarded it to Aisha today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Maya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Maya sent me the design yesterday",
+          "event_id": "relationship-0.8-041-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Aisha today",
+          "event_id": "relationship-0.8-041-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Maya sent me the design yesterday, and I forwarded it to Aisha today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-042",
+      "category": "historical",
+      "split": "development",
+      "text": "Daniel sent me the interview details yesterday, and I forwarded it to Noor today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Daniel",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Daniel sent me the interview details yesterday",
+          "event_id": "relationship-0.8-042-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Noor today",
+          "event_id": "relationship-0.8-042-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Daniel sent me the interview details yesterday, and I forwarded it to Noor today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-043",
+      "category": "historical",
+      "split": "development",
+      "text": "Priya sent me the contract yesterday, and I forwarded it to Sam today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Priya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Priya sent me the contract yesterday",
+          "event_id": "relationship-0.8-043-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Sam today",
+          "event_id": "relationship-0.8-043-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Priya sent me the contract yesterday, and I forwarded it to Sam today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-044",
+      "category": "historical",
+      "split": "development",
+      "text": "Elena sent me the application yesterday, and I forwarded it to Omar today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Elena",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Elena sent me the application yesterday",
+          "event_id": "relationship-0.8-044-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Omar today",
+          "event_id": "relationship-0.8-044-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Elena sent me the application yesterday, and I forwarded it to Omar today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-045",
+      "category": "historical",
+      "split": "development",
+      "text": "Lina sent me the report yesterday, and I forwarded it to Rahul today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Lina",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Lina sent me the report yesterday",
+          "event_id": "relationship-0.8-045-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Rahul today",
+          "event_id": "relationship-0.8-045-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Lina sent me the report yesterday, and I forwarded it to Rahul today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-046",
+      "category": "historical",
+      "split": "development",
+      "text": "Maya sent me the design yesterday, and I forwarded it to Aisha today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Maya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Maya sent me the design yesterday",
+          "event_id": "relationship-0.8-046-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Aisha today",
+          "event_id": "relationship-0.8-046-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Maya sent me the design yesterday, and I forwarded it to Aisha today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-047",
+      "category": "historical",
+      "split": "development",
+      "text": "Daniel sent me the interview details yesterday, and I forwarded it to Noor today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Daniel",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Daniel sent me the interview details yesterday",
+          "event_id": "relationship-0.8-047-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Noor today",
+          "event_id": "relationship-0.8-047-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Daniel sent me the interview details yesterday, and I forwarded it to Noor today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-048",
+      "category": "historical",
+      "split": "heldout",
+      "text": "Priya sent me the contract yesterday, and I forwarded it to Sam today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Priya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Priya sent me the contract yesterday",
+          "event_id": "relationship-0.8-048-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Sam today",
+          "event_id": "relationship-0.8-048-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Priya sent me the contract yesterday, and I forwarded it to Sam today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-049",
+      "category": "historical",
+      "split": "heldout",
+      "text": "Elena sent me the application yesterday, and I forwarded it to Omar today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Elena",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Elena sent me the application yesterday",
+          "event_id": "relationship-0.8-049-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Omar today",
+          "event_id": "relationship-0.8-049-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Elena sent me the application yesterday, and I forwarded it to Omar today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-050",
+      "category": "historical",
+      "split": "heldout",
+      "text": "Lina sent me the report yesterday, and I forwarded it to Rahul today.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "Lina",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "Lina sent me the report yesterday",
+          "event_id": "relationship-0.8-050-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "completed",
+          "condition": null,
+          "source_span": "I forwarded it to Rahul today",
+          "event_id": "relationship-0.8-050-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "FOLLOWED_BY",
+          "evidence": "Lina sent me the report yesterday, and I forwarded it to Rahul today.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-051",
+      "category": "superseded",
+      "split": "development",
+      "text": "I planned to email Maya about the design, but correction: I will call Maya instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Maya about the design",
+          "event_id": "relationship-0.8-051-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Maya instead",
+          "event_id": "relationship-0.8-051-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Maya about the design, but correction: I will call Maya instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-052",
+      "category": "superseded",
+      "split": "development",
+      "text": "I planned to email Daniel about the interview details, but correction: I will call Daniel instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Daniel about the interview details",
+          "event_id": "relationship-0.8-052-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Daniel instead",
+          "event_id": "relationship-0.8-052-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Daniel about the interview details, but correction: I will call Daniel instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-053",
+      "category": "superseded",
+      "split": "development",
+      "text": "I planned to email Priya about the contract, but correction: I will call Priya instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Priya about the contract",
+          "event_id": "relationship-0.8-053-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Priya instead",
+          "event_id": "relationship-0.8-053-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Priya about the contract, but correction: I will call Priya instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-054",
+      "category": "superseded",
+      "split": "development",
+      "text": "I planned to email Elena about the application, but correction: I will call Elena instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Elena about the application",
+          "event_id": "relationship-0.8-054-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Elena instead",
+          "event_id": "relationship-0.8-054-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Elena about the application, but correction: I will call Elena instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-055",
+      "category": "superseded",
+      "split": "development",
+      "text": "I planned to email Lina about the report, but correction: I will call Lina instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Lina about the report",
+          "event_id": "relationship-0.8-055-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Lina instead",
+          "event_id": "relationship-0.8-055-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Lina about the report, but correction: I will call Lina instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-056",
+      "category": "superseded",
+      "split": "development",
+      "text": "I planned to email Maya about the design, but correction: I will call Maya instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Maya about the design",
+          "event_id": "relationship-0.8-056-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Maya instead",
+          "event_id": "relationship-0.8-056-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Maya about the design, but correction: I will call Maya instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-057",
+      "category": "superseded",
+      "split": "development",
+      "text": "I planned to email Daniel about the interview details, but correction: I will call Daniel instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Daniel about the interview details",
+          "event_id": "relationship-0.8-057-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Daniel instead",
+          "event_id": "relationship-0.8-057-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Daniel about the interview details, but correction: I will call Daniel instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-058",
+      "category": "superseded",
+      "split": "heldout",
+      "text": "I planned to email Priya about the contract, but correction: I will call Priya instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Priya about the contract",
+          "event_id": "relationship-0.8-058-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Priya instead",
+          "event_id": "relationship-0.8-058-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Priya about the contract, but correction: I will call Priya instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-059",
+      "category": "superseded",
+      "split": "heldout",
+      "text": "I planned to email Elena about the application, but correction: I will call Elena instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Elena about the application",
+          "event_id": "relationship-0.8-059-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Elena instead",
+          "event_id": "relationship-0.8-059-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Elena about the application, but correction: I will call Elena instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-060",
+      "category": "superseded",
+      "split": "heldout",
+      "text": "I planned to email Lina about the report, but correction: I will call Lina instead.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "cancelled",
+          "condition": null,
+          "source_span": "email Lina about the report",
+          "event_id": "relationship-0.8-060-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "I will call Lina instead",
+          "event_id": "relationship-0.8-060-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 1,
+          "target_index": 0,
+          "relationship": "SUPERSEDES",
+          "evidence": "I planned to email Lina about the report, but correction: I will call Lina instead.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-061",
+      "category": "negated",
+      "split": "development",
+      "text": "I do not need to contact Maya about the design, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-062",
+      "category": "negated",
+      "split": "development",
+      "text": "I do not need to contact Daniel about the interview details, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-063",
+      "category": "negated",
+      "split": "development",
+      "text": "I do not need to contact Priya about the contract, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-064",
+      "category": "negated",
+      "split": "development",
+      "text": "I do not need to contact Elena about the application, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-065",
+      "category": "negated",
+      "split": "development",
+      "text": "I do not need to contact Lina about the report, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-066",
+      "category": "negated",
+      "split": "development",
+      "text": "I do not need to contact Maya about the design, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-067",
+      "category": "negated",
+      "split": "development",
+      "text": "I do not need to contact Daniel about the interview details, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-068",
+      "category": "negated",
+      "split": "heldout",
+      "text": "I do not need to contact Priya about the contract, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-069",
+      "category": "negated",
+      "split": "heldout",
+      "text": "I do not need to contact Elena about the application, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-070",
+      "category": "negated",
+      "split": "heldout",
+      "text": "I do not need to contact Lina about the report, so no follow-up is required.",
+      "events": [],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-071",
+      "category": "ambiguous",
+      "split": "development",
+      "text": "I might contact Maya about the design, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Maya about the design",
+          "event_id": "relationship-0.8-071-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-072",
+      "category": "ambiguous",
+      "split": "development",
+      "text": "I might contact Daniel about the interview details, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Daniel about the interview details",
+          "event_id": "relationship-0.8-072-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-073",
+      "category": "ambiguous",
+      "split": "development",
+      "text": "I might contact Priya about the contract, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Priya about the contract",
+          "event_id": "relationship-0.8-073-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-074",
+      "category": "ambiguous",
+      "split": "development",
+      "text": "I might contact Elena about the application, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Elena about the application",
+          "event_id": "relationship-0.8-074-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-075",
+      "category": "ambiguous",
+      "split": "development",
+      "text": "I might contact Lina about the report, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Lina about the report",
+          "event_id": "relationship-0.8-075-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-076",
+      "category": "ambiguous",
+      "split": "development",
+      "text": "I might contact Maya about the design, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Maya about the design",
+          "event_id": "relationship-0.8-076-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-077",
+      "category": "ambiguous",
+      "split": "development",
+      "text": "I might contact Daniel about the interview details, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Daniel about the interview details",
+          "event_id": "relationship-0.8-077-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-078",
+      "category": "ambiguous",
+      "split": "heldout",
+      "text": "I might contact Priya about the contract, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Priya about the contract",
+          "event_id": "relationship-0.8-078-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-079",
+      "category": "ambiguous",
+      "split": "heldout",
+      "text": "I might contact Elena about the application, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Elena about the application",
+          "event_id": "relationship-0.8-079-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-080",
+      "category": "ambiguous",
+      "split": "heldout",
+      "text": "I might contact Lina about the report, but I have not decided.",
+      "events": [
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "might contact Lina about the report",
+          "event_id": "relationship-0.8-080-event-1"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-081",
+      "category": "multiple_targets",
+      "split": "development",
+      "text": "I will submit the design after either Maya or Aisha approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Maya approves the design",
+          "event_id": "relationship-0.8-081-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Aisha",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Aisha approves the design",
+          "event_id": "relationship-0.8-081-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Maya or Aisha approves it",
+          "source_span": "I will submit the design",
+          "event_id": "relationship-0.8-081-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the design after either Maya or Aisha approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the design after either Maya or Aisha approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-082",
+      "category": "multiple_targets",
+      "split": "development",
+      "text": "I will submit the interview details after either Daniel or Noor approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Daniel approves the interview details",
+          "event_id": "relationship-0.8-082-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Noor",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Noor approves the interview details",
+          "event_id": "relationship-0.8-082-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Daniel or Noor approves it",
+          "source_span": "I will submit the interview details",
+          "event_id": "relationship-0.8-082-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the interview details after either Daniel or Noor approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the interview details after either Daniel or Noor approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-083",
+      "category": "multiple_targets",
+      "split": "development",
+      "text": "I will submit the contract after either Priya or Sam approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Priya approves the contract",
+          "event_id": "relationship-0.8-083-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Sam",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Sam approves the contract",
+          "event_id": "relationship-0.8-083-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Priya or Sam approves it",
+          "source_span": "I will submit the contract",
+          "event_id": "relationship-0.8-083-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the contract after either Priya or Sam approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the contract after either Priya or Sam approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-084",
+      "category": "multiple_targets",
+      "split": "development",
+      "text": "I will submit the application after either Elena or Omar approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Elena approves the application",
+          "event_id": "relationship-0.8-084-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Omar",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Omar approves the application",
+          "event_id": "relationship-0.8-084-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Elena or Omar approves it",
+          "source_span": "I will submit the application",
+          "event_id": "relationship-0.8-084-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the application after either Elena or Omar approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the application after either Elena or Omar approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-085",
+      "category": "multiple_targets",
+      "split": "development",
+      "text": "I will submit the report after either Lina or Rahul approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Lina approves the report",
+          "event_id": "relationship-0.8-085-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Rahul",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Rahul approves the report",
+          "event_id": "relationship-0.8-085-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Lina or Rahul approves it",
+          "source_span": "I will submit the report",
+          "event_id": "relationship-0.8-085-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the report after either Lina or Rahul approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the report after either Lina or Rahul approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-086",
+      "category": "multiple_targets",
+      "split": "development",
+      "text": "I will submit the design after either Maya or Aisha approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Maya approves the design",
+          "event_id": "relationship-0.8-086-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Aisha",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Aisha approves the design",
+          "event_id": "relationship-0.8-086-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Maya or Aisha approves it",
+          "source_span": "I will submit the design",
+          "event_id": "relationship-0.8-086-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the design after either Maya or Aisha approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the design after either Maya or Aisha approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-087",
+      "category": "multiple_targets",
+      "split": "development",
+      "text": "I will submit the interview details after either Daniel or Noor approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Daniel approves the interview details",
+          "event_id": "relationship-0.8-087-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Noor",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Noor approves the interview details",
+          "event_id": "relationship-0.8-087-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Daniel or Noor approves it",
+          "source_span": "I will submit the interview details",
+          "event_id": "relationship-0.8-087-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the interview details after either Daniel or Noor approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the interview details after either Daniel or Noor approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-088",
+      "category": "multiple_targets",
+      "split": "heldout",
+      "text": "I will submit the contract after either Priya or Sam approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Priya approves the contract",
+          "event_id": "relationship-0.8-088-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Sam",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Sam approves the contract",
+          "event_id": "relationship-0.8-088-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Priya or Sam approves it",
+          "source_span": "I will submit the contract",
+          "event_id": "relationship-0.8-088-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the contract after either Priya or Sam approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the contract after either Priya or Sam approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-089",
+      "category": "multiple_targets",
+      "split": "heldout",
+      "text": "I will submit the application after either Elena or Omar approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Elena approves the application",
+          "event_id": "relationship-0.8-089-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Omar",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Omar approves the application",
+          "event_id": "relationship-0.8-089-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Elena or Omar approves it",
+          "source_span": "I will submit the application",
+          "event_id": "relationship-0.8-089-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the application after either Elena or Omar approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the application after either Elena or Omar approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-090",
+      "category": "multiple_targets",
+      "split": "heldout",
+      "text": "I will submit the report after either Lina or Rahul approves it.",
+      "events": [
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Lina approves the report",
+          "event_id": "relationship-0.8-090-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Rahul",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Rahul approves the report",
+          "event_id": "relationship-0.8-090-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after either Lina or Rahul approves it",
+          "source_span": "I will submit the report",
+          "event_id": "relationship-0.8-090-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 2,
+          "target_index": 0,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the report after either Lina or Rahul approves it.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 2,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will submit the report after either Lina or Rahul approves it.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-091",
+      "category": "circular_looking",
+      "split": "development",
+      "text": "I will send the design after Maya reviews it, while Maya will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Maya reviews it",
+          "source_span": "I will send the design",
+          "event_id": "relationship-0.8-091-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Maya reviews the design",
+          "event_id": "relationship-0.8-091-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Maya reviews the design",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-091-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the design after Maya reviews it, while Maya will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the design after Maya reviews it, while Maya will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-092",
+      "category": "circular_looking",
+      "split": "development",
+      "text": "I will send the interview details after Daniel reviews it, while Daniel will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Daniel reviews it",
+          "source_span": "I will send the interview details",
+          "event_id": "relationship-0.8-092-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Daniel reviews the interview details",
+          "event_id": "relationship-0.8-092-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Daniel reviews the interview details",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-092-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the interview details after Daniel reviews it, while Daniel will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the interview details after Daniel reviews it, while Daniel will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-093",
+      "category": "circular_looking",
+      "split": "development",
+      "text": "I will send the contract after Priya reviews it, while Priya will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Priya reviews it",
+          "source_span": "I will send the contract",
+          "event_id": "relationship-0.8-093-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Priya reviews the contract",
+          "event_id": "relationship-0.8-093-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Priya reviews the contract",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-093-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the contract after Priya reviews it, while Priya will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the contract after Priya reviews it, while Priya will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-094",
+      "category": "circular_looking",
+      "split": "development",
+      "text": "I will send the application after Elena reviews it, while Elena will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Elena reviews it",
+          "source_span": "I will send the application",
+          "event_id": "relationship-0.8-094-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Elena reviews the application",
+          "event_id": "relationship-0.8-094-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Elena reviews the application",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-094-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the application after Elena reviews it, while Elena will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the application after Elena reviews it, while Elena will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-095",
+      "category": "circular_looking",
+      "split": "development",
+      "text": "I will send the report after Lina reviews it, while Lina will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Lina reviews it",
+          "source_span": "I will send the report",
+          "event_id": "relationship-0.8-095-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Lina reviews the report",
+          "event_id": "relationship-0.8-095-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Lina reviews the report",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-095-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the report after Lina reviews it, while Lina will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the report after Lina reviews it, while Lina will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-096",
+      "category": "circular_looking",
+      "split": "development",
+      "text": "I will send the design after Maya reviews it, while Maya will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Maya reviews it",
+          "source_span": "I will send the design",
+          "event_id": "relationship-0.8-096-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Maya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Maya reviews the design",
+          "event_id": "relationship-0.8-096-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Maya reviews the design",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-096-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the design after Maya reviews it, while Maya will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the design after Maya reviews it, while Maya will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-097",
+      "category": "circular_looking",
+      "split": "development",
+      "text": "I will send the interview details after Daniel reviews it, while Daniel will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Daniel reviews it",
+          "source_span": "I will send the interview details",
+          "event_id": "relationship-0.8-097-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Daniel",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Daniel reviews the interview details",
+          "event_id": "relationship-0.8-097-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Daniel reviews the interview details",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-097-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the interview details after Daniel reviews it, while Daniel will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the interview details after Daniel reviews it, while Daniel will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-098",
+      "category": "circular_looking",
+      "split": "heldout",
+      "text": "I will send the contract after Priya reviews it, while Priya will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Priya reviews it",
+          "source_span": "I will send the contract",
+          "event_id": "relationship-0.8-098-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Priya",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Priya reviews the contract",
+          "event_id": "relationship-0.8-098-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Priya reviews the contract",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-098-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the contract after Priya reviews it, while Priya will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the contract after Priya reviews it, while Priya will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-099",
+      "category": "circular_looking",
+      "split": "heldout",
+      "text": "I will send the application after Elena reviews it, while Elena will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Elena reviews it",
+          "source_span": "I will send the application",
+          "event_id": "relationship-0.8-099-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Elena",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Elena reviews the application",
+          "event_id": "relationship-0.8-099-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Elena reviews the application",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-099-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the application after Elena reviews it, while Elena will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the application after Elena reviews it, while Elena will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-100",
+      "category": "circular_looking",
+      "split": "heldout",
+      "text": "I will send the report after Lina reviews it, while Lina will review it after I send a draft.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "after Lina reviews it",
+          "source_span": "I will send the report",
+          "event_id": "relationship-0.8-100-event-1"
+        },
+        {
+          "type": "waiting_for",
+          "actor": "Lina",
+          "responsibility": "OTHER_PARTY_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "Lina reviews the report",
+          "event_id": "relationship-0.8-100-event-2"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": "before Lina reviews the report",
+          "source_span": "I send a draft",
+          "event_id": "relationship-0.8-100-event-3"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the report after Lina reviews it, while Lina will review it after I send a draft.",
+          "conditional_trigger": null
+        },
+        {
+          "source_index": 1,
+          "target_index": 2,
+          "relationship": "DEPENDS_ON",
+          "evidence": "I will send the report after Lina reviews it, while Lina will review it after I send a draft.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-101",
+      "category": "chronological_unrelated",
+      "split": "development",
+      "text": "I will finish the design on Monday, and I will call Maya on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the design on Monday",
+          "event_id": "relationship-0.8-101-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Maya on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-101-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-102",
+      "category": "chronological_unrelated",
+      "split": "development",
+      "text": "I will finish the interview details on Monday, and I will call Daniel on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the interview details on Monday",
+          "event_id": "relationship-0.8-102-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Daniel on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-102-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-103",
+      "category": "chronological_unrelated",
+      "split": "development",
+      "text": "I will finish the contract on Monday, and I will call Priya on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the contract on Monday",
+          "event_id": "relationship-0.8-103-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Priya on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-103-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-104",
+      "category": "chronological_unrelated",
+      "split": "development",
+      "text": "I will finish the application on Monday, and I will call Elena on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the application on Monday",
+          "event_id": "relationship-0.8-104-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Elena on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-104-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-105",
+      "category": "chronological_unrelated",
+      "split": "development",
+      "text": "I will finish the report on Monday, and I will call Lina on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the report on Monday",
+          "event_id": "relationship-0.8-105-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Lina on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-105-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-106",
+      "category": "chronological_unrelated",
+      "split": "development",
+      "text": "I will finish the design on Monday, and I will call Maya on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the design on Monday",
+          "event_id": "relationship-0.8-106-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Maya on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-106-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-107",
+      "category": "chronological_unrelated",
+      "split": "development",
+      "text": "I will finish the interview details on Monday, and I will call Daniel on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the interview details on Monday",
+          "event_id": "relationship-0.8-107-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Daniel on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-107-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-108",
+      "category": "chronological_unrelated",
+      "split": "heldout",
+      "text": "I will finish the contract on Monday, and I will call Priya on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the contract on Monday",
+          "event_id": "relationship-0.8-108-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Priya on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-108-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-109",
+      "category": "chronological_unrelated",
+      "split": "heldout",
+      "text": "I will finish the application on Monday, and I will call Elena on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the application on Monday",
+          "event_id": "relationship-0.8-109-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Elena on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-109-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-110",
+      "category": "chronological_unrelated",
+      "split": "heldout",
+      "text": "I will finish the report on Monday, and I will call Lina on Tuesday about a separate matter.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "finish the report on Monday",
+          "event_id": "relationship-0.8-110-event-1"
+        },
+        {
+          "type": "follow_up",
+          "actor": "user",
+          "responsibility": "USER_CONTACTS",
+          "status": "active",
+          "condition": null,
+          "source_span": "call Lina on Tuesday about a separate matter",
+          "event_id": "relationship-0.8-110-event-2"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "relationship-0.8-111",
+      "category": "related_to",
+      "split": "development",
+      "text": "I will send the design to Maya, and the design is related to the Aisha review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the design to Maya",
+          "event_id": "relationship-0.8-111-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the design is related to the Aisha review",
+          "event_id": "relationship-0.8-111-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the design to Maya, and the design is related to the Aisha review.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-112",
+      "category": "related_to",
+      "split": "development",
+      "text": "I will send the interview details to Daniel, and the interview details is related to the Noor review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the interview details to Daniel",
+          "event_id": "relationship-0.8-112-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the interview details is related to the Noor review",
+          "event_id": "relationship-0.8-112-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the interview details to Daniel, and the interview details is related to the Noor review.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-113",
+      "category": "related_to",
+      "split": "development",
+      "text": "I will send the contract to Priya, and the contract is related to the Sam review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the contract to Priya",
+          "event_id": "relationship-0.8-113-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the contract is related to the Sam review",
+          "event_id": "relationship-0.8-113-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the contract to Priya, and the contract is related to the Sam review.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-114",
+      "category": "related_to",
+      "split": "development",
+      "text": "I will send the application to Elena, and the application is related to the Omar review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the application to Elena",
+          "event_id": "relationship-0.8-114-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the application is related to the Omar review",
+          "event_id": "relationship-0.8-114-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the application to Elena, and the application is related to the Omar review.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-115",
+      "category": "related_to",
+      "split": "development",
+      "text": "I will send the report to Lina, and the report is related to the Rahul review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the report to Lina",
+          "event_id": "relationship-0.8-115-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the report is related to the Rahul review",
+          "event_id": "relationship-0.8-115-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the report to Lina, and the report is related to the Rahul review.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-116",
+      "category": "related_to",
+      "split": "development",
+      "text": "I will send the design to Maya, and the design is related to the Aisha review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the design to Maya",
+          "event_id": "relationship-0.8-116-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the design is related to the Aisha review",
+          "event_id": "relationship-0.8-116-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the design to Maya, and the design is related to the Aisha review.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-117",
+      "category": "related_to",
+      "split": "development",
+      "text": "I will send the interview details to Daniel, and the interview details is related to the Noor review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the interview details to Daniel",
+          "event_id": "relationship-0.8-117-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the interview details is related to the Noor review",
+          "event_id": "relationship-0.8-117-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the interview details to Daniel, and the interview details is related to the Noor review.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-118",
+      "category": "related_to",
+      "split": "heldout",
+      "text": "I will send the contract to Priya, and the contract is related to the Sam review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the contract to Priya",
+          "event_id": "relationship-0.8-118-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the contract is related to the Sam review",
+          "event_id": "relationship-0.8-118-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the contract to Priya, and the contract is related to the Sam review.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-119",
+      "category": "related_to",
+      "split": "heldout",
+      "text": "I will send the application to Elena, and the application is related to the Omar review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the application to Elena",
+          "event_id": "relationship-0.8-119-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the application is related to the Omar review",
+          "event_id": "relationship-0.8-119-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the application to Elena, and the application is related to the Omar review.",
+          "conditional_trigger": null
+        }
+      ]
+    },
+    {
+      "id": "relationship-0.8-120",
+      "category": "related_to",
+      "split": "heldout",
+      "text": "I will send the report to Lina, and the report is related to the Rahul review.",
+      "events": [
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "USER_PERFORMS",
+          "status": "active",
+          "condition": null,
+          "source_span": "send the report to Lina",
+          "event_id": "relationship-0.8-120-event-1"
+        },
+        {
+          "type": "personal_task",
+          "actor": "user",
+          "responsibility": "UNKNOWN",
+          "status": "active",
+          "condition": null,
+          "source_span": "the report is related to the Rahul review",
+          "event_id": "relationship-0.8-120-event-2"
+        }
+      ],
+      "relationships": [
+        {
+          "source_index": 0,
+          "target_index": 1,
+          "relationship": "RELATED_TO",
+          "evidence": "I will send the report to Lina, and the report is related to the Rahul review.",
+          "conditional_trigger": null
+        }
+      ]
+    }
+  ]
+}

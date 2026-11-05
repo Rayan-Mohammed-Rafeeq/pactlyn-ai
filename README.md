@@ -10,11 +10,11 @@ reminder. It is designed to remain useful offline after local model setup.
 
 ## Current release
 
-The repository contains a working 0.3 local-first foundation: a PySide6 desktop shell,
-SQLite/SQLAlchemy persistence, Qdrant local-mode storage, a deterministic
+The repository contains a working 0.8 local-first foundation: a PySide6 desktop
+shell, SQLite/SQLAlchemy persistence, Qdrant local-mode storage, a deterministic
 capture baseline, Ollama and explicit OpenRouter gateways, a LangGraph capture
-workflow, reminder recovery, provenance-aware memory, Resend outbound queueing
-and inbound polling adapters. Desktop capture runs Ollama asynchronously,
+workflow, reminder recovery, provenance-aware memory, settings-driven Resend
+outbound email and inbound polling. Desktop capture runs Ollama asynchronously,
 supports editable multi-commitment review, and only offers a clearly labelled
 offline fallback after a model failure.
 
@@ -24,12 +24,13 @@ possible after a user approves an exact payload.
 ## Install and run on Linux
 
 Python 3.11+ is supported by the current environment; Python 3.12+ is
-recommended for new installations.
+recommended for new installations and required for the mypy check configuration.
 
 ```bash
 sudo apt install python3 python3-venv  # PySide6 wheels normally need no Qt apt packages
 curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync --extra dev
+uv run alembic upgrade head   # existing databases; safe/no-op on a fresh install
 uv run pactlyn
 ```
 
@@ -57,21 +58,34 @@ with `PACTLYN_OLLAMA_URL`, `PACTLYN_OLLAMA_MODEL` and
 failure and asks before using the conservative rule-based fallback; model output
 is never treated as confirmed fact automatically.
 
-## Resend setup
+## Email setup
 
-Resend is optional and online-only. Create an API key, verify a sending domain,
-and configure the receiving address/domain in Resend. Store the key in the OS
-credential manager instead of `.env` or SQLite:
+Resend is optional and online-only. Configure it entirely in **Settings →
+Email**:
 
-```python
-from pactlyn.security.credentials import CredentialStore
-CredentialStore().set("resend_api_key", "re_...")
-```
+* enter your personal identity, signature and preferred tone;
+* save a Resend API key (masked, stored only in the OS keyring, never in SQLite
+  or `.env`);
+* enter a sender address at a domain verified in Resend — a personal Gmail or
+  Outlook address cannot be the sender;
+* optionally enter a Resend receiving address, enable inbound synchronisation
+  and choose a polling interval;
+* choose whether new drafts reply to your personal address or the receiving
+  address;
+* click **Test connection** for a read-only credential/domain/inbox check.
 
-Set `PACTLYN_RESEND_FROM` to the verified sender. Pactlyn processes inbound
-messages addressed to the configured Resend receiving address/domain through
-polling; this is not unrestricted Gmail or Outlook inbox synchronisation.
-Email content necessarily passes through Resend during transmission.
+Pactlyn always requires approval of the exact payload before sending. **Send
+test email** is a separate explicit action with a full preview and confirmation;
+it uses the same draft/approval/queue path, and only that action is processed.
+Inbound mail is polled through Resend; this is not unrestricted Gmail or Outlook
+inbox synchronisation. Email content necessarily passes through Resend during
+transmission.
+
+Saved Settings → Email values take precedence over environment variables.
+`PACTLYN_RESEND_FROM`, `PACTLYN_RESEND_INBOUND_ADDRESS` and
+`PACTLYN_RESEND_API_KEY` are development/test/CI fallbacks only, used before the
+first save. See [Resend setup](docs/resend-setup.md) for details and
+troubleshooting.
 
 ## Offline behavior
 

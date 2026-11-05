@@ -21,11 +21,12 @@ async def run() -> dict[str, object]:
         ("C-improved-qwen2.5-7b-retrieved-context", "qwen2.5:7b", "improved", "existing_contacts"),
         ("alternative-qwen2.5-3b", "qwen2.5:3b", "improved", "none"),
     ]
+    experiments: dict[str, object] = {}
     results: dict[str, object] = {
         "dataset": "evaluation/datasets/commitments.json",
         "dataset_size": 150,
         "methodology": "Same checked-in dataset, fixed evaluation_now, schema and scoring implementation for all model runs.",
-        "experiments": {},
+        "experiments": experiments,
         "D-existing-deterministic-extractor": run_deterministic(),
     }
     original_model = os.environ.get("PACTLYN_OLLAMA_MODEL")
@@ -43,7 +44,7 @@ async def run() -> dict[str, object]:
             else:
                 report = outcome
             (REPORTS / f"{name}.json").write_text(json.dumps(report, indent=2) + "\n")
-            results["experiments"][name] = report
+            experiments[name] = report
     finally:
         for key, value in (
             ("PACTLYN_OLLAMA_MODEL", original_model),

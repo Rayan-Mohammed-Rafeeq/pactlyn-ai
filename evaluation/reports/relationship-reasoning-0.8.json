@@ -1,0 +1,3134 @@
+{
+  "dataset_version": "relationships-0.8-v1",
+  "dataset_sha256": "e9340d14af4da4a68a74248c9b50689e4fa1baadea04f1d38f1b2ba278c42927",
+  "configuration": {
+    "model": "qwen2.5:7b",
+    "prompt_version": "improved",
+    "relationship_prompt_version": "relationship-stage-v0.8"
+  },
+  "pilot": {
+    "sample_denominator": 12,
+    "selection": "one held-out item per category",
+    "not_generalisation_evidence": true
+  },
+  "reports": {
+    "A_single_pass": {
+      "configuration": "A_single_pass",
+      "sample_denominator": 12,
+      "model_call_count": 12,
+      "event_count_accuracy": 0.6667,
+      "relationship_edge_metrics": {
+        "tp": 1,
+        "fp": 6,
+        "fn": 11,
+        "denominator_predicted": 7,
+        "denominator_expected": 12,
+        "precision": 0.1429,
+        "recall": 0.0833,
+        "f1": 0.1053
+      },
+      "direction_accuracy": {
+        "correct": 3,
+        "denominator": 11,
+        "accuracy": 0.2727
+      },
+      "relationship_type_accuracy": {
+        "correct": 1,
+        "denominator": 3,
+        "accuracy": 0.3333
+      },
+      "exact_graph_accuracy": {
+        "correct": 4,
+        "denominator": 12,
+        "accuracy": 0.3333
+      },
+      "latency_ms_mean": 10879.13,
+      "latency_ms_p95": 11974.15,
+      "failures": [
+        {
+          "id": "relationship-0.8-108",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-098",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-018",
+          "expected": [
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ],
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-008",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-048",
+          "expected": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-088",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-058",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-028",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "event_count_correct": true
+        }
+      ]
+    },
+    "B_staged": {
+      "configuration": "B_staged",
+      "sample_denominator": 12,
+      "model_call_count": 24,
+      "event_count_accuracy": 0.6667,
+      "relationship_edge_metrics": {
+        "tp": 4,
+        "fp": 4,
+        "fn": 8,
+        "denominator_predicted": 8,
+        "denominator_expected": 12,
+        "precision": 0.5,
+        "recall": 0.3333,
+        "f1": 0.4
+      },
+      "direction_accuracy": {
+        "correct": 4,
+        "denominator": 11,
+        "accuracy": 0.3636
+      },
+      "relationship_type_accuracy": {
+        "correct": 4,
+        "denominator": 4,
+        "accuracy": 1.0
+      },
+      "exact_graph_accuracy": {
+        "correct": 4,
+        "denominator": 12,
+        "accuracy": 0.3333
+      },
+      "latency_ms_mean": 11296.95,
+      "latency_ms_p95": 15609.61,
+      "failures": [
+        {
+          "id": "relationship-0.8-108",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-098",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-018",
+          "expected": [
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ],
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-008",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-038",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              2,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-088",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-058",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-028",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        }
+      ]
+    },
+    "C_candidate_edges": {
+      "configuration": "C_candidate_edges",
+      "sample_denominator": 12,
+      "model_call_count": 24,
+      "event_count_accuracy": 0.3333,
+      "relationship_edge_metrics": {
+        "tp": 1,
+        "fp": 8,
+        "fn": 11,
+        "denominator_predicted": 9,
+        "denominator_expected": 12,
+        "precision": 0.1111,
+        "recall": 0.0833,
+        "f1": 0.0952
+      },
+      "direction_accuracy": {
+        "correct": 1,
+        "denominator": 11,
+        "accuracy": 0.0909
+      },
+      "relationship_type_accuracy": {
+        "correct": 1,
+        "denominator": 1,
+        "accuracy": 1.0
+      },
+      "exact_graph_accuracy": {
+        "correct": 2,
+        "denominator": 12,
+        "accuracy": 0.1667
+      },
+      "latency_ms_mean": 15740.54,
+      "latency_ms_p95": 45874.01,
+      "failures": [
+        {
+          "id": "relationship-0.8-108",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-098",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-018",
+          "expected": [
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ],
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-008",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-048",
+          "expected": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ],
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-038",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              0,
+              2,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              0,
+              "SUPERSEDES"
+            ],
+            [
+              2,
+              1,
+              "SUPERSEDES"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-088",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-118",
+          "expected": [
+            [
+              0,
+              1,
+              "RELATED_TO"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-058",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-028",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        }
+      ]
+    },
+    "D_staged_with_context": {
+      "configuration": "D_staged_with_context",
+      "sample_denominator": 12,
+      "model_call_count": 24,
+      "event_count_accuracy": 0.5,
+      "relationship_edge_metrics": {
+        "tp": 3,
+        "fp": 9,
+        "fn": 9,
+        "denominator_predicted": 12,
+        "denominator_expected": 12,
+        "precision": 0.25,
+        "recall": 0.25,
+        "f1": 0.25
+      },
+      "direction_accuracy": {
+        "correct": 3,
+        "denominator": 11,
+        "accuracy": 0.2727
+      },
+      "relationship_type_accuracy": {
+        "correct": 3,
+        "denominator": 3,
+        "accuracy": 1.0
+      },
+      "exact_graph_accuracy": {
+        "correct": 3,
+        "denominator": 12,
+        "accuracy": 0.25
+      },
+      "latency_ms_mean": 19979.54,
+      "latency_ms_p95": 25186.65,
+      "failures": [
+        {
+          "id": "relationship-0.8-098",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-018",
+          "expected": [
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ],
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "RESPONSE_REQUIRED_FROM"
+            ],
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-008",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-048",
+          "expected": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ],
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-038",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              0,
+              2,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              0,
+              "SUPERSEDES"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-088",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-118",
+          "expected": [
+            [
+              0,
+              1,
+              "RELATED_TO"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        },
+        {
+          "id": "relationship-0.8-058",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": true
+        },
+        {
+          "id": "relationship-0.8-028",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "event_count_correct": false
+        }
+      ]
+    }
+  },
+  "status": "complete",
+  "deterministic": {
+    "deterministic_single_pass": {
+      "configuration": "deterministic_single_pass",
+      "dataset_version": "relationships-0.8-v1",
+      "sample_count": 120,
+      "relationship_edge_metrics": {
+        "tp": 10,
+        "fp": 40,
+        "fn": 110,
+        "denominator_predicted": 50,
+        "denominator_expected": 120,
+        "precision": 0.2,
+        "recall": 0.0833,
+        "f1": 0.1176
+      },
+      "direction_accuracy": {
+        "correct": 10,
+        "denominator": 110,
+        "accuracy": 0.0909
+      },
+      "relationship_type_accuracy": {
+        "correct": 10,
+        "denominator": 10,
+        "accuracy": 1.0
+      },
+      "conditional_trigger_accuracy": {
+        "correct": 0,
+        "denominator": 20,
+        "accuracy": 0.0
+      },
+      "exact_graph_accuracy": {
+        "correct": 30,
+        "denominator": 120,
+        "accuracy": 0.25
+      },
+      "orphan_edge_rate": {
+        "invalid_edges": 0,
+        "predicted_edge_denominator": 50,
+        "rate": 0.0
+      },
+      "invalid_edge_rate": {
+        "rejected_edges": 0,
+        "predicted_edge_denominator": 50,
+        "rate": 0.0
+      },
+      "failures": [
+        {
+          "id": "relationship-0.8-001",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-002",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-003",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-004",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-005",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-006",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-007",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-008",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-009",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-010",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-011",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-012",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-013",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-014",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-015",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-016",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-017",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-018",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-019",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-020",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-021",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-022",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-023",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-024",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-025",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-026",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-027",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-028",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-029",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-030",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        }
+      ]
+    },
+    "deterministic_staged": {
+      "configuration": "deterministic_staged",
+      "dataset_version": "relationships-0.8-v1",
+      "sample_count": 120,
+      "relationship_edge_metrics": {
+        "tp": 10,
+        "fp": 40,
+        "fn": 110,
+        "denominator_predicted": 50,
+        "denominator_expected": 120,
+        "precision": 0.2,
+        "recall": 0.0833,
+        "f1": 0.1176
+      },
+      "direction_accuracy": {
+        "correct": 10,
+        "denominator": 110,
+        "accuracy": 0.0909
+      },
+      "relationship_type_accuracy": {
+        "correct": 10,
+        "denominator": 10,
+        "accuracy": 1.0
+      },
+      "conditional_trigger_accuracy": {
+        "correct": 0,
+        "denominator": 20,
+        "accuracy": 0.0
+      },
+      "exact_graph_accuracy": {
+        "correct": 30,
+        "denominator": 120,
+        "accuracy": 0.25
+      },
+      "orphan_edge_rate": {
+        "invalid_edges": 0,
+        "predicted_edge_denominator": 50,
+        "rate": 0.0
+      },
+      "invalid_edge_rate": {
+        "rejected_edges": 10,
+        "predicted_edge_denominator": 60,
+        "rate": 0.1667
+      },
+      "failures": [
+        {
+          "id": "relationship-0.8-001",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-002",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-003",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-004",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-005",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-006",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-007",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-008",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-009",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-010",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-011",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-012",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-013",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-014",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-015",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-016",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-017",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-018",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-019",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-020",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-021",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-022",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-023",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-024",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-025",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-026",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-027",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-028",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-029",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-030",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        }
+      ]
+    },
+    "heldout_deterministic_single_pass": {
+      "configuration": "heldout_deterministic_single_pass",
+      "dataset_version": "relationships-0.8-v1",
+      "sample_count": 36,
+      "relationship_edge_metrics": {
+        "tp": 3,
+        "fp": 12,
+        "fn": 33,
+        "denominator_predicted": 15,
+        "denominator_expected": 36,
+        "precision": 0.2,
+        "recall": 0.0833,
+        "f1": 0.1176
+      },
+      "direction_accuracy": {
+        "correct": 3,
+        "denominator": 33,
+        "accuracy": 0.0909
+      },
+      "relationship_type_accuracy": {
+        "correct": 3,
+        "denominator": 3,
+        "accuracy": 1.0
+      },
+      "conditional_trigger_accuracy": {
+        "correct": 0,
+        "denominator": 6,
+        "accuracy": 0.0
+      },
+      "exact_graph_accuracy": {
+        "correct": 9,
+        "denominator": 36,
+        "accuracy": 0.25
+      },
+      "orphan_edge_rate": {
+        "invalid_edges": 0,
+        "predicted_edge_denominator": 15,
+        "rate": 0.0
+      },
+      "invalid_edge_rate": {
+        "rejected_edges": 0,
+        "predicted_edge_denominator": 15,
+        "rate": 0.0
+      },
+      "failures": [
+        {
+          "id": "relationship-0.8-008",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-009",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-010",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-018",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-019",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-020",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-028",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-029",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-030",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-038",
+          "category": "multiple_contacts",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-039",
+          "category": "multiple_contacts",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-040",
+          "category": "multiple_contacts",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-058",
+          "category": "superseded",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-059",
+          "category": "superseded",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-060",
+          "category": "superseded",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-088",
+          "category": "multiple_targets",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-089",
+          "category": "multiple_targets",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-090",
+          "category": "multiple_targets",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-098",
+          "category": "circular_looking",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-099",
+          "category": "circular_looking",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-100",
+          "category": "circular_looking",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-108",
+          "category": "chronological_unrelated",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-109",
+          "category": "chronological_unrelated",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-110",
+          "category": "chronological_unrelated",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-118",
+          "category": "related_to",
+          "expected": [
+            [
+              0,
+              1,
+              "RELATED_TO"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-119",
+          "category": "related_to",
+          "expected": [
+            [
+              0,
+              1,
+              "RELATED_TO"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-120",
+          "category": "related_to",
+          "expected": [
+            [
+              0,
+              1,
+              "RELATED_TO"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        }
+      ]
+    },
+    "heldout_deterministic_staged": {
+      "configuration": "heldout_deterministic_staged",
+      "dataset_version": "relationships-0.8-v1",
+      "sample_count": 36,
+      "relationship_edge_metrics": {
+        "tp": 3,
+        "fp": 12,
+        "fn": 33,
+        "denominator_predicted": 15,
+        "denominator_expected": 36,
+        "precision": 0.2,
+        "recall": 0.0833,
+        "f1": 0.1176
+      },
+      "direction_accuracy": {
+        "correct": 3,
+        "denominator": 33,
+        "accuracy": 0.0909
+      },
+      "relationship_type_accuracy": {
+        "correct": 3,
+        "denominator": 3,
+        "accuracy": 1.0
+      },
+      "conditional_trigger_accuracy": {
+        "correct": 0,
+        "denominator": 6,
+        "accuracy": 0.0
+      },
+      "exact_graph_accuracy": {
+        "correct": 9,
+        "denominator": 36,
+        "accuracy": 0.25
+      },
+      "orphan_edge_rate": {
+        "invalid_edges": 0,
+        "predicted_edge_denominator": 15,
+        "rate": 0.0
+      },
+      "invalid_edge_rate": {
+        "rejected_edges": 3,
+        "predicted_edge_denominator": 18,
+        "rate": 0.1667
+      },
+      "failures": [
+        {
+          "id": "relationship-0.8-008",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-009",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-010",
+          "category": "dependency_chain",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": [
+            "Duplicate relationship removed: FOLLOWED_BY"
+          ]
+        },
+        {
+          "id": "relationship-0.8-018",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-019",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-020",
+          "category": "conditional_fallback",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              0,
+              "RESPONSE_REQUIRED_FROM"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-028",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-029",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-030",
+          "category": "waiting_for",
+          "expected": [
+            [
+              1,
+              0,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-038",
+          "category": "multiple_contacts",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-039",
+          "category": "multiple_contacts",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-040",
+          "category": "multiple_contacts",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-058",
+          "category": "superseded",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-059",
+          "category": "superseded",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-060",
+          "category": "superseded",
+          "expected": [
+            [
+              1,
+              0,
+              "SUPERSEDES"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-088",
+          "category": "multiple_targets",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-089",
+          "category": "multiple_targets",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-090",
+          "category": "multiple_targets",
+          "expected": [
+            [
+              2,
+              0,
+              "DEPENDS_ON"
+            ],
+            [
+              2,
+              1,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-098",
+          "category": "circular_looking",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-099",
+          "category": "circular_looking",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-100",
+          "category": "circular_looking",
+          "expected": [
+            [
+              0,
+              1,
+              "DEPENDS_ON"
+            ],
+            [
+              1,
+              2,
+              "DEPENDS_ON"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-108",
+          "category": "chronological_unrelated",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-109",
+          "category": "chronological_unrelated",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-110",
+          "category": "chronological_unrelated",
+          "expected": [],
+          "predicted": [
+            [
+              0,
+              1,
+              "FOLLOWED_BY"
+            ]
+          ],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-118",
+          "category": "related_to",
+          "expected": [
+            [
+              0,
+              1,
+              "RELATED_TO"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-119",
+          "category": "related_to",
+          "expected": [
+            [
+              0,
+              1,
+              "RELATED_TO"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        },
+        {
+          "id": "relationship-0.8-120",
+          "category": "related_to",
+          "expected": [
+            [
+              0,
+              1,
+              "RELATED_TO"
+            ]
+          ],
+          "predicted": [],
+          "warnings": []
+        }
+      ]
+    }
+  }
+}

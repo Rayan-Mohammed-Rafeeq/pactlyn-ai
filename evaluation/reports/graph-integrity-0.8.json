@@ -1,0 +1,14 @@
+{
+  "schema_version": "graph-integrity-0.8-v1",
+  "checks": {
+    "events_preserved_after_rejection": true,
+    "rejected_edges_explained": true,
+    "dependency_cycle_detected": true,
+    "valid_edge_evidence_persisted": true,
+    "rejected_edge_audit_persisted": true,
+    "edge_deletion_consistent": true
+  },
+  "passed": 6,
+  "denominator": 6,
+  "known_limitation": "Relationship review records preserve rejected indexes and evidence; unresolved endpoints remain nullable by design."
+}

@@ -8,8 +8,13 @@
    ```
 
 2. Run `uv sync --extra dev` from the repository.
-3. Start the application with `uv run pactlyn`.
-4. Install Ollama and pull a chat model plus `nomic-embed-text` if local AI is
+3. If you are upgrading an existing data directory, apply schema migrations with
+   `uv run alembic upgrade head` (a fresh database is created automatically).
+4. Start the application with `uv run pactlyn`.
+5. Install and unlock a keyring such as GNOME Keyring or KWallet. Settings →
+   Email stores the Resend API key there and refuses to save it in application
+   data if the keyring is unavailable.
+6. Install Ollama and pull a chat model plus `nomic-embed-text` if local AI is
    desired.
 
 To install a user-scoped desktop launcher from a source checkout:

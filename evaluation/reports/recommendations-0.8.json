@@ -1,0 +1,66 @@
+{
+  "schema_version": "recommendations-0.8-v1",
+  "scenario_denominator": 4,
+  "checks": {
+    "conditional_held_before_trigger": true,
+    "conditional_unblocked_after_response": true,
+    "supporting_evidence_present": true,
+    "trigger_fields_present": true,
+    "duplicate_recommendations_suppressed": true,
+    "superseded_commitment_not_recommended": true,
+    "no_external_action_taken": true
+  },
+  "recommendation_samples": [
+    {
+      "title": "Follow up: Wait for Rahul",
+      "explanation": "This waiting commitment reached its expected response time (3e94e027-f762-4f8f-ac3a-718769a88ff7).",
+      "commitment_ids": [
+        "3e94e027-f762-4f8f-ac3a-718769a88ff7"
+      ],
+      "supporting_evidence": "",
+      "triggering_condition": "due_at <= 2026-11-03T18:38:34.437461+00:00",
+      "needs_confirmation": true
+    },
+    {
+      "title": "Conditional follow-up held: Contact Rahul if needed",
+      "explanation": "Contact Rahul if needed should wait for a response on Wait for Rahul before it is recommended.",
+      "commitment_ids": [
+        "41042ecd-6578-44dc-bd5e-579062360621",
+        "3e94e027-f762-4f8f-ac3a-718769a88ff7"
+      ],
+      "supporting_evidence": "if Rahul does not reply",
+      "triggering_condition": "if Rahul does not reply",
+      "needs_confirmation": true
+    },
+    {
+      "title": "Condition not met: Contact Rahul if needed",
+      "explanation": "The condition for Contact Rahul if needed has not been satisfied yet.",
+      "commitment_ids": [
+        "41042ecd-6578-44dc-bd5e-579062360621",
+        "3e94e027-f762-4f8f-ac3a-718769a88ff7"
+      ],
+      "supporting_evidence": "",
+      "triggering_condition": "if Rahul does not reply",
+      "needs_confirmation": true
+    },
+    {
+      "title": "Now possible: Contact Rahul if needed",
+      "explanation": "The required response for Contact Rahul if needed was received from Wait for Rahul.",
+      "commitment_ids": [
+        "41042ecd-6578-44dc-bd5e-579062360621",
+        "3e94e027-f762-4f8f-ac3a-718769a88ff7"
+      ],
+      "supporting_evidence": "if Rahul does not reply",
+      "triggering_condition": "if Rahul does not reply",
+      "needs_confirmation": false
+    }
+  ],
+  "commitment_ids": {
+    "waiting": "3e94e027-f762-4f8f-ac3a-718769a88ff7",
+    "fallback": "41042ecd-6578-44dc-bd5e-579062360621",
+    "superseded": "250d456e-6694-4de8-b658-3e962d05081b",
+    "replacement": "dce44b8a-c1ca-4d52-b1a2-49fe12ad797b"
+  },
+  "passed": 7,
+  "denominator": 7
+}

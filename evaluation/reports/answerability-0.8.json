@@ -1,0 +1,408 @@
+{
+  "dataset_version": "rag-0.8-v1",
+  "source_report": "/run/media/rayan/Workspace1/01_Projects/pactlyn-ai/evaluation/reports/multihop-rag-0.8.json",
+  "sample_denominator": 60,
+  "answerable_denominator": 48,
+  "unanswerable_denominator": 12,
+  "answer_accuracy": {
+    "correct": 48,
+    "denominator": 48,
+    "accuracy": 1.0
+  },
+  "groundedness": {
+    "grounded_answers": 42,
+    "denominator": 48,
+    "rate": 0.875
+  },
+  "citation_precision": {
+    "correct": 43,
+    "denominator": 45,
+    "precision": 0.9556
+  },
+  "citation_recall": {
+    "covered_answerable": 42,
+    "denominator": 48,
+    "recall": 0.875
+  },
+  "abstention_precision": {
+    "correct": 12,
+    "denominator": 23,
+    "precision": 0.5217
+  },
+  "abstention_recall": {
+    "correct": 12,
+    "denominator": 12,
+    "recall": 1.0
+  },
+  "false_abstention_rate": {
+    "false_abstentions": 11,
+    "answerable_denominator": 48,
+    "rate": 0.2292
+  },
+  "unsupported_answer_rate": {
+    "unsupported": 0,
+    "answerable_denominator": 48,
+    "rate": 0.0
+  },
+  "answer_coverage_on_answerable": {
+    "covered": 37,
+    "denominator": 48,
+    "rate": 0.7708
+  },
+  "failures": [
+    {
+      "id": "rag-0.8-020",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 4,
+      "retrieved_relevant": 3,
+      "evidence_complete": false,
+      "citations": [
+        "r08-review",
+        "r08-rahul-budget",
+        "r08-rahul-proposal",
+        "r08-correction-new",
+        "r08-followup"
+      ],
+      "citation_correct": true,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "From the local records, the actionable item after receiving Rahul's proposal became reviewing it and forwarding it to the placement team [source:commitment/r08-review:chunk:0]. This was part of a series of commitments and communications involving Rahul's proposal and the budget approval [source:email/r08-rahul-budget:chunk:0], as well as the timeline for sending the revised proposal [source:commitment/r08-rahul-proposal:chunk:0]. The next step was to email Rahul about the proposal on Monday [source:commitment/r08-correction-new:chunk:0], and if the placement team did not acknowledge the proposal, following up was planned for Monday [source:commitment/r08-followup:chunk:0].",
+      "ids": [
+        "r08-review",
+        "r08-rahul-budget",
+        "r08-rahul-proposal",
+        "r08-history",
+        "r08-correction-old",
+        "r08-correction-new",
+        "r08-hr-reply",
+        "r08-placement",
+        "r08-followup",
+        "r08-no-bank"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-023",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 4,
+      "retrieved_relevant": 3,
+      "evidence_complete": false,
+      "citations": [
+        "r08-review",
+        "r08-history",
+        "r08-rahul-budget",
+        "r08-correction-new",
+        "r08-followup"
+      ],
+      "citation_correct": true,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "Based on the provided evidence, the records that became actionable after receiving Rahul's proposal are:\n\n1. [source:commitment/r08-review:chunk:0] - The reviewer will now forward the proposal to the placement team after receiving it.\n2. [source:email/r08-history:chunk:0] - An email was sent to Rahul about the proposal, which was previously cancelled.\n3. [source:email/r08-rahul-budget:chunk:0] - Rahul will send the revised proposal by Friday after the budget was approved.\n4. [source:commitment/r08-correction-new:chunk:0] - A new commitment was created to email Rahul about the proposal on Monday.\n5. [source:commitment/r08-followup:chunk:0] - The task to follow up on Monday if the placement team does not acknowledge the proposal is now actionable.\n\nThese commitments and actions were derived directly from the evidence provided, addressing every part of the question without inferring missing facts.",
+      "ids": [
+        "r08-review",
+        "r08-rahul-proposal",
+        "r08-correction-old",
+        "r08-history",
+        "r08-rahul-budget",
+        "r08-correction-new",
+        "r08-placement",
+        "r08-followup",
+        "r08-report",
+        "r08-professor"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-024",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 4,
+      "retrieved_relevant": 3,
+      "evidence_complete": false,
+      "citations": [
+        "r08-review"
+      ],
+      "citation_correct": true,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "After receiving Rahul's proposal, the actionable item became to review the proposal and forward it to the placement team [source:commitment/r08-review:chunk:0].",
+      "ids": [
+        "r08-review",
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-history",
+        "r08-correction-old",
+        "r08-correction-new",
+        "r08-placement",
+        "r08-followup",
+        "r08-approval",
+        "r08-report"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-026",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 2,
+      "retrieved_relevant": 1,
+      "evidence_complete": false,
+      "citations": [
+        "r08-no-bank"
+      ],
+      "citation_correct": false,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "From the local records:\n\n- Rahul sent the proposal yesterday.\n- The proposal was forwarded to the team today.\n- Rahul promised to send a revised proposal after the finance budget is approved, by Friday.\n- There is a commitment to email Rahul about the proposal on Monday, as the old one was cancelled.\n- The placement team has not acknowledged the proposal yet.\n- HR will send the interview schedule tomorrow.\n- If the placement team does not acknowledge the proposal, a follow-up will be done on Monday.\n\nNo local records mention contacting the bank regarding a mortgage [source:memory/r08-no-bank:chunk:0].",
+      "ids": [
+        "r08-history",
+        "r08-review",
+        "r08-rahul-budget",
+        "r08-correction-old",
+        "r08-rahul-proposal",
+        "r08-correction-new",
+        "r08-hr-reply",
+        "r08-placement",
+        "r08-followup",
+        "r08-no-bank"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-028",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 2,
+      "retrieved_relevant": 1,
+      "evidence_complete": false,
+      "citations": [],
+      "citation_correct": false,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "From the provided evidence, we can piece together what happened with Rahul's proposal:\n\nYesterday:\n- Rahul sent the proposal (source:email/r08-history:chunk:0).\n- The old commitment to call Rahul about the proposal was cancelled (source:commitment/r08-correction-old:chunk:0).\n- Professor Mehta confirmed approval of the design on Tuesday (source:email/r08-approval:chunk:0).\n\nToday:\n- The placement team has not acknowledged the proposal yet (source:email/r08-placement:chunk:0).\n- Professor Mehta's approval of the design confirms that the budget has been approved (source:email/r08-approval:chunk:0).\n- Rahul promised to send the revised proposal by Friday after finance approves the budget (source:commitment/r08-rahul-proposal:chunk:0).\n- A new commitment was made to email Rahul about the proposal on Monday (source:commitment/r08-correction-new:chunk:0).\n- If the placement team does not acknowledge the proposal, a follow-up will be conducted on Monday (source:commitment/r08-followup:chunk:0).\n\nThe sequence of events indicates that Rahul's proposal was sent yesterday, and with the confirmation of design approval from Professor Mehta, the next step is for Rahul to send a revised proposal, which is expected by Friday. Today, there has been no acknowledgment from the placement team, and actions are being planned to ensure the proposal receives the necessary attention.",
+      "ids": [
+        "r08-history",
+        "r08-review",
+        "r08-correction-old",
+        "r08-rahul-proposal",
+        "r08-correction-new",
+        "r08-rahul-budget",
+        "r08-placement",
+        "r08-followup",
+        "r08-approval",
+        "r08-report"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-029",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 2,
+      "retrieved_relevant": 1,
+      "evidence_complete": false,
+      "citations": [
+        "r08-history",
+        "r08-rahul-budget",
+        "r08-rahul-budget",
+        "r08-placement",
+        "r08-followup",
+        "r08-correction-new",
+        "r08-report",
+        "r08-hr-reply"
+      ],
+      "citation_correct": true,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "From the provided records, here is the summary of events related to Rahul's proposal:\n\n1. Rahul sent the proposal yesterday, and it was forwarded to the team today. [source:email/r08-history:chunk:0]\n2. Rahul promised to send the revised proposal after the finance approves the budget, by Friday. [source:email/r08-rahul-budget:chunk:0]\n3. The finance has approved the budget, so Rahul will send the revised proposal by Friday. [source:email/r08-rahul-budget:chunk:0]\n4. The proposal has not yet been acknowledged by the placement team. [source:email/r08-placement:chunk:0]\n5. If the placement team does not acknowledge the proposal, a follow-up is planned for Monday. [source:commitment/r08-followup:chunk:0]\n6. There is a new commitment to email Rahul about the proposal on Monday. [source:commitment/r08-correction-new:chunk:0]\n7. The final report is ready for submission once Professor Mehta approves the design. [source:commitment/r08-report:chunk:0]\n\nNo events have occurred with the HR or interview schedule. [source:email/r08-hr-reply:chunk:0]",
+      "ids": [
+        "r08-history",
+        "r08-review",
+        "r08-correction-old",
+        "r08-rahul-proposal",
+        "r08-correction-new",
+        "r08-rahul-budget",
+        "r08-placement",
+        "r08-followup",
+        "r08-report",
+        "r08-hr-reply"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-030",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 2,
+      "retrieved_relevant": 1,
+      "evidence_complete": false,
+      "citations": [
+        "r08-history",
+        "r08-placement",
+        "r08-rahul-budget",
+        "r08-correction-old",
+        "r08-followup",
+        "r08-approval",
+        "r08-report"
+      ],
+      "citation_correct": true,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "Yesterday, Rahul sent his proposal, which was then forwarded to the team today [source:email/r08-history:chunk:0]. The team has not acknowledged the proposal yet [source:email/r08-placement:chunk:0]. \n\nRahul promised to send a revised proposal after the finance approves the budget, which is expected by Friday [source:email/r08-rahul-budget:chunk:0].\n\nThere was a change in the commitment to Rahul: the old one to call him was cancelled, and a new commitment was made to email him about the proposal on Monday [source:commitment/r08-correction-old:chunk:0, source:commitment/r08-correction-new:chunk:0].\n\nIf the placement team does not acknowledge the proposal, a follow-up will be done on Monday [source:commitment/r08-followup:chunk:0].\n\nAdditionally, Professor Mehta confirmed the approval of the design on Tuesday [source:email/r08-approval:chunk:0], and the final report is ready for submission once this approval is given [source:commitment/r08-report:chunk:0].",
+      "ids": [
+        "r08-history",
+        "r08-review",
+        "r08-rahul-budget",
+        "r08-correction-old",
+        "r08-rahul-proposal",
+        "r08-correction-new",
+        "r08-placement",
+        "r08-followup",
+        "r08-approval",
+        "r08-report"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-039",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 2,
+      "retrieved_relevant": 1,
+      "evidence_complete": false,
+      "citations": [
+        "r08-unrelated"
+      ],
+      "citation_correct": true,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "The commitment to renew the gym membership in December is unrelated to the research report. This is explicitly stated in [source:commitment/r08-unrelated:chunk:0], which directly addresses the question by identifying this specific task as unrelated to the research report.",
+      "ids": [
+        "r08-unrelated",
+        "r08-office",
+        "r08-correction-new",
+        "r08-history",
+        "r08-review",
+        "r08-team",
+        "r08-rahul-proposal",
+        "r08-followup",
+        "r08-placement",
+        "r08-hr-reply"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-043",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 3,
+      "retrieved_relevant": 2,
+      "evidence_complete": false,
+      "citations": [
+        "r08-approval",
+        "r08-report",
+        "r08-review",
+        "r08-followup",
+        "r08-team",
+        "r08-rahul-budget",
+        "r08-hr-reply"
+      ],
+      "citation_correct": true,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "The design approval has arrived, as confirmed by Professor Mehta on Tuesday [source:email/r08-approval:chunk:0]. Next, the final report can be submitted, as this is dependent on Professor Mehta's approval of the design [source:commitment/r08-report:chunk:0]. Additionally, after receiving Rahul's proposal, the proposal will be reviewed and forwarded to the placement team [source:commitment/r08-review:chunk:0, source:email/r08-history:chunk:0]. If the placement team does not acknowledge the proposal, a follow-up is planned for Monday [source:commitment/r08-followup:chunk:0]. The project team, as the recipient for the forwarded proposal, is to be informed accordingly [source:contact_note/r08-team:chunk:0]. The finance department has approved the budget, and the proposer plans to send the revised proposal by Friday [source:email/r08-rahul-budget:chunk:0]. No interview schedule has been attached yet, as per the HR reply [source:email/r08-hr-reply:chunk:0].",
+      "ids": [
+        "r08-approval",
+        "r08-placement",
+        "r08-professor",
+        "r08-hr-reply",
+        "r08-report",
+        "r08-review",
+        "r08-history",
+        "r08-followup",
+        "r08-team",
+        "r08-rahul-budget"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-045",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 3,
+      "retrieved_relevant": 2,
+      "evidence_complete": false,
+      "citations": [
+        "r08-approval",
+        "r08-report",
+        "r08-professor",
+        "r08-history",
+        "r08-team",
+        "r08-placement",
+        "r08-followup",
+        "r08-rahul-budget",
+        "r08-rahul-proposal"
+      ],
+      "citation_correct": true,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "Based on the provided evidence:\n\n1. The design approval has arrived as Professor Mehta confirmed approval of the design on Tuesday [source:email/r08-approval:chunk:0].\n\n2. The next steps involve submitting the final report, which is ready to be submitted, once the design is approved [source:commitment/r08-report:chunk:0] and [source:commitment/r08-professor:chunk:0]. \n\n3. Regarding the proposal for placement, it has been forwarded to the placement team today [source:email/r08-history:chunk:0] and the project team is the recipient [source:contact_note/r08-team:chunk:0]. The placement team has not acknowledged the proposal yet [source:email/r08-placement:chunk:0].\n\n4. If the placement team does not acknowledge the proposal, a follow-up will be conducted on Monday [source:commitment/r08-followup:chunk:0].\n\n5. Additionally, Rahul has promised to send a revised proposal by Friday after the finance approves the budget [source:email/r08-rahul-budget:chunk:0] and [source:commitment/r08-rahul-proposal:chunk:0].",
+      "ids": [
+        "r08-approval",
+        "r08-placement",
+        "r08-report",
+        "r08-professor",
+        "r08-review",
+        "r08-history",
+        "r08-followup",
+        "r08-rahul-budget",
+        "r08-team",
+        "r08-rahul-proposal"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    },
+    {
+      "id": "rag-0.8-048",
+      "answerable": true,
+      "multi_hop": true,
+      "required_sources": 3,
+      "retrieved_relevant": 2,
+      "evidence_complete": false,
+      "citations": [
+        "r08-approval",
+        "r08-report",
+        "r08-professor"
+      ],
+      "citation_correct": true,
+      "answer_evaluated": true,
+      "answer_correct_proxy": true,
+      "answer": "Yes, the design approval has arrived as confirmed by Professor Mehta on Tuesday [source:email/r08-approval:chunk:0]. Next, the final report can be submitted as the report is now ready to submit once the design is approved [source:commitment/r08-report:chunk:0] and Professor Mehta must approve the design before the final report is submitted [source:commitment/r08-professor:chunk:0].",
+      "ids": [
+        "r08-approval",
+        "r08-report",
+        "r08-professor",
+        "r08-placement",
+        "r08-review",
+        "r08-rahul-budget",
+        "r08-history",
+        "r08-followup",
+        "r08-team",
+        "r08-rahul-proposal"
+      ],
+      "true_abstain": false,
+      "predicted_abstain": true
+    }
+  ]
+}

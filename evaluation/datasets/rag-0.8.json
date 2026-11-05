@@ -1,0 +1,818 @@
+{
+  "dataset_version": "rag-0.8-v1",
+  "authoring": "independently authored source records, multi-hop answers, relevance labels, and no-answer labels; no model predictions used",
+  "sources": [
+    {
+      "id": "r08-rahul-proposal",
+      "source_type": "commitment",
+      "content": "Rahul promised to send the revised proposal after finance approves the budget, by Friday."
+    },
+    {
+      "id": "r08-rahul-budget",
+      "source_type": "email",
+      "content": "From Rahul: finance approved the budget; I will send the revised proposal by Friday."
+    },
+    {
+      "id": "r08-review",
+      "source_type": "commitment",
+      "content": "After receiving Rahul's proposal, I will review it and forward it to the placement team."
+    },
+    {
+      "id": "r08-placement",
+      "source_type": "email",
+      "content": "The placement team has not acknowledged the proposal yet."
+    },
+    {
+      "id": "r08-followup",
+      "source_type": "commitment",
+      "content": "If the placement team does not acknowledge the proposal, I will follow up on Monday."
+    },
+    {
+      "id": "r08-professor",
+      "source_type": "commitment",
+      "content": "Professor Mehta must approve the design before I submit the final report."
+    },
+    {
+      "id": "r08-report",
+      "source_type": "commitment",
+      "content": "The final report is ready to submit once Professor Mehta approves the design."
+    },
+    {
+      "id": "r08-office",
+      "source_type": "contact_note",
+      "content": "The research office receives the final report after submission."
+    },
+    {
+      "id": "r08-hr-outbound",
+      "source_type": "email",
+      "content": "I emailed HR asking for the interview schedule on Monday."
+    },
+    {
+      "id": "r08-hr-reply",
+      "source_type": "email",
+      "content": "From HR: the interview schedule will be sent tomorrow; no schedule has been attached yet."
+    },
+    {
+      "id": "r08-hr-followup",
+      "source_type": "commitment",
+      "content": "I will contact HR next Friday if the interview schedule remains missing."
+    },
+    {
+      "id": "r08-history",
+      "source_type": "email",
+      "content": "Rahul sent the proposal yesterday and I forwarded it to the team today."
+    },
+    {
+      "id": "r08-correction-old",
+      "source_type": "commitment",
+      "content": "The old commitment to call Rahul about the proposal was cancelled."
+    },
+    {
+      "id": "r08-correction-new",
+      "source_type": "commitment",
+      "content": "The replacement commitment is to email Rahul about the proposal on Monday."
+    },
+    {
+      "id": "r08-unrelated",
+      "source_type": "commitment",
+      "content": "Renew the gym membership in December; it is unrelated to the research report."
+    },
+    {
+      "id": "r08-approval",
+      "source_type": "email",
+      "content": "Professor Mehta confirmed approval of the design on Tuesday."
+    },
+    {
+      "id": "r08-team",
+      "source_type": "contact_note",
+      "content": "The project team is the recipient for the forwarded proposal."
+    },
+    {
+      "id": "r08-no-bank",
+      "source_type": "memory",
+      "content": "There is no local record about contacting the bank regarding a mortgage."
+    }
+  ],
+  "queries": [
+    {
+      "id": "rag-0.8-001",
+      "category": "waiting_action",
+      "query": "What am I waiting for from Rahul, and what should I do if he does not respond?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-followup"
+      ],
+      "answer": "Wait for Rahul's proposal and follow up Monday if it does not arrive.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-002",
+      "category": "waiting_action",
+      "query": "From the local records, What am I waiting for from Rahul, and what should I do if he does not respond?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-followup"
+      ],
+      "answer": "Wait for Rahul's proposal and follow up Monday if it does not arrive.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-003",
+      "category": "waiting_action",
+      "query": "Which commitments and messages answer this: What am I waiting for from Rahul, and what should I do if he does not respond?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-followup"
+      ],
+      "answer": "Wait for Rahul's proposal and follow up Monday if it does not arrive.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-004",
+      "category": "waiting_action",
+      "query": "What evidence supports this question: What am I waiting for from Rahul, and what should I do if he does not respond?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-followup"
+      ],
+      "answer": "Wait for Rahul's proposal and follow up Monday if it does not arrive.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-005",
+      "category": "waiting_action",
+      "query": "Can you connect the records for this: What am I waiting for from Rahul, and what should I do if he does not respond?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-followup"
+      ],
+      "answer": "Wait for Rahul's proposal and follow up Monday if it does not arrive.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-006",
+      "category": "waiting_action",
+      "query": "Please answer only from local evidence: What am I waiting for from Rahul, and what should I do if he does not respond?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-followup"
+      ],
+      "answer": "Wait for Rahul's proposal and follow up Monday if it does not arrive.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-007",
+      "category": "approval_chain",
+      "query": "Which report submission depends on Professor Mehta's approval?",
+      "relevant": [
+        "r08-professor",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "The final report submission depends on Professor Mehta approving the design.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-008",
+      "category": "approval_chain",
+      "query": "From the local records, Which report submission depends on Professor Mehta's approval?",
+      "relevant": [
+        "r08-professor",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "The final report submission depends on Professor Mehta approving the design.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-009",
+      "category": "approval_chain",
+      "query": "Which commitments and messages answer this: Which report submission depends on Professor Mehta's approval?",
+      "relevant": [
+        "r08-professor",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "The final report submission depends on Professor Mehta approving the design.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-010",
+      "category": "approval_chain",
+      "query": "What evidence supports this question: Which report submission depends on Professor Mehta's approval?",
+      "relevant": [
+        "r08-professor",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "The final report submission depends on Professor Mehta approving the design.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-011",
+      "category": "approval_chain",
+      "query": "Can you connect the records for this: Which report submission depends on Professor Mehta's approval?",
+      "relevant": [
+        "r08-professor",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "The final report submission depends on Professor Mehta approving the design.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-012",
+      "category": "approval_chain",
+      "query": "Please answer only from local evidence: Which report submission depends on Professor Mehta's approval?",
+      "relevant": [
+        "r08-professor",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "The final report submission depends on Professor Mehta approving the design.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-013",
+      "category": "hr_status",
+      "query": "Has HR replied to my message about the interview schedule, and what remains to do?",
+      "relevant": [
+        "r08-hr-outbound",
+        "r08-hr-reply",
+        "r08-hr-followup"
+      ],
+      "answer": "HR replied that the schedule will be sent, and the follow-up remains conditional if it is still missing.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-014",
+      "category": "hr_status",
+      "query": "From the local records, Has HR replied to my message about the interview schedule, and what remains to do?",
+      "relevant": [
+        "r08-hr-outbound",
+        "r08-hr-reply",
+        "r08-hr-followup"
+      ],
+      "answer": "HR replied that the schedule will be sent, and the follow-up remains conditional if it is still missing.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-015",
+      "category": "hr_status",
+      "query": "Which commitments and messages answer this: Has HR replied to my message about the interview schedule, and what remains to do?",
+      "relevant": [
+        "r08-hr-outbound",
+        "r08-hr-reply",
+        "r08-hr-followup"
+      ],
+      "answer": "HR replied that the schedule will be sent, and the follow-up remains conditional if it is still missing.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-016",
+      "category": "hr_status",
+      "query": "What evidence supports this question: Has HR replied to my message about the interview schedule, and what remains to do?",
+      "relevant": [
+        "r08-hr-outbound",
+        "r08-hr-reply",
+        "r08-hr-followup"
+      ],
+      "answer": "HR replied that the schedule will be sent, and the follow-up remains conditional if it is still missing.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-017",
+      "category": "hr_status",
+      "query": "Can you connect the records for this: Has HR replied to my message about the interview schedule, and what remains to do?",
+      "relevant": [
+        "r08-hr-outbound",
+        "r08-hr-reply",
+        "r08-hr-followup"
+      ],
+      "answer": "HR replied that the schedule will be sent, and the follow-up remains conditional if it is still missing.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-018",
+      "category": "hr_status",
+      "query": "Please answer only from local evidence: Has HR replied to my message about the interview schedule, and what remains to do?",
+      "relevant": [
+        "r08-hr-outbound",
+        "r08-hr-reply",
+        "r08-hr-followup"
+      ],
+      "answer": "HR replied that the schedule will be sent, and the follow-up remains conditional if it is still missing.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-019",
+      "category": "actionable_proposal",
+      "query": "What became actionable after receiving Rahul's proposal?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-review",
+        "r08-team"
+      ],
+      "answer": "Review the proposal and forward it to the team.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-020",
+      "category": "actionable_proposal",
+      "query": "From the local records, What became actionable after receiving Rahul's proposal?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-review",
+        "r08-team"
+      ],
+      "answer": "Review the proposal and forward it to the team.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-021",
+      "category": "actionable_proposal",
+      "query": "Which commitments and messages answer this: What became actionable after receiving Rahul's proposal?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-review",
+        "r08-team"
+      ],
+      "answer": "Review the proposal and forward it to the team.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-022",
+      "category": "actionable_proposal",
+      "query": "What evidence supports this question: What became actionable after receiving Rahul's proposal?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-review",
+        "r08-team"
+      ],
+      "answer": "Review the proposal and forward it to the team.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-023",
+      "category": "actionable_proposal",
+      "query": "Can you connect the records for this: What became actionable after receiving Rahul's proposal?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-review",
+        "r08-team"
+      ],
+      "answer": "Review the proposal and forward it to the team.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-024",
+      "category": "actionable_proposal",
+      "query": "Please answer only from local evidence: What became actionable after receiving Rahul's proposal?",
+      "relevant": [
+        "r08-rahul-proposal",
+        "r08-rahul-budget",
+        "r08-review",
+        "r08-team"
+      ],
+      "answer": "Review the proposal and forward it to the team.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-025",
+      "category": "historical",
+      "query": "What happened with Rahul's proposal yesterday and today?",
+      "relevant": [
+        "r08-history",
+        "r08-team"
+      ],
+      "answer": "Rahul sent it yesterday and it was forwarded today.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-026",
+      "category": "historical",
+      "query": "From the local records, What happened with Rahul's proposal yesterday and today?",
+      "relevant": [
+        "r08-history",
+        "r08-team"
+      ],
+      "answer": "Rahul sent it yesterday and it was forwarded today.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-027",
+      "category": "historical",
+      "query": "Which commitments and messages answer this: What happened with Rahul's proposal yesterday and today?",
+      "relevant": [
+        "r08-history",
+        "r08-team"
+      ],
+      "answer": "Rahul sent it yesterday and it was forwarded today.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-028",
+      "category": "historical",
+      "query": "What evidence supports this question: What happened with Rahul's proposal yesterday and today?",
+      "relevant": [
+        "r08-history",
+        "r08-team"
+      ],
+      "answer": "Rahul sent it yesterday and it was forwarded today.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-029",
+      "category": "historical",
+      "query": "Can you connect the records for this: What happened with Rahul's proposal yesterday and today?",
+      "relevant": [
+        "r08-history",
+        "r08-team"
+      ],
+      "answer": "Rahul sent it yesterday and it was forwarded today.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-030",
+      "category": "historical",
+      "query": "Please answer only from local evidence: What happened with Rahul's proposal yesterday and today?",
+      "relevant": [
+        "r08-history",
+        "r08-team"
+      ],
+      "answer": "Rahul sent it yesterday and it was forwarded today.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-031",
+      "category": "supersession",
+      "query": "Which Rahul follow-up is current after the correction?",
+      "relevant": [
+        "r08-correction-old",
+        "r08-correction-new"
+      ],
+      "answer": "The current commitment is to email Rahul Monday; the call commitment was cancelled.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-032",
+      "category": "supersession",
+      "query": "From the local records, Which Rahul follow-up is current after the correction?",
+      "relevant": [
+        "r08-correction-old",
+        "r08-correction-new"
+      ],
+      "answer": "The current commitment is to email Rahul Monday; the call commitment was cancelled.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-033",
+      "category": "supersession",
+      "query": "Which commitments and messages answer this: Which Rahul follow-up is current after the correction?",
+      "relevant": [
+        "r08-correction-old",
+        "r08-correction-new"
+      ],
+      "answer": "The current commitment is to email Rahul Monday; the call commitment was cancelled.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-034",
+      "category": "supersession",
+      "query": "What evidence supports this question: Which Rahul follow-up is current after the correction?",
+      "relevant": [
+        "r08-correction-old",
+        "r08-correction-new"
+      ],
+      "answer": "The current commitment is to email Rahul Monday; the call commitment was cancelled.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-035",
+      "category": "supersession",
+      "query": "Can you connect the records for this: Which Rahul follow-up is current after the correction?",
+      "relevant": [
+        "r08-correction-old",
+        "r08-correction-new"
+      ],
+      "answer": "The current commitment is to email Rahul Monday; the call commitment was cancelled.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-036",
+      "category": "supersession",
+      "query": "Please answer only from local evidence: Which Rahul follow-up is current after the correction?",
+      "relevant": [
+        "r08-correction-old",
+        "r08-correction-new"
+      ],
+      "answer": "The current commitment is to email Rahul Monday; the call commitment was cancelled.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-037",
+      "category": "unrelated",
+      "query": "Which responsibility is unrelated to the research report?",
+      "relevant": [
+        "r08-unrelated",
+        "r08-professor"
+      ],
+      "answer": "Renewing the gym membership is unrelated.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-038",
+      "category": "unrelated",
+      "query": "From the local records, Which responsibility is unrelated to the research report?",
+      "relevant": [
+        "r08-unrelated",
+        "r08-professor"
+      ],
+      "answer": "Renewing the gym membership is unrelated.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-039",
+      "category": "unrelated",
+      "query": "Which commitments and messages answer this: Which responsibility is unrelated to the research report?",
+      "relevant": [
+        "r08-unrelated",
+        "r08-professor"
+      ],
+      "answer": "Renewing the gym membership is unrelated.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-040",
+      "category": "unrelated",
+      "query": "What evidence supports this question: Which responsibility is unrelated to the research report?",
+      "relevant": [
+        "r08-unrelated",
+        "r08-professor"
+      ],
+      "answer": "Renewing the gym membership is unrelated.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-041",
+      "category": "unrelated",
+      "query": "Can you connect the records for this: Which responsibility is unrelated to the research report?",
+      "relevant": [
+        "r08-unrelated",
+        "r08-professor"
+      ],
+      "answer": "Renewing the gym membership is unrelated.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-042",
+      "category": "unrelated",
+      "query": "Please answer only from local evidence: Which responsibility is unrelated to the research report?",
+      "relevant": [
+        "r08-unrelated",
+        "r08-professor"
+      ],
+      "answer": "Renewing the gym membership is unrelated.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-043",
+      "category": "approval_state",
+      "query": "Has the design approval arrived, and what can happen next?",
+      "relevant": [
+        "r08-approval",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "Professor Mehta approved the design, so the final report can be submitted and then sent to the research office.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-044",
+      "category": "approval_state",
+      "query": "From the local records, Has the design approval arrived, and what can happen next?",
+      "relevant": [
+        "r08-approval",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "Professor Mehta approved the design, so the final report can be submitted and then sent to the research office.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-045",
+      "category": "approval_state",
+      "query": "Which commitments and messages answer this: Has the design approval arrived, and what can happen next?",
+      "relevant": [
+        "r08-approval",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "Professor Mehta approved the design, so the final report can be submitted and then sent to the research office.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-046",
+      "category": "approval_state",
+      "query": "What evidence supports this question: Has the design approval arrived, and what can happen next?",
+      "relevant": [
+        "r08-approval",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "Professor Mehta approved the design, so the final report can be submitted and then sent to the research office.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-047",
+      "category": "approval_state",
+      "query": "Can you connect the records for this: Has the design approval arrived, and what can happen next?",
+      "relevant": [
+        "r08-approval",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "Professor Mehta approved the design, so the final report can be submitted and then sent to the research office.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-048",
+      "category": "approval_state",
+      "query": "Please answer only from local evidence: Has the design approval arrived, and what can happen next?",
+      "relevant": [
+        "r08-approval",
+        "r08-report",
+        "r08-office"
+      ],
+      "answer": "Professor Mehta approved the design, so the final report can be submitted and then sent to the research office.",
+      "answerable": true,
+      "multi_hop": true
+    },
+    {
+      "id": "rag-0.8-049",
+      "category": "no_answer",
+      "query": "Did I contact the bank about the mortgage?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-050",
+      "category": "no_answer",
+      "query": "From the local records, Did I contact the bank about the mortgage?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-051",
+      "category": "no_answer",
+      "query": "Which commitments and messages answer this: Did I contact the bank about the mortgage?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-052",
+      "category": "no_answer",
+      "query": "What evidence supports this question: Did I contact the bank about the mortgage?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-053",
+      "category": "no_answer",
+      "query": "Can you connect the records for this: Did I contact the bank about the mortgage?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-054",
+      "category": "no_answer",
+      "query": "Please answer only from local evidence: Did I contact the bank about the mortgage?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-055",
+      "category": "no_answer_other",
+      "query": "What did Maya promise about the conference venue?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-056",
+      "category": "no_answer_other",
+      "query": "From the local records, What did Maya promise about the conference venue?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-057",
+      "category": "no_answer_other",
+      "query": "Which commitments and messages answer this: What did Maya promise about the conference venue?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-058",
+      "category": "no_answer_other",
+      "query": "What evidence supports this question: What did Maya promise about the conference venue?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-059",
+      "category": "no_answer_other",
+      "query": "Can you connect the records for this: What did Maya promise about the conference venue?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    },
+    {
+      "id": "rag-0.8-060",
+      "category": "no_answer_other",
+      "query": "Please answer only from local evidence: What did Maya promise about the conference venue?",
+      "relevant": [],
+      "answer": "There is not enough local evidence to determine that.",
+      "answerable": false,
+      "multi_hop": false
+    }
+  ]
+}
