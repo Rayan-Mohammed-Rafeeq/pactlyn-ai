@@ -53,6 +53,8 @@ from pactlyn.email.addresses import email_address, is_valid_email_address
 from pactlyn.email.composer import DraftDefaults
 from pactlyn.email.inbound_sync import InboundEmailSync
 from pactlyn.platform.linux.autostart import LinuxAutostart
+from pactlyn.documents.indexing import DocumentIndexer
+from pactlyn.rag.document_rag import DocumentGroundedAnswer, DocumentRAGService
 from pactlyn.rag.retrieval import HybridRetriever
 from pactlyn.rag.service import RAGService
 from pactlyn.storage.backup import BackupError, BackupService
@@ -65,6 +67,7 @@ from pactlyn.storage.models import (
     EmailThread,
     MemoryKind,
 )
+from pactlyn.ui.documents_page import DocumentsPage
 from pactlyn.ui.email_settings import EmailSettingsPage
 from pactlyn.ui.model_settings import AIModelsSettingsPage
 from pactlyn.ui.theme import (
@@ -197,6 +200,46 @@ class AssistantWorker(QThread):
             async def answer() -> object:
                 retriever = HybridRetriever(session, self.container.vectors, self.container.embedder)
                 return await RAGService(session, self.container.llm, retriever).answer(self.question)
+
+            self.finished.emit(asyncio.run(answer()))
+        except Exception as exc:
+            session.rollback()
+            self.failed.emit(str(exc))
+        finally:
+            session.close()
+
+
+class DocumentAssistantWorker(QThread):
+    """Worker for document-focused queries with cited answers."""
+    finished = Signal(object)
+    failed = Signal(str)
+
+    def __init__(self, container: AppContainer, question: str):
+        super().__init__()
+        self.container = container
+        self.question = question
+
+    def run(self) -> None:
+        session = self.container.session()
+        try:
+            async def answer() -> DocumentGroundedAnswer:
+                # Build document RAG service with commitment fallback
+                indexer = DocumentIndexer(
+                    self.container.session_factory,
+                    self.container.vectors,
+                    self.container.embedder,
+                )
+                retriever = HybridRetriever(session, self.container.vectors, self.container.embedder)
+                commitment_rag = RAGService(session, self.container.llm, retriever)
+                
+                doc_rag = DocumentRAGService(
+                    session,
+                    self.container.llm,
+                    indexer,
+                    commitment_rag=commitment_rag,
+                )
+                
+                return await doc_rag.answer(self.question)
 
             self.finished.emit(asyncio.run(answer()))
         except Exception as exc:
@@ -827,8 +870,9 @@ class PactlynWindow(QMainWindow):
         layout.addWidget(self._nav_button("✉   Email Centre", 3))
         layout.addWidget(self._nav_button("▣   Memory", 4))
         layout.addWidget(self._nav_button("✦   Assistant", 5))
+        layout.addWidget(self._nav_button("📄   Documents", 6))
         layout.addStretch()
-        layout.addWidget(self._nav_button("⚙   Settings", 6))
+        layout.addWidget(self._nav_button("⚙   Settings", 7))
         return sidebar
 
     def _nav_button(self, label: str, index: int) -> QPushButton:
@@ -846,6 +890,9 @@ class PactlynWindow(QMainWindow):
         self.pages.addWidget(self._email_page())
         self.pages.addWidget(self._memory_page())
         self.pages.addWidget(self._assistant_page())
+        # Initialize Documents page with AppContainer
+        self.documents_page = DocumentsPage(self.container)
+        self.pages.addWidget(self.documents_page)
         self.pages.addWidget(self._settings_page())
         self._navigate(0)
 
@@ -1085,9 +1132,24 @@ class PactlynWindow(QMainWindow):
         layout = self._header("Assistant", "Ask about what is due, waiting, or worth doing next.")
         layout.setContentsMargins(28, 24, 28, 24)
         layout.setSpacing(14)
+        
+        # Mode selector
+        mode_layout = QHBoxLayout()
+        mode_layout.addWidget(QLabel("Search mode:"))
+        self.assistant_mode_combo = QComboBox()
+        self.assistant_mode_combo.addItem("📝 Commitments & Records", "commitments")
+        self.assistant_mode_combo.addItem("📄 Uploaded Documents", "documents")
+        self.assistant_mode_combo.addItem("🔍 Both (Hybrid)", "hybrid")
+        self.assistant_mode_combo.setCurrentIndex(0)
+        mode_layout.addWidget(self.assistant_mode_combo)
+        mode_layout.addStretch()
+        layout.addLayout(mode_layout)
+        
         self.assistant_input = QTextEdit()
         self.assistant_input.setPlaceholderText("Capture a commitment or ask: What am I waiting for?")
+        self.assistant_input.setMaximumHeight(100)
         layout.addWidget(self.assistant_input)
+        
         controls = QHBoxLayout()
         send = QPushButton("Remember this")
         send.setObjectName("primary")
@@ -1099,10 +1161,13 @@ class PactlynWindow(QMainWindow):
         controls.addWidget(ask)
         controls.addStretch()
         layout.addLayout(controls)
+        
         self.assistant_output = QTextEdit()
         self.assistant_output.setReadOnly(True)
         self.assistant_output.setPlaceholderText("Grounded answers cite local source records here.")
+        self.assistant_output.anchorClicked.connect(self._assistant_citation_clicked)
         layout.addWidget(self.assistant_output, 1)
+        
         page.setLayout(layout)
         return page
 
@@ -1215,8 +1280,10 @@ class PactlynWindow(QMainWindow):
         self.pages.setCurrentIndex(index)
         for current, button in enumerate(self.nav):
             button.setChecked(current == index)
-        if index == 6 and hasattr(self, "email_settings_page"):
+        if index == 7 and hasattr(self, "email_settings_page"):
             self.email_settings_page.refresh()
+        if index == 6 and hasattr(self, "documents_page"):
+            self.documents_page.refresh_list()
         self._refresh()
 
     def _capture(self, initial: str = "") -> None:
@@ -1287,12 +1354,25 @@ class PactlynWindow(QMainWindow):
         question = self.assistant_input.toPlainText().strip()
         if not question or (self.assistant_worker and self.assistant_worker.isRunning()):
             return
-        self.assistant_output.setPlainText("Searching local memory and commitments…")
-        worker = AssistantWorker(self.container, question)
-        worker.finished.connect(lambda answer: self._assistant_finished(worker, answer))
-        worker.failed.connect(lambda error: self._assistant_failed(worker, error))
-        self.assistant_worker = worker
-        worker.start()
+        
+        mode = self.assistant_mode_combo.currentData()
+        
+        if mode == "documents" or mode == "hybrid":
+            # Use document RAG
+            self.assistant_output.setPlainText("Searching local documents and memory…")
+            worker = DocumentAssistantWorker(self.container, question)
+            worker.finished.connect(lambda answer: self._document_assistant_finished(worker, answer))
+            worker.failed.connect(lambda error: self._assistant_failed(worker, error))
+            self.assistant_worker = worker
+            worker.start()
+        else:
+            # Use original commitment RAG
+            self.assistant_output.setPlainText("Searching local memory and commitments…")
+            worker = AssistantWorker(self.container, question)
+            worker.finished.connect(lambda answer: self._assistant_finished(worker, answer))
+            worker.failed.connect(lambda error: self._assistant_failed(worker, error))
+            self.assistant_worker = worker
+            worker.start()
 
     def _assistant_finished(self, worker: AssistantWorker, answer: Any) -> None:
         evidence = "\n\nSources:\n" + "\n".join(
@@ -1308,6 +1388,106 @@ class PactlynWindow(QMainWindow):
         worker.deleteLater()
         if self.assistant_worker is worker:
             self.assistant_worker = None
+
+    def _document_assistant_finished(self, worker: DocumentAssistantWorker, answer: DocumentGroundedAnswer) -> None:
+        """Handle document RAG answer with clickable citations."""
+        # Format answer with HTML for clickable citations
+        answer_html = self._format_document_answer(answer)
+        self.assistant_output.setHtml(answer_html)
+        
+        # Store citations for click handler
+        self._current_citations = {
+            f"citation_{i}": citation
+            for i, citation in enumerate(answer.citations)
+        }
+        
+        worker.deleteLater()
+        if self.assistant_worker is worker:
+            self.assistant_worker = None
+
+    def _format_document_answer(self, answer: DocumentGroundedAnswer) -> str:
+        """Format document answer with HTML citations."""
+        from html import escape
+        
+        # Build HTML for the answer
+        html_parts = ["<div style='font-family: system-ui; line-height: 1.6;'>"]
+        
+        # Add the answer text (escape HTML but preserve citation markers)
+        answer_text = answer.answer
+        
+        # Replace [doc1] style markers with clickable HTML links
+        import re
+        def replace_citation(match: re.Match) -> str:
+            doc_num = int(match.group(1))
+            if doc_num <= len(answer.citations):
+                citation_key = f"citation_{doc_num - 1}"
+                return f'<a href="pactlyn://{citation_key}" style="color: #2563eb; text-decoration: none; font-weight: 500;">[doc{doc_num}]</a>'
+            return match.group(0)
+        
+        answer_html = re.sub(r'\[doc(\d+)\]', replace_citation, escape(answer_text))
+        html_parts.append(f"<p>{answer_html}</p>")
+        
+        # Add citations section
+        if answer.citations:
+            html_parts.append("<hr style='margin: 16px 0; border: none; border-top: 1px solid #e5e7eb;'>")
+            html_parts.append("<p style='font-weight: 600; margin-bottom: 8px;'>📄 Document Sources:</p>")
+            html_parts.append("<ul style='margin: 0; padding-left: 20px;'>")
+            
+            for i, citation in enumerate(answer.citations, start=1):
+                page_info = f" (page {citation.page_number})" if citation.page_number else ""
+                section_info = f" - {citation.section_title}" if citation.section_title else ""
+                citation_key = f"citation_{i - 1}"
+                
+                citation_html = (
+                    f'<li style="margin-bottom: 6px;">'
+                    f'<a href="pactlyn://{citation_key}" style="color: #2563eb; text-decoration: none;">'
+                    f'[doc{i}] {escape(citation.document_name)}{page_info}{section_info}'
+                    f'</a>'
+                    f'</li>'
+                )
+                html_parts.append(citation_html)
+            
+            html_parts.append("</ul>")
+        
+        # Add commitment sources if present
+        if answer.commitment_evidence:
+            html_parts.append("<hr style='margin: 16px 0; border: none; border-top: 1px solid #e5e7eb;'>")
+            html_parts.append("<p style='font-weight: 600; margin-bottom: 8px;'>📝 Commitment Context:</p>")
+            html_parts.append("<ul style='margin: 0; padding-left: 20px;'>")
+            
+            for item in answer.commitment_evidence:
+                html_parts.append(
+                    f'<li style="margin-bottom: 6px; color: #6b7280;">'
+                    f'{escape(item.source_type)}/{escape(item.source_id)}'
+                    f'</li>'
+                )
+            
+            html_parts.append("</ul>")
+        
+        html_parts.append("</div>")
+        return "".join(html_parts)
+
+    def _assistant_citation_clicked(self, url: Any) -> None:
+        """Handle clicks on citation links - open document to specific page."""
+        from PySide6.QtCore import QUrl
+        
+        url_obj = QUrl(url) if not isinstance(url, QUrl) else url
+        citation_key = url_obj.path()
+        
+        if citation_key not in getattr(self, '_current_citations', {}):
+            return
+        
+        citation = self._current_citations[citation_key]
+        
+        # Navigate to documents page
+        self.main_tabs.setCurrentIndex(6)  # Documents tab
+        
+        # Open the document in the viewer
+        if hasattr(self, 'documents_page'):
+            self.documents_page.open_document_by_id(
+                citation.document_id,
+                page_number=citation.page_number,
+            )
 
     def _capture_finished(self, text: str, result: CaptureResult) -> None:
         if not result.candidates:

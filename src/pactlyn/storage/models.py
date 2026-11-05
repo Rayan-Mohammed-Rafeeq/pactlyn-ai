@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import enum
+import sys
 import uuid
 from datetime import datetime
 
@@ -25,7 +26,16 @@ def new_id() -> str:
     return str(uuid.uuid4())
 
 
-class CommitmentType(enum.StrEnum):
+# Python 3.10 compatibility: StrEnum added in 3.11
+if sys.version_info >= (3, 11):
+    from enum import StrEnum
+else:
+    class StrEnum(str, enum.Enum):
+        """Compatibility StrEnum for Python 3.10"""
+        pass
+
+
+class CommitmentType(StrEnum):
     PERSONAL_TASK = "personal_task"
     WAITING_FOR = "waiting_for"
     FOLLOW_UP = "follow_up"
@@ -33,7 +43,7 @@ class CommitmentType(enum.StrEnum):
     EVENT = "event"
 
 
-class CommitmentRelationshipType(enum.StrEnum):
+class CommitmentRelationshipType(StrEnum):
     BLOCKED_BY = "BLOCKED_BY"
     DEPENDS_ON = "DEPENDS_ON"
     FOLLOWED_BY = "FOLLOWED_BY"
@@ -42,7 +52,7 @@ class CommitmentRelationshipType(enum.StrEnum):
     SUPERSEDES = "SUPERSEDES"
 
 
-class CommitmentStatus(enum.StrEnum):
+class CommitmentStatus(StrEnum):
     DRAFT = "draft"
     NEEDS_CONFIRMATION = "needs_confirmation"
     ACTIVE = "active"
@@ -55,7 +65,7 @@ class CommitmentStatus(enum.StrEnum):
     CANCELLED = "cancelled"
 
 
-class EmailState(enum.StrEnum):
+class EmailState(StrEnum):
     DRAFT = "draft"
     APPROVED = "approved"
     QUEUED = "queued"
@@ -67,7 +77,7 @@ class EmailState(enum.StrEnum):
     UNKNOWN = "unknown"
 
 
-class MemoryKind(enum.StrEnum):
+class MemoryKind(StrEnum):
     EPISODIC = "episodic"
     SEMANTIC = "semantic"
     PROCEDURAL = "procedural"
@@ -443,7 +453,7 @@ class Document(Base):
     content_hash: Mapped[str] = mapped_column(String, unique=True, index=True)
     mime_type: Mapped[str]
     size_bytes: Mapped[int]
-    status: Mapped[str]  # uploaded, processing, indexed, failed
+    status: Mapped[str]  # uploaded, processing, extracted, indexed, failed
     page_count: Mapped[int | None]
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     processed_at: Mapped[datetime | None]
@@ -475,3 +485,71 @@ class DocumentChunk(Base):
 
     # Relationships
     document: Mapped["Document"] = relationship(back_populates="chunks")
+
+
+class DocumentFigure(Base):
+    """Extracted figure/image from a document with AI-generated description."""
+
+    __tablename__ = "document_figures"
+    
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=new_id)
+    document_id: Mapped[str] = mapped_column(ForeignKey("documents.id", ondelete="CASCADE"), index=True)
+    page_number: Mapped[int]  # 1-indexed
+    image_index: Mapped[int]  # Index on this page
+    image_hash: Mapped[str] = mapped_column(String, index=True)  # SHA256 for deduplication
+    
+    # Bounding box in PDF points
+    bbox_x0: Mapped[float]
+    bbox_y0: Mapped[float]
+    bbox_x1: Mapped[float]
+    bbox_y1: Mapped[float]
+    
+    # Image metadata
+    width: Mapped[int]  # Original width in pixels
+    height: Mapped[int]  # Original height in pixels
+    format: Mapped[str | None]  # JPEG, PNG, etc.
+    colorspace: Mapped[str | None]
+    
+    # Storage
+    local_path: Mapped[str | None]  # Path to stored image file
+    
+    # Context
+    caption: Mapped[str | None]
+    nearby_text: Mapped[str | None]  # JSON: nearby headings/paragraphs
+    
+    # AI-generated intelligence
+    description: Mapped[str | None]  # Vision model description
+    figure_type: Mapped[str | None]  # chart, diagram, photo, screenshot, table
+    vision_model: Mapped[str | None]  # Model used for description
+    vision_confidence: Mapped[float | None]
+    contains_text: Mapped[bool] = mapped_column(default=False)
+    
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    
+    # Relationships
+    document: Mapped["Document"] = relationship()
+
+
+class ProcessingTask(Base):
+    """Background task queue for long-running document operations."""
+
+    __tablename__ = "processing_tasks"
+    __table_args__ = (Index("ix_tasks_status_priority", "status", "priority"),)
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=new_id)
+    task_type: Mapped[str] = mapped_column(String, index=True)  # extract_document, ocr_page, analyze_figure
+    document_id: Mapped[str | None] = mapped_column(
+        ForeignKey("documents.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    status: Mapped[str] = mapped_column(String, default="queued", index=True)  # queued, running, completed, failed
+    priority: Mapped[int] = mapped_column(Integer, default=5)  # 1-10, higher = sooner
+    input_data: Mapped[dict[str, object]] = mapped_column(JSON, default=dict)  # Task parameters
+    output_data: Mapped[dict[str, object] | None] = mapped_column(JSON, nullable=True)  # Task results
+    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, index=True)
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    # Relationships
+    document: Mapped["Document | None"] = relationship()
