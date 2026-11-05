@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 # Try importing PyMuPDF
 try:
-    import fitz  # PyMuPDF
+    import pymupdf as fitz
 
     PYMUPDF_AVAILABLE = True
 except ImportError:

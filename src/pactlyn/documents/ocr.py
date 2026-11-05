@@ -15,7 +15,7 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any
 
-import fitz  # PyMuPDF for PDF rendering
+import pymupdf as fitz  # PyMuPDF for PDF rendering
 from PIL import Image
 
 logger = logging.getLogger(__name__)

@@ -33,6 +33,7 @@ from PySide6.QtWidgets import (
     QStackedWidget,
     QSystemTrayIcon,
     QTabWidget,
+    QTextBrowser,
     QTextEdit,
     QVBoxLayout,
     QWidget,
@@ -1162,9 +1163,10 @@ class PactlynWindow(QMainWindow):
         controls.addStretch()
         layout.addLayout(controls)
         
-        self.assistant_output = QTextEdit()
+        self.assistant_output = QTextBrowser()
         self.assistant_output.setReadOnly(True)
         self.assistant_output.setPlaceholderText("Grounded answers cite local source records here.")
+        self.assistant_output.setOpenExternalLinks(False)
         self.assistant_output.anchorClicked.connect(self._assistant_citation_clicked)
         layout.addWidget(self.assistant_output, 1)
         

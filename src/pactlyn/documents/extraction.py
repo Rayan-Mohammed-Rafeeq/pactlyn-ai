@@ -30,7 +30,7 @@ except ImportError:
 
 # Try importing PyMuPDF (fallback extractor)
 try:
-    import fitz  # PyMuPDF
+    import pymupdf as fitz
 
     PYMUPDF_AVAILABLE = True
 except ImportError:

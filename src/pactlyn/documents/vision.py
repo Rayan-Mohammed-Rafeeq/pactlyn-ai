@@ -306,7 +306,7 @@ class VisionService:
             VisionProcessingError: If PDF cannot be read or inference fails
         """
         try:
-            import fitz  # PyMuPDF
+            import pymupdf as fitz  # PyMuPDF
 
             doc = fitz.open(pdf_path)
 

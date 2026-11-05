@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import fitz  # PyMuPDF
+import pymupdf as fitz  # PyMuPDF
 
 
 @dataclass
