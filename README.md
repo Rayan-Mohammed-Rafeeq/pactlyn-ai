@@ -27,6 +27,7 @@
 - [Quick Start](#quick-start)
   - [Installation](#installation)
   - [First Launch](#first-launch)
+  - [Testing Your Installation](#testing-your-installation)
 - [How It Works](#how-it-works)
   - [For Non-Technical Users](#for-non-technical-users)
   - [For Technical Users](#for-technical-users)
@@ -851,6 +852,65 @@ uv run pactlyn
    - Ask: "What am I waiting for?"
    - Get AI-powered answers from your stored commitments
 
+### Testing Your Installation
+
+**Quick 5-minute test** to verify everything works:
+
+```bash
+# Keep Ollama running in terminal 1
+ollama serve
+
+# Run Pactlyn in terminal 2
+uv run pactlyn
+```
+
+**Test Checklist**:
+
+1. ✅ **Model Discovery** (Settings → AI Models):
+   - Status shows "Connected"
+   - Models list populated
+   - No "Checking..." stuck state
+
+2. ✅ **Capture Commitment** (Home page):
+   - Type: "Call John about budget by Tuesday 3pm"
+   - Click "Capture" → Wait 10-30 seconds
+   - Review dialog shows extracted: Person (John), Deadline (Tuesday 3pm)
+   - Click "Save" → Appears in Commitments page
+
+3. ✅ **Query Assistant** (Assistant page):
+   - Type: "What do I need to do this week?"
+   - Click "Ask local context" → Wait 20-60 seconds
+   - Answer appears with clean formatting (bold, bullets work)
+   - **No [1], [2], [doc1] brackets in answer text**
+
+4. ✅ **Document Q&A** (Documents page):
+   - Upload any text-based PDF
+   - Go to Assistant → Change mode to "Uploaded Documents"
+   - Ask: "Summarize this document"
+   - Answer shows with **"📄 Sources:"** section below
+   - Citations show document name + page numbers
+
+5. ✅ **Verify Memory** (Memory page):
+   - See episodic entries from your captures
+   - Shows extracted facts and relationships
+
+**Expected Performance** (qwen3:4b on 4GB GPU):
+- Commitment capture: 10-30 seconds
+- Document Q&A: 20-60 seconds
+- Assistant queries: 15-45 seconds
+
+**If tests fail**, see [Testing Checklist](docs/testing-checklist.md) for troubleshooting:
+- "Checking..." stuck → Restart Ollama
+- Timeout errors → Switch to faster model
+- Qdrant lock → Remove lock files
+- Brackets still showing → Restart Pactlyn
+
+**Full testing guide**: [docs/testing-checklist.md](docs/testing-checklist.md)
+- Comprehensive tests (20+ scenarios)
+- Performance benchmarks
+- Troubleshooting common issues
+- Automated test suite instructions
+
 ---
 
 ## How It Works
@@ -1048,6 +1108,7 @@ graph TB
 - 📘 **[How to Use Pactlyn](docs/user-guide.md)** — Complete walkthrough for new users
 - 🎯 **[Common Workflows](docs/workflows.md)** — Email tracking, project management, meeting follow-ups
 - ⚙️ **[Settings Guide](docs/settings.md)** — Configure models, email, themes
+- 🧪 **[Testing Checklist](docs/testing-checklist.md)** — Verify your installation, troubleshoot issues
 
 ### Technical Documentation
 
@@ -1077,17 +1138,69 @@ cd pactlyn-ai
 # Install with dev dependencies
 uv sync --extra dev
 
-# Run tests
+# Initialize database
+uv run alembic upgrade head
+```
+
+### Running Tests
+
+**Quick functional test** (5 minutes):
+```bash
+# Start Ollama (separate terminal)
+ollama serve
+
+# Run Pactlyn
+uv run pactlyn
+
+# Follow testing checklist in docs/testing-checklist.md
+```
+
+**Automated test suite**:
+```bash
+# Run all tests
 uv run pytest
 
-# Check code quality
-uv run ruff check src tests
-uv run mypy src
+# Run with verbose output
+uv run pytest -v -s
 
+# Run specific test file
+uv run pytest tests/unit/test_capture.py
+
+# Run tests matching pattern
+uv run pytest -k "test_commitment"
+```
+
+**Code coverage**:
+```bash
 # Run with coverage
 uv run coverage run --source=src/pactlyn -m pytest
+
+# Generate coverage report
 uv run coverage report -m
+
+# Generate HTML report
+uv run coverage html
+# Open htmlcov/index.html in browser
 ```
+
+**Code quality checks**:
+```bash
+# Lint with Ruff
+uv run ruff check src tests
+
+# Type check with mypy
+uv run mypy src
+
+# Format code
+uv run ruff format src tests
+```
+
+**Complete test guide**: See [docs/testing-checklist.md](docs/testing-checklist.md) for:
+- Functional testing scenarios
+- Performance benchmarks
+- Integration tests
+- UI testing
+- Troubleshooting guide
 
 ### Project Structure
 
