@@ -1450,18 +1450,8 @@ class PactlynWindow(QMainWindow):
         
         answer_text = ' '.join(formatted_lines)
         
-        # Replace [doc1] style markers with clickable HTML links
-        def replace_citation(match: re.Match) -> str:
-            doc_num = int(match.group(1))
-            if doc_num <= len(answer.citations):
-                citation_key = f"citation_{doc_num - 1}"
-                citation = answer.citations[doc_num - 1]
-                # Show document name + page instead of just "doc1"
-                label = f"{citation.document_name} (p.{citation.page_number})"
-                return f'<a href="pactlyn://{citation_key}" style="color: #2563eb; text-decoration: none; font-weight: 500;" title="{escape(label)}">[{doc_num}]</a>'
-            return match.group(0)
-        
-        answer_html = re.sub(r'\[doc(\d+)\]', replace_citation, answer_text)
+        # Remove all [doc1][doc2] style citation markers from the text
+        answer_html = re.sub(r'\[doc\d+\]', '', answer_text)
         html_parts.append(f"<p>{answer_html}</p>")
         
         # Add citations section - group by document
