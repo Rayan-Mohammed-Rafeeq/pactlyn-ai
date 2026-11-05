@@ -1408,48 +1408,84 @@ class PactlynWindow(QMainWindow):
             self.assistant_worker = None
 
     def _format_document_answer(self, answer: DocumentGroundedAnswer) -> str:
-        """Format document answer with HTML citations."""
+        """Format document answer with HTML citations and proper formatting."""
         from html import escape
+        import re
         
         # Build HTML for the answer
         html_parts = ["<div style='font-family: system-ui; line-height: 1.6;'>"]
         
-        # Add the answer text (escape HTML but preserve citation markers)
+        # Convert markdown formatting to HTML
         answer_text = answer.answer
         
+        # Convert **bold** to <strong>
+        answer_text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', answer_text)
+        
+        # Convert *italic* or _italic_ to <em>
+        answer_text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', answer_text)
+        answer_text = re.sub(r'_(.+?)_', r'<em>\1</em>', answer_text)
+        
+        # Convert bullet points (- item or * item) to proper HTML lists
+        lines = answer_text.split('\n')
+        in_list = False
+        formatted_lines = []
+        
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith('- ') or stripped.startswith('* '):
+                if not in_list:
+                    formatted_lines.append('<ul style="margin: 8px 0; padding-left: 24px;">')
+                    in_list = True
+                item_text = stripped[2:]  # Remove "- " or "* "
+                formatted_lines.append(f'<li>{item_text}</li>')
+            else:
+                if in_list:
+                    formatted_lines.append('</ul>')
+                    in_list = False
+                if stripped:
+                    formatted_lines.append(stripped)
+        
+        if in_list:
+            formatted_lines.append('</ul>')
+        
+        answer_text = ' '.join(formatted_lines)
+        
         # Replace [doc1] style markers with clickable HTML links
-        import re
         def replace_citation(match: re.Match) -> str:
             doc_num = int(match.group(1))
             if doc_num <= len(answer.citations):
                 citation_key = f"citation_{doc_num - 1}"
-                return f'<a href="pactlyn://{citation_key}" style="color: #2563eb; text-decoration: none; font-weight: 500;">[doc{doc_num}]</a>'
+                citation = answer.citations[doc_num - 1]
+                # Show document name + page instead of just "doc1"
+                label = f"{citation.document_name} (p.{citation.page_number})"
+                return f'<a href="pactlyn://{citation_key}" style="color: #2563eb; text-decoration: none; font-weight: 500;" title="{escape(label)}">[{doc_num}]</a>'
             return match.group(0)
         
-        answer_html = re.sub(r'\[doc(\d+)\]', replace_citation, escape(answer_text))
+        answer_html = re.sub(r'\[doc(\d+)\]', replace_citation, answer_text)
         html_parts.append(f"<p>{answer_html}</p>")
         
-        # Add citations section
+        # Add citations section - group by document
         if answer.citations:
             html_parts.append("<hr style='margin: 16px 0; border: none; border-top: 1px solid #e5e7eb;'>")
-            html_parts.append("<p style='font-weight: 600; margin-bottom: 8px;'>📄 Document Sources:</p>")
-            html_parts.append("<ul style='margin: 0; padding-left: 20px;'>")
+            html_parts.append("<p style='font-weight: 600; margin-bottom: 8px;'>📄 Sources:</p>")
             
+            # Group citations by document name
+            from collections import defaultdict
+            docs_map = defaultdict(list)
             for i, citation in enumerate(answer.citations, start=1):
-                page_info = f" (page {citation.page_number})" if citation.page_number else ""
-                section_info = f" - {citation.section_title}" if citation.section_title else ""
-                citation_key = f"citation_{i - 1}"
-                
-                citation_html = (
-                    f'<li style="margin-bottom: 6px;">'
-                    f'<a href="pactlyn://{citation_key}" style="color: #2563eb; text-decoration: none;">'
-                    f'[doc{i}] {escape(citation.document_name)}{page_info}{section_info}'
-                    f'</a>'
-                    f'</li>'
-                )
-                html_parts.append(citation_html)
+                docs_map[citation.document_name].append((i, citation))
             
-            html_parts.append("</ul>")
+            # Display grouped by document
+            for doc_name, cites in docs_map.items():
+                pages = sorted(set(c.page_number for _, c in cites if c.page_number))
+                page_str = f"page{'s' if len(pages) > 1 else ''} {', '.join(map(str, pages))}" if pages else ""
+                
+                html_parts.append(
+                    f'<div style="margin-bottom: 8px;">'
+                    f'<strong>{escape(doc_name)}</strong>'
+                    f'{" (" + page_str + ")" if page_str else ""}'
+                    f'</div>'
+                )
         
         # Add commitment sources if present
         if answer.commitment_evidence:
