@@ -56,8 +56,8 @@ class ModelDiscoveryWorker(QThread):
             models_dict = asyncio.run(classify_all())
             
             result = {
-                "connection_ok": inventory.connection.is_connected,
-                "ollama_version": inventory.connection.ollama_version,
+                "connection_ok": inventory.connection.connected,
+                "ollama_version": inventory.connection.server_version,
                 "models": models_dict,
                 "last_checked": inventory.discovered_at
             }
