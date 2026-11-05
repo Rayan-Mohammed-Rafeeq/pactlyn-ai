@@ -13,7 +13,7 @@ class OllamaProvider:
     name = "ollama"
     is_local = True
 
-    def __init__(self, base_url: str, model: str, embedding_model: str, timeout: float = 60.0):
+    def __init__(self, base_url: str, model: str, embedding_model: str, timeout: float = 300.0):
         self.base_url = base_url.rstrip("/")
         self.model = model
         self.model_name = embedding_model
