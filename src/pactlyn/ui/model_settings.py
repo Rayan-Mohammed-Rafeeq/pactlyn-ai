@@ -260,6 +260,7 @@ class AIModelsSettingsPage(QWidget):
         assistant_layout = QHBoxLayout()
         self.assistant_combo = QComboBox()
         self.assistant_combo.setMinimumWidth(300)
+        self.assistant_combo.currentIndexChanged.connect(self._auto_save_selection)
         assistant_layout.addWidget(self.assistant_combo, 1)
         
         test_assistant_btn = QPushButton("Test")
@@ -272,6 +273,7 @@ class AIModelsSettingsPage(QWidget):
         embedding_layout = QHBoxLayout()
         self.embedding_combo = QComboBox()
         self.embedding_combo.setMinimumWidth(300)
+        self.embedding_combo.currentIndexChanged.connect(self._auto_save_selection)
         embedding_layout.addWidget(self.embedding_combo, 1)
         
         test_embedding_btn = QPushButton("Test")
@@ -279,12 +281,6 @@ class AIModelsSettingsPage(QWidget):
         embedding_layout.addWidget(test_embedding_btn)
         
         selection_layout.addRow("Embedding Model:", embedding_layout)
-        
-        # Save button
-        save_btn = QPushButton("Save Model Selection")
-        save_btn.clicked.connect(self._save_selection)
-        save_btn.setStyleSheet("font-weight: bold; padding: 8px;")
-        selection_layout.addRow("", save_btn)
         
         selection_group.setLayout(selection_layout)
         content_layout.addWidget(selection_group)
@@ -319,16 +315,14 @@ class AIModelsSettingsPage(QWidget):
             config_service = ModelConfigurationService(session)
             active = config_service.get_all_active_models()
             
-            # Update connection status
-            self._update_connection_status("Checking...")
-            
             # Load saved selections
             if active.assistant_model:
                 self._select_model_in_combo(self.assistant_combo, active.assistant_model)
             if active.embedding_model:
                 self._select_model_in_combo(self.embedding_combo, active.embedding_model)
             
-            self._set_status("Ready. Click 'Refresh Models' to discover installed models.", "info")
+            # Automatically discover models on startup
+            self._discover_models()
         finally:
             session.close()
     
@@ -389,6 +383,10 @@ class AIModelsSettingsPage(QWidget):
             config_service = ModelConfigurationService(session)
             active = config_service.get_all_active_models()
             
+            # Temporarily disconnect signals to prevent auto-save during population
+            self.assistant_combo.currentIndexChanged.disconnect(self._auto_save_selection)
+            self.embedding_combo.currentIndexChanged.disconnect(self._auto_save_selection)
+            
             # Clear existing items
             self.assistant_combo.clear()
             self.embedding_combo.clear()
@@ -410,6 +408,10 @@ class AIModelsSettingsPage(QWidget):
             self.embedding_combo.addItems(sorted(embedding_models))
             if active.embedding_model:
                 self._select_model_in_combo(self.embedding_combo, active.embedding_model)
+            
+            # Reconnect signals
+            self.assistant_combo.currentIndexChanged.connect(self._auto_save_selection)
+            self.embedding_combo.currentIndexChanged.connect(self._auto_save_selection)
         
         finally:
             session.close()
@@ -457,6 +459,35 @@ class AIModelsSettingsPage(QWidget):
             lines.append("")  # Blank line between models
         
         self.inventory_text.setPlainText("\n".join(lines))
+    
+    def _auto_save_selection(self) -> None:
+        """Auto-save model selection when user changes dropdown."""
+        assistant_model = self.assistant_combo.currentText()
+        embedding_model = self.embedding_combo.currentText()
+        
+        # Only save if both models are selected
+        if not assistant_model or not embedding_model:
+            return
+        
+        # Save silently in the background
+        session = self.container.session()
+        try:
+            config_service = ModelConfigurationService(session)
+            config_service.set_active_model(ModelRole.ASSISTANT, assistant_model)
+            config_service.set_active_model(ModelRole.EMBEDDING, embedding_model)
+            session.commit()
+            
+            self._set_status(
+                f"✓ Preference saved: {assistant_model} (assistant), {embedding_model} (embedding)",
+                "success"
+            )
+            
+            self.modelChanged.emit()
+        
+        except Exception as exc:
+            self._set_status(f"Failed to save preference: {exc}", "error")
+        finally:
+            session.close()
     
     def _save_selection(self) -> None:
         """Save the selected models to database."""
