@@ -61,3 +61,20 @@ async def test_hybrid_retrieval_sanitizes_punctuation_in_fts_queries(tmp_path, s
     evidence = await HybridRetriever(session, store, embedder).search("follow-up Rahul", limit=5)
     assert evidence
     store.close()
+
+
+@pytest.mark.asyncio
+async def test_retrieval_modes_and_reranking_preserve_provenance(tmp_path, session):
+    store = LocalQdrantStore(tmp_path / "qdrant")
+    embedder = DeterministicTestEmbedding()
+    memory = MemoryService(session, store, embedder)
+    await memory.remember("Professor approves the research design before report submission", kind=MemoryKind.SEMANTIC, source_type="note", source_id="approval-note", verified=True)
+    session.commit()
+    retriever = HybridRetriever(session, store, embedder)
+    for mode in ("dense", "fts5", "hybrid", "rrf"):
+        evidence = await retriever.search("research design approval", mode=mode, limit=3)
+        assert evidence
+        assert all(item.source_id == "approval-note" for item in evidence[:1])
+    reranked = await retriever.search("research design approval", mode="hybrid", rerank=True, limit=3)
+    assert reranked and reranked[0].source_id == "approval-note"
+    store.close()

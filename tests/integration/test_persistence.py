@@ -9,7 +9,11 @@ from pactlyn.core.commitments import (
 )
 from pactlyn.memory.service import MemoryService
 from pactlyn.rag.embeddings import DeterministicTestEmbedding
-from pactlyn.storage.models import CommitmentRelationshipType, MemoryKind
+from pactlyn.storage.models import (
+    CommitmentRelationshipReview,
+    CommitmentRelationshipType,
+    MemoryKind,
+)
 from pactlyn.vectorstore.qdrant_local import LocalQdrantStore
 
 
@@ -73,3 +77,25 @@ def test_commitment_relationships_persist_and_are_queryable(session):
     assert related[0][0].relationship == CommitmentRelationshipType.DEPENDS_ON
     assert related[0][1].id == commitments[0].id
     assert service.search("DEPENDS_ON")
+
+
+def test_relationship_evidence_and_rejections_are_audited(session):
+    service = CommitmentService(session)
+    candidates = [CommitmentCandidate(title="A"), CommitmentCandidate(title="B")]
+    rejected = CommitmentRelationshipCandidate(
+        source_index=0,
+        target_index=0,
+        relationship=CommitmentRelationshipType.DEPENDS_ON,
+        evidence="A requires A",
+        rejection_reason="self reference",
+    )
+    persisted = service.create_many(
+        candidates,
+        [CommitmentRelationshipCandidate(source_index=1, target_index=0, relationship=CommitmentRelationshipType.DEPENDS_ON, evidence="B requires A", confidence=0.9)],
+        rejected_relationships=[rejected],
+    )
+    session.commit()
+    edge = service.related(persisted[1].id)[0][0]
+    assert edge.evidence == "B requires A"
+    assert edge.confidence == 0.9
+    assert session.query(CommitmentRelationshipReview).count() == 1

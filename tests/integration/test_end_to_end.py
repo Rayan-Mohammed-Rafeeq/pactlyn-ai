@@ -152,3 +152,21 @@ def test_invalid_relationships_preserve_events_and_explain_warnings() -> None:
     assert not result.relationships
     assert any("FOLLOWED_BY" in warning for warning in result.relationship_warnings)
     assert any("unresolved source" in warning for warning in result.relationship_warnings)
+
+
+def test_relationship_reasoning_handles_approval_history_and_tentative_actions() -> None:
+    extractor = CommitmentExtractor()
+    approval = extractor.extract("My professor needs to approve the design before I submit the final report.")
+    assert len(approval.candidates) == 2
+    assert approval.relationships[0].relationship.value == "DEPENDS_ON"
+    assert approval.relationships[0].source_index == 1
+    assert approval.relationships[0].target_index == 0
+
+    history = extractor.extract("Rahul sent me the proposal yesterday, and I forwarded it today.")
+    assert len(history.candidates) == 2
+    assert all(candidate.extraction_status == "completed" for candidate in history.candidates)
+    assert all(candidate.due_at is None for candidate in history.candidates)
+
+    tentative = extractor.extract("I might contact HR next week, but I haven't decided yet.")
+    assert tentative.candidates
+    assert tentative.candidates[0].needs_confirmation is True

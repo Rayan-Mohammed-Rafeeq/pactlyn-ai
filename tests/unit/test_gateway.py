@@ -57,6 +57,35 @@ class InvalidProvider(StructuredProvider):
         return "not json"
 
 
+class StagedProvider(StructuredProvider):
+    def __init__(self):
+        self.calls = 0
+
+    async def complete(self, messages, *, json_schema=None):
+        self.calls += 1
+        if json_schema and "relationships" in str(json_schema.get("properties", {})):
+            return json.dumps(
+                {
+                    "relationships": [
+                        {
+                            "source_index": 1,
+                            "target_index": 0,
+                            "relationship": "DEPENDS_ON",
+                            "evidence": "before",
+                        }
+                    ]
+                }
+            )
+        return json.dumps(
+            {
+                "candidates": [
+                    {"title": "Approval", "type": "waiting_for", "person": "Professor", "responsibility": "OTHER_PARTY_PERFORMS"},
+                    {"title": "Submit", "type": "personal_task", "responsibility": "CONDITIONALLY_EXECUTES"},
+                ]
+            }
+        )
+
+
 @pytest.mark.asyncio
 async def test_gateway_does_not_silently_fallback_on_model_failure():
     result = await LLMGateway(UnavailableProvider()).extract_commitments("Finish the report")
@@ -145,6 +174,18 @@ def test_gateway_drops_unsupported_relationship_but_keeps_candidates():
     assert len(result.candidates) == 2
     assert result.relationships == []
     assert any("Unsupported relationship" in warning for warning in result.relationship_warnings)
+
+
+@pytest.mark.asyncio
+async def test_gateway_staged_relationship_stage_uses_two_calls():
+    provider = StagedProvider()
+    result = await LLMGateway(provider).extract_staged(
+        "Professor approves before I submit the report."
+    )
+    assert provider.calls == 2
+    assert len(result.candidates) == 2
+    assert result.relationships[0].relationship.value == "DEPENDS_ON"
+    assert result.relationships[0].source_event_id == result.candidates[1].event_id
 
 
 def test_gateway_validation_rejects_ungrounded_person_and_waiting_date():
