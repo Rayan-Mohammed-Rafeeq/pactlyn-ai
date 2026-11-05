@@ -19,7 +19,13 @@ def main() -> int:
         return 1
     app.aboutToQuit.connect(window.shutdown)
     window.show()
-    return app.exec()
+    try:
+        return app.exec()
+    finally:
+        # aboutToQuit normally performs cleanup, but app.exec() can also
+        # return without emitting it (for example when startup or a Qt
+        # callback exits early). shutdown() is idempotent.
+        window.shutdown()
 
 
 if __name__ == "__main__":

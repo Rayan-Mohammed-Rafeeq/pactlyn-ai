@@ -9,8 +9,10 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from pactlyn.app.configuration import Settings
 from pactlyn.core.commitments import CommitmentService
+from pactlyn.email.composer import EmailComposer
 from pactlyn.email.resend.provider import ResendProvider
 from pactlyn.email.service import EmailService
+from pactlyn.email.settings import EmailPreferences, EmailSettingsRepository
 from pactlyn.llm.gateway import LLMGateway
 from pactlyn.llm.providers.ollama import OllamaProvider
 from pactlyn.llm.providers.openrouter import OpenRouterProvider
@@ -45,6 +47,29 @@ class AppContainer:
     def email(self, session: Session) -> EmailService:
         return EmailService(session, self.email_provider)
 
+    def email_settings(self, session: Session) -> EmailSettingsRepository:
+        return EmailSettingsRepository(session)
+
+    def email_composer(self, session: Session) -> EmailComposer:
+        return EmailComposer(session, self.email_settings(session), self.settings)
+
+    def effective_email_settings(self) -> EmailPreferences:
+        session = self.session()
+        try:
+            return self.email_settings(session).load(self.settings)
+        finally:
+            session.close()
+
+    def refresh_email_provider(self) -> bool:
+        session = self.session()
+        try:
+            repository = self.email_settings(session)
+            key = repository.resolve_api_key(self.settings)
+        finally:
+            session.close()
+        self.email_provider = ResendProvider(key) if key else None
+        return self.email_provider is not None
+
     def capture_context(self, session: Session, query: str, *, limit: int = 8) -> str:
         """Return small, explicitly labelled local context for the extraction prompt."""
         contacts = list(session.scalars(select(Contact).order_by(Contact.name).limit(limit)))
@@ -73,15 +98,25 @@ def build_container(
     # deterministic adapter instead, so no personal data leaves the machine.
     credentials = CredentialStore()
     cloud = None
-    openrouter_key = credentials.get("openrouter_api_key")
+    # Keyring takes precedence; fall back to the .env / env-var value.
+    openrouter_key = credentials.get("openrouter_api_key") or settings.openrouter_api_key
     if settings.openrouter_enabled and openrouter_key and settings.openrouter_model:
         cloud = OpenRouterProvider(openrouter_key, settings.openrouter_model)
-    email_provider = None
-    resend_key = credentials.get("resend_api_key")
-    if resend_key and settings.resend_from:
-        email_provider = ResendProvider(resend_key)
     vectors = LocalQdrantStore(settings.qdrant_path)
     session_factory = create_session_factory(engine)
+    email_provider = None
+    config_session = session_factory()
+    try:
+        # Settings → Email values in SQLite take precedence. The keyring is
+        # checked first for the secret; environment values remain a
+        # development/CI fallback only.
+        email_settings_repository = EmailSettingsRepository(config_session, credentials)
+        email_settings_repository.load(settings)
+        resend_key = email_settings_repository.resolve_api_key(settings)
+        if resend_key:
+            email_provider = ResendProvider(resend_key)
+    finally:
+        config_session.close()
     metadata_session = session_factory()
     try:
         embedding_state = activate_embedding_model(

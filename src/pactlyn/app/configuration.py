@@ -9,8 +9,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Non-secret application settings.
 
-    Secrets intentionally do not live in this object or in SQLite. Use
-    :class:`pactlyn.security.credentials.CredentialStore` for provider keys.
+    Secrets (e.g. ``resend_api_key``, ``openrouter_api_key``) are loaded from
+    the OS keyring via :class:`pactlyn.security.credentials.CredentialStore`
+    at runtime.  As a convenience for local development they can also be
+    supplied via ``.env`` / environment variables; bootstrap will prefer the
+    keyring value when both are present.
     """
 
     model_config = SettingsConfigDict(env_prefix="PACTLYN_", env_file=".env", extra="ignore")
@@ -23,6 +26,9 @@ class Settings(BaseSettings):
     openrouter_enabled: bool = False
     resend_from: str | None = None
     resend_inbound_address: str | None = None
+    # Dev-convenience env overrides for secrets (keyring takes precedence).
+    resend_api_key: str | None = Field(default=None)
+    openrouter_api_key: str | None = Field(default=None)
     default_timezone: str = "UTC"
     reminder_lead_hours: int = 24
     quiet_hours_start: int = 22
