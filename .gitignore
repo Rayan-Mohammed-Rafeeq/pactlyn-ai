@@ -36,9 +36,8 @@ build/
 
 # Application data (local-only runtime data)
 data/
-documents/
-figures/
 uploads/
+figures/
 
 # Database files (SQLite)
 *.db

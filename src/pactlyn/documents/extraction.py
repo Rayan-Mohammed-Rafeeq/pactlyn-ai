@@ -76,9 +76,19 @@ def extract_text_docling(file_path: Path) -> ExtractionResult:
 
     try:
         # Configure Docling pipeline
+        # Handle API changes gracefully - backend attribute may not exist in all versions
         pipeline_options = PdfPipelineOptions()
         pipeline_options.do_ocr = False  # OCR handled separately in Phase 2
         pipeline_options.do_table_structure = True
+        
+        # Try to set backend if available (newer API)
+        if hasattr(pipeline_options, 'backend'):
+            try:
+                from docling.backend.pypdfium2_backend import PyPdfiumBackend
+                pipeline_options.backend = PyPdfiumBackend
+            except (ImportError, AttributeError):
+                # Backend setting not supported or backend class not available
+                pass
 
         converter = DocumentConverter(
             format_options={

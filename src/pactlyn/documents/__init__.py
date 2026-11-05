@@ -17,6 +17,14 @@ from pactlyn.documents.ocr import (
     PaddleOCREngine,
     get_default_ocr_engine,
 )
+from pactlyn.documents.vision import (
+    VisionResult,
+    VisionService,
+    VisionError,
+    VisionModelUnavailable,
+    VisionProcessingError,
+    get_default_vision_service,
+)
 
 __all__ = [
     "Document",
@@ -28,4 +36,10 @@ __all__ = [
     "OCRPageResult",
     "PaddleOCREngine",
     "get_default_ocr_engine",
+    "VisionResult",
+    "VisionService",
+    "VisionError",
+    "VisionModelUnavailable",
+    "VisionProcessingError",
+    "get_default_vision_service",
 ]

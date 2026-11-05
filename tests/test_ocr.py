@@ -162,15 +162,13 @@ class TestOCREngines:
         mock_instance = Mock()
         mock_paddle_class.return_value = mock_instance
 
-        engine = PaddleOCREngine(use_gpu=False, lang="en")
+        engine = PaddleOCREngine(lang="en")
         assert engine.is_available() is True
 
         # Check initialization parameters
         mock_paddle_class.assert_called_once_with(
             use_angle_cls=True,
             lang="en",
-            use_gpu=False,
-            show_log=False,
         )
 
     @patch("pactlyn.documents.ocr.PADDLEOCR_AVAILABLE", False)

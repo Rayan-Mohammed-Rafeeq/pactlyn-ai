@@ -121,8 +121,30 @@ def classify_page_for_ocr(
     """
     char_count = len(page_text.strip())
     
-    # Check if page is effectively blank
-    if char_count < 5:
+    # Check for meaningful text (not just symbols/garbage)
+    words = re.findall(r'\b[a-zA-Z]{2,}\b', page_text)
+    meaningful_ratio = len(words) / max(1, len(page_text.split()))
+    has_meaningful_text = meaningful_ratio >= meaningful_word_ratio and len(words) >= 3
+    
+    # Check for large images using get_image_info (more reliable than get_image_bbox)
+    has_large_image = False
+    try:
+        img_list = page.get_image_info()
+        if img_list:
+            page_area = page.rect.width * page.rect.height
+            for img in img_list:
+                bbox = img.get('bbox')
+                if bbox:
+                    img_area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
+                    # Image covers >50% of page
+                    if img_area > (page_area * 0.5):
+                        has_large_image = True
+                        break
+    except Exception as e:
+        logger.debug(f"Could not check image size on page {page_number}: {e}")
+    
+    # Check if page is effectively blank (no text AND no large images)
+    if char_count < 5 and not has_large_image:
         return PageClassification(
             page_number=page_number,
             needs_ocr=False,
@@ -132,31 +154,6 @@ def classify_page_for_ocr(
             has_large_image=False,
             is_blank=True,
         )
-    
-    # Check for meaningful text (not just symbols/garbage)
-    words = re.findall(r'\b[a-zA-Z]{2,}\b', page_text)
-    meaningful_ratio = len(words) / max(1, len(page_text.split()))
-    has_meaningful_text = meaningful_ratio >= meaningful_word_ratio and len(words) >= 3
-    
-    # Check for large images
-    images = page.get_images(full=True)
-    has_large_image = False
-    if images:
-        page_rect = page.rect
-        page_area = page_rect.width * page_rect.height
-        
-        for img_info in images:
-            try:
-                xref = img_info[0]
-                img_bbox = page.get_image_bbox(xref)
-                if img_bbox:
-                    img_area = (img_bbox.x1 - img_bbox.x0) * (img_bbox.y1 - img_bbox.y0)
-                    # Image covers >50% of page
-                    if img_area > (page_area * 0.5):
-                        has_large_image = True
-                        break
-            except Exception as e:
-                logger.debug(f"Could not check image size on page {page_number}: {e}")
     
     # Decision logic
     if char_count >= min_chars and has_meaningful_text:
@@ -284,15 +281,13 @@ class OCREngine(ABC):
 class PaddleOCREngine(OCREngine):
     """PaddleOCR engine (CPU-friendly, good accuracy)."""
     
-    def __init__(self, use_gpu: bool = False, lang: str = "en"):
+    def __init__(self, lang: str = "en"):
         """Initialize PaddleOCR engine.
         
         Args:
-            use_gpu: Whether to use GPU (default False for CPU mode)
             lang: Language code (default "en" for English)
         """
         self._ocr: PaddleOCR | None = None
-        self._use_gpu = use_gpu
         self._lang = lang
         self._initialized = False
         self._init_error: str | None = None
@@ -308,13 +303,11 @@ class PaddleOCREngine(OCREngine):
             return
         
         try:
-            # Initialize PaddleOCR with CPU mode by default
+            # Initialize PaddleOCR (CPU mode by default in 3.7+)
             # First run will download models (~8MB for det, ~10MB for rec)
             self._ocr = PaddleOCR(
                 use_angle_cls=True,  # Enable rotation detection
                 lang=self._lang,
-                use_gpu=self._use_gpu,
-                show_log=False,
             )
             self._initialized = True
             logger.info("PaddleOCR initialized successfully")
@@ -367,8 +360,8 @@ class PaddleOCREngine(OCREngine):
             import numpy as np
             img_array = np.array(image)
             
-            # Run OCR
-            result = self._ocr.ocr(img_array, cls=True)  # type: ignore[attr-defined]
+            # Run OCR (cls parameter not supported in PaddleOCR 3.7+)
+            result = self._ocr.ocr(img_array)  # type: ignore[attr-defined]
             
             if not result or not result[0]:
                 return OCRPageResult(
