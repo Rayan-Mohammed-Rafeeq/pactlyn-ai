@@ -15,6 +15,8 @@ class SendRequest:
     body_text: str
     body_html: str | None
     idempotency_key: str
+    headers: dict[str, str] | None = None
+    attachments: list[dict[str, str]] | None = None
 
 
 @dataclass(frozen=True)
@@ -26,7 +28,9 @@ class SendResult:
 class EmailProvider(Protocol):
     async def send(self, request: SendRequest) -> SendResult: ...
 
-    async def list_received(self, cursor: str | None = None) -> tuple[list[dict[str, object]], str | None]: ...
+    async def list_received(
+        self, cursor: str | None = None
+    ) -> tuple[list[dict[str, object]], str | None]: ...
 
     async def get_received(self, message_id: str) -> dict[str, object]: ...
 
