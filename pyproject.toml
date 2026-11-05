@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pactlyn"
-version = "0.9.0"
+version = "0.1.0"
 description = "A local-first personal AI agent for remembering commitments and following through."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -23,6 +23,13 @@ dependencies = [
   "python-dateutil>=2.9,<3",
   "resend>=2.5,<3",
   "SQLAlchemy>=2.0,<3",
+  # Document Intelligence (Phase 1+)
+  "docling>=2.0,<3",
+  "pymupdf>=1.24,<2",
+  "pypdfium2>=5.0",
+  "pillow>=10.0,<14",
+  # Document Intelligence - OCR (Phase 2+)
+  "paddleocr>=2.7,<3",
 ]
 
 [project.optional-dependencies]

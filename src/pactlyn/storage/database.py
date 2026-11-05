@@ -38,14 +38,8 @@ def init_database(engine: Engine) -> None:
 
     Base.metadata.create_all(engine)
     with engine.begin() as connection:
-        connection.execute(text(
-            "CREATE VIRTUAL TABLE IF NOT EXISTS commitment_fts USING fts5("
-            "commitment_id UNINDEXED, title, description, person, content)"
-        ))
-        connection.execute(text(
-            "CREATE VIRTUAL TABLE IF NOT EXISTS personal_fact_fts USING fts5("
-            "fact_id UNINDEXED, attribute, value, display_value, source_text)"
-        ))
+        connection.execute(text("CREATE VIRTUAL TABLE IF NOT EXISTS commitment_fts USING fts5(" 
+                                "commitment_id UNINDEXED, title, description, person, content)"))
 
 
 def session_scope(factory: sessionmaker[Session]) -> Generator[Session, None, None]:

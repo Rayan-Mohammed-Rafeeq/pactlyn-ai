@@ -9,7 +9,7 @@ from typing import Any, Literal, cast
 
 from dateutil import parser as date_parser
 from PySide6.QtCore import Qt, QThread, QTimer, Signal
-from PySide6.QtGui import QAction, QIcon, QKeySequence, QShortcut
+from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -33,6 +33,7 @@ from PySide6.QtWidgets import (
     QStackedWidget,
     QSystemTrayIcon,
     QTabWidget,
+    QTextBrowser,
     QTextEdit,
     QVBoxLayout,
     QWidget,
@@ -53,6 +54,8 @@ from pactlyn.email.addresses import email_address, is_valid_email_address
 from pactlyn.email.composer import DraftDefaults
 from pactlyn.email.inbound_sync import InboundEmailSync
 from pactlyn.platform.linux.autostart import LinuxAutostart
+from pactlyn.documents.indexing import DocumentIndexer
+from pactlyn.rag.document_rag import DocumentGroundedAnswer, DocumentRAGService
 from pactlyn.rag.retrieval import HybridRetriever
 from pactlyn.rag.service import RAGService
 from pactlyn.storage.backup import BackupError, BackupService
@@ -65,17 +68,16 @@ from pactlyn.storage.models import (
     EmailThread,
     MemoryKind,
 )
+from pactlyn.ui.documents_page import DocumentsPage
 from pactlyn.ui.email_settings import EmailSettingsPage
-from pactlyn.ui.memory_page import MemoryPage
+from pactlyn.ui.model_settings import AIModelsSettingsPage
 from pactlyn.ui.theme import (
+    COLOR_PINE,
     COLOR_TERRACOTTA,
     BrandWidget,
     ThemeMode,
-    create_sidebar_icon,
-    get_saved_sidebar_state,
     get_saved_theme,
     get_stylesheet,
-    save_sidebar_state,
     save_theme,
     status_color,
 )
@@ -95,21 +97,12 @@ class CaptureDialog(QDialog):
         self.setWindowTitle("Capture a commitment")
         self.setMinimumWidth(500)
         layout = QVBoxLayout(self)
-        prompt = QLabel("What do you want Pactlyn to remember?")
-        prompt.setObjectName("dialog_prompt")
-        layout.addWidget(prompt)
+        layout.addWidget(QLabel("What do you want Pactlyn to remember?"))
         self.text = QTextEdit()
         self.text.setPlaceholderText("e.g. I need to submit my assignment by Friday")
         self.text.setPlainText(initial)
         layout.addWidget(self.text)
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Ok)
-        ok_button = buttons.button(QDialogButtonBox.StandardButton.Ok)
-        if ok_button:
-            ok_button.setObjectName("primary")
-            ok_button.setDefault(True)
-        cancel_button = buttons.button(QDialogButtonBox.StandardButton.Cancel)
-        if cancel_button:
-            cancel_button.setObjectName("secondary")
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
@@ -207,8 +200,47 @@ class AssistantWorker(QThread):
         try:
             async def answer() -> object:
                 retriever = HybridRetriever(session, self.container.vectors, self.container.embedder)
-                fact_service = self.container.personal_facts(session)
-                return await RAGService(session, self.container.llm, retriever, fact_service).answer(self.question)
+                return await RAGService(session, self.container.llm, retriever).answer(self.question)
+
+            self.finished.emit(asyncio.run(answer()))
+        except Exception as exc:
+            session.rollback()
+            self.failed.emit(str(exc))
+        finally:
+            session.close()
+
+
+class DocumentAssistantWorker(QThread):
+    """Worker for document-focused queries with cited answers."""
+    finished = Signal(object)
+    failed = Signal(str)
+
+    def __init__(self, container: AppContainer, question: str):
+        super().__init__()
+        self.container = container
+        self.question = question
+
+    def run(self) -> None:
+        session = self.container.session()
+        try:
+            async def answer() -> DocumentGroundedAnswer:
+                # Build document RAG service with commitment fallback
+                indexer = DocumentIndexer(
+                    self.container.session_factory,
+                    self.container.vectors,
+                    self.container.embedder,
+                )
+                retriever = HybridRetriever(session, self.container.vectors, self.container.embedder)
+                commitment_rag = RAGService(session, self.container.llm, retriever)
+                
+                doc_rag = DocumentRAGService(
+                    session,
+                    self.container.llm,
+                    indexer,
+                    commitment_rag=commitment_rag,
+                )
+                
+                return await doc_rag.answer(self.question)
 
             self.finished.emit(asyncio.run(answer()))
         except Exception as exc:
@@ -293,20 +325,6 @@ class ConnectivityWorker(QThread):
     def run(self) -> None:
         state = asyncio.run(self.monitor.probe("https://api.resend.com"))
         self.finished.emit(state)
-
-
-class StartupMigrationWorker(QThread):
-    """Runs idempotent data-quality migrations in the background after startup."""
-
-    def __init__(self, container: AppContainer):
-        super().__init__()
-        self.container = container
-
-    def run(self) -> None:
-        try:
-            asyncio.run(self.container.run_startup_migrations())
-        except Exception:
-            pass  # migrations are advisory — never crash the UI
 
 
 class EmailDraftDialog(QDialog):
@@ -398,13 +416,6 @@ class EmailDraftDialog(QDialog):
         buttons = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Save
         )
-        save_button = buttons.button(QDialogButtonBox.StandardButton.Save)
-        if save_button is not None:
-            save_button.setObjectName("primary")
-            save_button.setDefault(True)
-        cancel_button = buttons.button(QDialogButtonBox.StandardButton.Cancel)
-        if cancel_button is not None:
-            cancel_button.setObjectName("secondary")
         buttons.accepted.connect(self._validate_and_accept)
         buttons.rejected.connect(self.reject)
         layout.addRow(buttons)
@@ -555,11 +566,6 @@ class EmailApprovalDialog(QDialog):
         approve_button = buttons.button(QDialogButtonBox.StandardButton.Ok)
         if approve_button is not None:
             approve_button.setText("Approve exact payload")
-            approve_button.setObjectName("primary")
-            approve_button.setDefault(True)
-        cancel_button = buttons.button(QDialogButtonBox.StandardButton.Cancel)
-        if cancel_button is not None:
-            cancel_button.setObjectName("secondary")
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
@@ -606,13 +612,6 @@ class CommitmentReviewDialog(QDialog):
         scroll.setWidget(tabs)
         layout.addWidget(scroll, 1)
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Save)
-        save_button = buttons.button(QDialogButtonBox.StandardButton.Save)
-        if save_button is not None:
-            save_button.setObjectName("primary")
-            save_button.setDefault(True)
-        cancel_button = buttons.button(QDialogButtonBox.StandardButton.Cancel)
-        if cancel_button is not None:
-            cancel_button.setObjectName("secondary")
         buttons.accepted.connect(self._validate_and_accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
@@ -796,7 +795,6 @@ class PactlynWindow(QMainWindow):
         self.setWindowTitle("Pactlyn — Remember what matters")
         self.resize(1180, 760)
         self.theme_mode: ThemeMode = get_saved_theme()
-        self.sidebar_visible: bool = get_saved_sidebar_state()
         icon = QIcon(str(Path(__file__).with_name("pactlyn.svg")))
         self.setWindowIcon(icon)
         self.pages = QStackedWidget()
@@ -808,35 +806,17 @@ class PactlynWindow(QMainWindow):
         self.email_sync_worker: EmailSyncWorker | None = None
         self.connectivity = ConnectivityMonitor()
         self.connectivity_worker: ConnectivityWorker | None = None
-        self._startup_migration_worker: StartupMigrationWorker | None = None
         self._shutdown_complete = False
         root = QWidget()
         root.setObjectName("central_widget")
         root_layout = QHBoxLayout(root)
         root_layout.setContentsMargins(0, 0, 0, 0)
         root_layout.setSpacing(0)
-        self.sidebar_frame = self._sidebar()
-        root_layout.addWidget(self.sidebar_frame)
-
-        # Right content area
-        content_container = QWidget()
-        content_container.setObjectName("content_container")
-        content_layout = QVBoxLayout(content_container)
-        content_layout.setContentsMargins(0, 0, 0, 0)
-        content_layout.setSpacing(0)
-
-        content_layout.addWidget(self.pages, 1)
-        root_layout.addWidget(content_container, 1)
-
+        root_layout.addWidget(self._sidebar())
+        root_layout.addWidget(self.pages, 1)
         self.setCentralWidget(root)
         self._add_pages()
         self.apply_theme(self.theme_mode)
-
-        # Keyboard shortcut for toggling sidebar
-        self.sidebar_shortcut = QShortcut(QKeySequence("Ctrl+B"), self)
-        self.sidebar_shortcut.activated.connect(self._toggle_sidebar)
-
-        self._set_sidebar_open(self.sidebar_visible)
         self._setup_tray()
         self._refresh()
         timer = QTimer(self)
@@ -853,8 +833,6 @@ class PactlynWindow(QMainWindow):
         self._inbound_timer = inbound_timer
         QTimer.singleShot(100, self._probe_connectivity)
         QTimer.singleShot(5_000, self._maybe_auto_sync)
-        # Run data-quality migrations in the background after the UI is ready.
-        QTimer.singleShot(3_000, self._run_startup_migrations)
 
     def apply_theme(self, mode: ThemeMode) -> None:
         self.theme_mode = mode
@@ -862,9 +840,6 @@ class PactlynWindow(QMainWindow):
         self.setStyleSheet(get_stylesheet(mode))
         if hasattr(self, "brand_widget"):
             self.brand_widget.set_mode(mode)
-        if hasattr(self, "sidebar_close_btn"):
-            close_col = "#C5D4CE" if mode == "dark" else "#E5EFEA"
-            self.sidebar_close_btn.setIcon(create_sidebar_icon(close_col, 18))
         if hasattr(self, "theme_combo"):
             idx = 1 if mode == "dark" else 0
             if self.theme_combo.currentIndex() != idx:
@@ -873,54 +848,7 @@ class PactlynWindow(QMainWindow):
                 self.theme_combo.blockSignals(False)
         if hasattr(self, "email_settings_page"):
             self.email_settings_page.set_theme(mode)
-        if hasattr(self, "memory_page"):
-            self.memory_page.set_theme(mode)
         self._refresh()
-
-    def _toggle_sidebar(self) -> None:
-        self._set_sidebar_open(not self.sidebar_visible)
-
-    def _set_sidebar_open(self, visible: bool) -> None:
-        self.sidebar_visible = visible
-        save_sidebar_state(visible)
-        expanded_w = 220
-        collapsed_w = 52
-        if hasattr(self, "sidebar_frame"):
-            self.sidebar_frame.setFixedWidth(expanded_w if visible else collapsed_w)
-        # Toggle brand text elements; when collapsed only show the toggle button
-        if hasattr(self, "brand_widget"):
-            self.brand_widget.setVisible(visible)
-        # In collapsed mode resize the toggle button to fill the narrow strip
-        if hasattr(self, "sidebar_close_btn"):
-            if visible:
-                self.sidebar_close_btn.setFixedSize(26, 26)
-            else:
-                self.sidebar_close_btn.setFixedSize(36, 36)
-        # Toggle nav button text
-        if hasattr(self, "nav"):
-            for btn in self.nav:
-                icon_char = btn.property("icon_char") or ""
-                full_label = btn.property("full_label") or ""
-                if visible:
-                    btn.setText(full_label)
-                    btn.setFixedHeight(36)
-                    btn.setStyleSheet("")
-                else:
-                    btn.setText(icon_char)
-                    btn.setFixedHeight(40)
-                    btn.setStyleSheet(
-                        "text-align: center; padding-left: 0; padding-right: 0; "
-                        "font-size: 17px;"
-                    )
-        # Toggle sidebar toggle button tooltip
-        if hasattr(self, "sidebar_close_btn"):
-            tip = "Collapse sidebar (Ctrl+B)" if visible else "Expand sidebar (Ctrl+B)"
-            self.sidebar_close_btn.setToolTip(tip)
-        # Sync settings checkbox
-        if hasattr(self, "sidebar_visible_cb") and self.sidebar_visible_cb.isChecked() != visible:
-            self.sidebar_visible_cb.blockSignals(True)
-            self.sidebar_visible_cb.setChecked(visible)
-            self.sidebar_visible_cb.blockSignals(False)
 
     def _on_theme_combo_changed(self, index: int) -> None:
         mode = cast(ThemeMode, self.theme_combo.itemData(index))
@@ -930,67 +858,28 @@ class PactlynWindow(QMainWindow):
     def _sidebar(self) -> QWidget:
         sidebar = QFrame()
         sidebar.setObjectName("sidebar")
-        sidebar.setFixedWidth(220)
+        sidebar.setFixedWidth(240)
         layout = QVBoxLayout(sidebar)
-        layout.setContentsMargins(6, 10, 6, 10)
-        layout.setSpacing(2)
-
-        # Header row: Brand icon + wordmark + Toggle button
-        header_row = QHBoxLayout()
-        header_row.setContentsMargins(2, 0, 0, 0)
-        header_row.setSpacing(0)
-
+        layout.setContentsMargins(12, 14, 12, 16)
+        layout.setSpacing(4)
         self.brand_widget = BrandWidget(self.theme_mode)
-        header_row.addWidget(self.brand_widget, 1)
-
-        self.sidebar_close_btn = QPushButton()
-        self.sidebar_close_btn.setObjectName("sidebar_toggle_btn")
-        self.sidebar_close_btn.setFixedSize(26, 26)
-        self.sidebar_close_btn.setToolTip("Collapse sidebar (Ctrl+B)")
-        self.sidebar_close_btn.clicked.connect(self._toggle_sidebar)
-        header_row.addWidget(self.sidebar_close_btn, 0, Qt.AlignmentFlag.AlignVCenter)
-
-        layout.addLayout(header_row)
+        layout.addWidget(self.brand_widget)
         layout.addSpacing(6)
-
-        # Main nav items — tightly grouped
-        for label, idx in [
-            ("⌂   Home", 0),
-            ("✓   Commitments", 1),
-            ("◷   Waiting For", 2),
-            ("✉   Email Centre", 3),
-            ("▣   Memory", 4),
-            ("✦   Assistant", 5),
-        ]:
-            btn = self._nav_button(label, idx)
-            btn.setFixedHeight(36)
-            layout.addWidget(btn)
-
-        # Thin divider line before Settings
-        layout.addSpacing(6)
-        line = QFrame()
-        line.setFrameShape(QFrame.Shape.HLine)
-        line.setObjectName("sidebar_divider")
-        layout.addWidget(line)
-        layout.addSpacing(2)
-
-        settings_btn = self._nav_button("⚙   Settings", 6)
-        settings_btn.setFixedHeight(36)
-        layout.addWidget(settings_btn)
-
-        # Push everything up — small stretch at the very bottom
-        layout.addStretch(1)
-
+        layout.addWidget(self._nav_button("⌂   Home", 0))
+        layout.addWidget(self._nav_button("✓   Commitments", 1))
+        layout.addWidget(self._nav_button("◷   Waiting For", 2))
+        layout.addWidget(self._nav_button("✉   Email Centre", 3))
+        layout.addWidget(self._nav_button("▣   Memory", 4))
+        layout.addWidget(self._nav_button("✦   Assistant", 5))
+        layout.addWidget(self._nav_button("📄   Documents", 6))
+        layout.addStretch()
+        layout.addWidget(self._nav_button("⚙   Settings", 7))
         return sidebar
 
     def _nav_button(self, label: str, index: int) -> QPushButton:
         button = QPushButton(label)
         button.setObjectName("nav")
         button.setCheckable(True)
-        # Store icon char and full label for collapsed/expanded toggle
-        parts = label.split(None, 1)
-        button.setProperty("icon_char", parts[0] if parts else "")
-        button.setProperty("full_label", label)
         button.clicked.connect(lambda: self._navigate(index))
         self.nav.append(button)
         return button
@@ -1002,6 +891,9 @@ class PactlynWindow(QMainWindow):
         self.pages.addWidget(self._email_page())
         self.pages.addWidget(self._memory_page())
         self.pages.addWidget(self._assistant_page())
+        # Initialize Documents page with AppContainer
+        self.documents_page = DocumentsPage(self.container)
+        self.pages.addWidget(self.documents_page)
         self.pages.addWidget(self._settings_page())
         self._navigate(0)
 
@@ -1227,19 +1119,38 @@ class PactlynWindow(QMainWindow):
         return page
 
     def _memory_page(self) -> QWidget:
-        self.memory_page = MemoryPage(self.container)
-        self.memory_page.navigateRequested.connect(self._memory_navigate)
-        self.memory_page.createCommitmentRequested.connect(lambda: self._capture())
-        return self.memory_page
+        page = QWidget()
+        layout = self._header("Memory", "Pactlyn keeps provenance with every remembered fact.")
+        layout.setContentsMargins(28, 24, 28, 24)
+        layout.setSpacing(14)
+        self.memory_list = QListWidget()
+        layout.addWidget(self.memory_list, 1)
+        page.setLayout(layout)
+        return page
 
     def _assistant_page(self) -> QWidget:
         page = QWidget()
         layout = self._header("Assistant", "Ask about what is due, waiting, or worth doing next.")
         layout.setContentsMargins(28, 24, 28, 24)
         layout.setSpacing(14)
+        
+        # Mode selector
+        mode_layout = QHBoxLayout()
+        mode_layout.addWidget(QLabel("Search mode:"))
+        self.assistant_mode_combo = QComboBox()
+        self.assistant_mode_combo.addItem("📝 Commitments & Records", "commitments")
+        self.assistant_mode_combo.addItem("📄 Uploaded Documents", "documents")
+        self.assistant_mode_combo.addItem("🔍 Both (Hybrid)", "hybrid")
+        self.assistant_mode_combo.setCurrentIndex(0)
+        mode_layout.addWidget(self.assistant_mode_combo)
+        mode_layout.addStretch()
+        layout.addLayout(mode_layout)
+        
         self.assistant_input = QTextEdit()
         self.assistant_input.setPlaceholderText("Capture a commitment or ask: What am I waiting for?")
+        self.assistant_input.setMaximumHeight(100)
         layout.addWidget(self.assistant_input)
+        
         controls = QHBoxLayout()
         send = QPushButton("Remember this")
         send.setObjectName("primary")
@@ -1251,10 +1162,14 @@ class PactlynWindow(QMainWindow):
         controls.addWidget(ask)
         controls.addStretch()
         layout.addLayout(controls)
-        self.assistant_output = QTextEdit()
+        
+        self.assistant_output = QTextBrowser()
         self.assistant_output.setReadOnly(True)
         self.assistant_output.setPlaceholderText("Grounded answers cite local source records here.")
+        self.assistant_output.setOpenExternalLinks(False)
+        self.assistant_output.anchorClicked.connect(self._assistant_citation_clicked)
         layout.addWidget(self.assistant_output, 1)
+        
         page.setLayout(layout)
         return page
 
@@ -1280,10 +1195,6 @@ class PactlynWindow(QMainWindow):
         self.theme_combo.setCurrentIndex(1 if self.theme_mode == "dark" else 0)
         self.theme_combo.currentIndexChanged.connect(self._on_theme_combo_changed)
         appearance_form.addRow("Color Theme:", self.theme_combo)
-        self.sidebar_visible_cb = QCheckBox("Show navigation sidebar (toggle with sidebar icon or Ctrl+B)")
-        self.sidebar_visible_cb.setChecked(self.sidebar_visible)
-        self.sidebar_visible_cb.toggled.connect(self._set_sidebar_open)
-        appearance_form.addRow("Sidebar:", self.sidebar_visible_cb)
         general_layout.addWidget(appearance_group)
 
         general_layout.addWidget(
@@ -1318,6 +1229,12 @@ class PactlynWindow(QMainWindow):
         self.email_settings_page.settingsSaved.connect(self._email_settings_saved)
         self.email_settings_page.syncRequested.connect(self._sync_email)
         tabs.addTab(self.email_settings_page, "Email")
+        
+        # AI Models Settings tab
+        self.model_settings_page = AIModelsSettingsPage(self.container)
+        self.model_settings_page.modelChanged.connect(self._model_settings_changed)
+        tabs.addTab(self.model_settings_page, "AI Models")
+        
         layout.addWidget(tabs, 1)
         page.setLayout(layout)
         return page
@@ -1365,31 +1282,11 @@ class PactlynWindow(QMainWindow):
         self.pages.setCurrentIndex(index)
         for current, button in enumerate(self.nav):
             button.setChecked(current == index)
-        if index == 6 and hasattr(self, "email_settings_page"):
+        if index == 7 and hasattr(self, "email_settings_page"):
             self.email_settings_page.refresh()
+        if index == 6 and hasattr(self, "documents_page"):
+            self.documents_page.refresh_list()
         self._refresh()
-
-    def _memory_navigate(self, page: str, entity_id: str) -> None:
-        if page == "assistant":
-            self._navigate(5)
-            return
-        if page == "commitments":
-            self._navigate(1)
-            for index in range(self.commitment_list.count()):
-                item = self.commitment_list.item(index)
-                if item.data(Qt.ItemDataRole.UserRole) == entity_id:
-                    self.commitment_list.setCurrentItem(item)
-                    self._refresh_related()
-                    break
-            return
-        if page == "email":
-            self._navigate(3)
-            for index in range(self.email_thread_list.count()):
-                item = self.email_thread_list.item(index)
-                if item.data(Qt.ItemDataRole.UserRole) == entity_id:
-                    self.email_thread_list.setCurrentItem(item)
-                    self._show_email_thread(item)
-                    break
 
     def _capture(self, initial: str = "") -> None:
         if initial.strip():
@@ -1441,23 +1338,6 @@ class PactlynWindow(QMainWindow):
         self.connectivity_worker = worker
         worker.start()
 
-    def _run_startup_migrations(self) -> None:
-        """Run background data-quality migrations once after the UI is ready."""
-        if self._startup_migration_worker and self._startup_migration_worker.isRunning():
-            return
-        worker = StartupMigrationWorker(self.container)
-        worker.finished.connect(lambda: self._startup_migration_done(worker))
-        self._startup_migration_worker = worker
-        worker.start()
-
-    def _startup_migration_done(self, worker: StartupMigrationWorker) -> None:
-        worker.deleteLater()
-        if self._startup_migration_worker is worker:
-            self._startup_migration_worker = None
-        # Refresh the memory page so any newly created personal facts appear.
-        if hasattr(self, "memory_page"):
-            self.memory_page.refresh()
-
     def _connectivity_finished(self, worker: ConnectivityWorker, state: ConnectivityState) -> None:
         was_offline = self.connectivity.state == ConnectivityState.OFFLINE
         dot = "● " if state == ConnectivityState.ONLINE else "○ "
@@ -1476,12 +1356,25 @@ class PactlynWindow(QMainWindow):
         question = self.assistant_input.toPlainText().strip()
         if not question or (self.assistant_worker and self.assistant_worker.isRunning()):
             return
-        self.assistant_output.setPlainText("Searching local memory and commitments…")
-        worker = AssistantWorker(self.container, question)
-        worker.finished.connect(lambda answer: self._assistant_finished(worker, answer))
-        worker.failed.connect(lambda error: self._assistant_failed(worker, error))
-        self.assistant_worker = worker
-        worker.start()
+        
+        mode = self.assistant_mode_combo.currentData()
+        
+        if mode == "documents" or mode == "hybrid":
+            # Use document RAG
+            self.assistant_output.setPlainText("Searching local documents and memory…")
+            worker = DocumentAssistantWorker(self.container, question)
+            worker.finished.connect(lambda answer: self._document_assistant_finished(worker, answer))
+            worker.failed.connect(lambda error: self._assistant_failed(worker, error))
+            self.assistant_worker = worker
+            worker.start()
+        else:
+            # Use original commitment RAG
+            self.assistant_output.setPlainText("Searching local memory and commitments…")
+            worker = AssistantWorker(self.container, question)
+            worker.finished.connect(lambda answer: self._assistant_finished(worker, answer))
+            worker.failed.connect(lambda error: self._assistant_failed(worker, error))
+            self.assistant_worker = worker
+            worker.start()
 
     def _assistant_finished(self, worker: AssistantWorker, answer: Any) -> None:
         evidence = "\n\nSources:\n" + "\n".join(
@@ -1497,6 +1390,132 @@ class PactlynWindow(QMainWindow):
         worker.deleteLater()
         if self.assistant_worker is worker:
             self.assistant_worker = None
+
+    def _document_assistant_finished(self, worker: DocumentAssistantWorker, answer: DocumentGroundedAnswer) -> None:
+        """Handle document RAG answer with clickable citations."""
+        # Format answer with HTML for clickable citations
+        answer_html = self._format_document_answer(answer)
+        self.assistant_output.setHtml(answer_html)
+        
+        # Store citations for click handler
+        self._current_citations = {
+            f"citation_{i}": citation
+            for i, citation in enumerate(answer.citations)
+        }
+        
+        worker.deleteLater()
+        if self.assistant_worker is worker:
+            self.assistant_worker = None
+
+    def _format_document_answer(self, answer: DocumentGroundedAnswer) -> str:
+        """Format document answer with HTML citations and proper formatting."""
+        from html import escape
+        import re
+        
+        # Build HTML for the answer
+        html_parts = ["<div style='font-family: system-ui; line-height: 1.6;'>"]
+        
+        # Convert markdown formatting to HTML
+        answer_text = answer.answer
+        
+        # Convert **bold** to <strong>
+        answer_text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', answer_text)
+        
+        # Convert *italic* or _italic_ to <em>
+        answer_text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', answer_text)
+        answer_text = re.sub(r'_(.+?)_', r'<em>\1</em>', answer_text)
+        
+        # Convert bullet points (- item or * item) to proper HTML lists
+        lines = answer_text.split('\n')
+        in_list = False
+        formatted_lines = []
+        
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith('- ') or stripped.startswith('* '):
+                if not in_list:
+                    formatted_lines.append('<ul style="margin: 8px 0; padding-left: 24px;">')
+                    in_list = True
+                item_text = stripped[2:]  # Remove "- " or "* "
+                formatted_lines.append(f'<li>{item_text}</li>')
+            else:
+                if in_list:
+                    formatted_lines.append('</ul>')
+                    in_list = False
+                if stripped:
+                    formatted_lines.append(stripped)
+        
+        if in_list:
+            formatted_lines.append('</ul>')
+        
+        answer_text = ' '.join(formatted_lines)
+        
+        # Remove all [doc1][doc2] style citation markers from the text
+        answer_html = re.sub(r'\[doc\d+\]', '', answer_text)
+        html_parts.append(f"<p>{answer_html}</p>")
+        
+        # Add citations section - group by document
+        if answer.citations:
+            html_parts.append("<hr style='margin: 16px 0; border: none; border-top: 1px solid #e5e7eb;'>")
+            html_parts.append("<p style='font-weight: 600; margin-bottom: 8px;'>📄 Sources:</p>")
+            
+            # Group citations by document name
+            from collections import defaultdict
+            docs_map = defaultdict(list)
+            for i, citation in enumerate(answer.citations, start=1):
+                docs_map[citation.document_name].append((i, citation))
+            
+            # Display grouped by document
+            for doc_name, cites in docs_map.items():
+                pages = sorted(set(c.page_number for _, c in cites if c.page_number))
+                page_str = f"page{'s' if len(pages) > 1 else ''} {', '.join(map(str, pages))}" if pages else ""
+                
+                html_parts.append(
+                    f'<div style="margin-bottom: 8px;">'
+                    f'<strong>{escape(doc_name)}</strong>'
+                    f'{" (" + page_str + ")" if page_str else ""}'
+                    f'</div>'
+                )
+        
+        # Add commitment sources if present
+        if answer.commitment_evidence:
+            html_parts.append("<hr style='margin: 16px 0; border: none; border-top: 1px solid #e5e7eb;'>")
+            html_parts.append("<p style='font-weight: 600; margin-bottom: 8px;'>📝 Commitment Context:</p>")
+            html_parts.append("<ul style='margin: 0; padding-left: 20px;'>")
+            
+            for item in answer.commitment_evidence:
+                html_parts.append(
+                    f'<li style="margin-bottom: 6px; color: #6b7280;">'
+                    f'{escape(item.source_type)}/{escape(item.source_id)}'
+                    f'</li>'
+                )
+            
+            html_parts.append("</ul>")
+        
+        html_parts.append("</div>")
+        return "".join(html_parts)
+
+    def _assistant_citation_clicked(self, url: Any) -> None:
+        """Handle clicks on citation links - open document to specific page."""
+        from PySide6.QtCore import QUrl
+        
+        url_obj = QUrl(url) if not isinstance(url, QUrl) else url
+        citation_key = url_obj.path()
+        
+        if citation_key not in getattr(self, '_current_citations', {}):
+            return
+        
+        citation = self._current_citations[citation_key]
+        
+        # Navigate to documents page
+        self.main_tabs.setCurrentIndex(6)  # Documents tab
+        
+        # Open the document in the viewer
+        if hasattr(self, 'documents_page'):
+            self.documents_page.open_document_by_id(
+                citation.document_id,
+                page_number=citation.page_number,
+            )
 
     def _capture_finished(self, text: str, result: CaptureResult) -> None:
         if not result.candidates:
@@ -1629,14 +1648,12 @@ class PactlynWindow(QMainWindow):
                     )
                     thread_item.setData(Qt.ItemDataRole.UserRole, thread.id)
                     self.email_thread_list.addItem(thread_item)
+            if hasattr(self, "memory_list"):
+                self.memory_list.clear()
+                for memory in self.container.memories(session).list()[:50]:
+                    self.memory_list.addItem(f"{memory.kind.value} · {memory.content} · source: {memory.source_type}/{memory.source_id}")
         finally:
             session.close()
-        if (
-            hasattr(self, "memory_page")
-            and hasattr(self, "pages")
-            and self.pages.currentWidget() is self.memory_page
-        ):
-            self.memory_page.refresh()
 
     @staticmethod
     def _commitment_text(item: Any) -> str:
@@ -2005,6 +2022,11 @@ class PactlynWindow(QMainWindow):
         self._refresh()
         if hasattr(self, "email_settings_page"):
             self.email_settings_page.refresh_status()
+    
+    def _model_settings_changed(self) -> None:
+        """Handle AI model settings changes."""
+        # Model changes require application restart to take effect
+        pass
 
     def _sync_email(self, silent: bool = False) -> None:
         if self.email_sync_worker and self.email_sync_worker.isRunning():
@@ -2268,8 +2290,6 @@ class PactlynWindow(QMainWindow):
             self.connectivity_worker.wait(2000)
         if hasattr(self, "email_settings_page"):
             self.email_settings_page.shutdown()
-        if hasattr(self, "memory_page"):
-            self.memory_page.shutdown()
         self._timer.stop()
         self._connectivity_timer.stop()
         self._inbound_timer.stop()

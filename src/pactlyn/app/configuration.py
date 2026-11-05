@@ -20,8 +20,8 @@ class Settings(BaseSettings):
 
     data_dir: Path = Field(default=Path("~/.local/share/pactlyn"))
     ollama_url: str = "http://127.0.0.1:11434"
-    ollama_model: str = "qwen2.5:7b"
-    ollama_embedding_model: str = "nomic-embed-text:latest"
+    ollama_model: str = "llama3.2:3b"
+    ollama_embedding_model: str = "nomic-embed-text"
     openrouter_model: str | None = None
     openrouter_enabled: bool = False
     resend_from: str | None = None
