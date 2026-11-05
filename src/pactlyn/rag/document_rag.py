@@ -358,7 +358,7 @@ class DocumentRAGService:
         logger.info(f"FULL CONTEXT:\n{full_context}\n---END CONTEXT---")
         
         try:
-            answer = await asyncio.wait_for(provider.complete(messages), timeout=60)
+            answer = await asyncio.wait_for(provider.complete(messages), timeout=300)
         except (LLMUnavailable, TimeoutError) as exc:
             raise LLMUnavailable(f"Local document answer failed: {exc}") from exc
         
