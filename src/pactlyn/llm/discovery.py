@@ -14,7 +14,6 @@ from enum import StrEnum
 from typing import Any
 
 import httpx
-
 from pactlyn.llm.interfaces import LLMUnavailable
 
 

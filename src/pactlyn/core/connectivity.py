@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import enum
 from collections.abc import Callable
+from enum import StrEnum
 
 import httpx
 
 
-class ConnectivityState(enum.StrEnum):
+class ConnectivityState(StrEnum):
     ONLINE = "online"
     OFFLINE = "offline"
     RESUMING = "resuming"

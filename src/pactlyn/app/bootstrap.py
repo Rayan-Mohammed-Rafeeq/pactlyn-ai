@@ -6,7 +6,6 @@ from datetime import UTC, datetime
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
-
 from pactlyn.app.configuration import Settings
 from pactlyn.core.commitments import CommitmentService
 from pactlyn.email.composer import EmailComposer

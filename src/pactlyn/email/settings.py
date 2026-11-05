@@ -6,7 +6,6 @@ from enum import StrEnum
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
 from pactlyn.app.configuration import Settings
 from pactlyn.email.addresses import (
     is_public_mailbox_domain,
