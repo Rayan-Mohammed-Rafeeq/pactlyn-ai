@@ -786,130 +786,112 @@ graph TB
 
 ## Quick Start
 
-### Installation
+> **Platform**: Linux (Ubuntu 22.04+ / Debian 12+ recommended). macOS and Windows support is planned.
 
-**Prerequisites:**
-- Linux (Ubuntu/Debian recommended)
-- Python 3.11 or higher
-- Ollama (for local AI models)
+---
 
-**Step 1: Install Dependencies**
+### 🟢 Regular Users — One-time install
 
-```bash
-# Install Python and system packages
-sudo apt install python3 python3-venv
+This is the recommended path. After these steps Pactlyn will appear in your app menu and you can launch it by clicking its icon — no terminal needed day-to-day.
 
-# Install uv (fast Python package manager)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-**Step 2: Install Ollama & Models**
+**Step 1 — Install Ollama and download AI models** (~2.3 GB, one-time)
 
 ```bash
 # Install Ollama
 curl -fsSL https://ollama.com/install.sh | sh
 
-# Download recommended models (lightweight, fast)
-ollama pull qwen2.5:3b        # Chat model (2GB)
-ollama pull nomic-embed-text  # Embedding model (274MB)
-
-# Start Ollama server
-ollama serve
+# Pull the two models Pactlyn needs
+ollama pull llama3.2:3b        # Chat model  (~2 GB)
+ollama pull nomic-embed-text   # Embedding model (~274 MB)
 ```
 
-**Step 3: Install & Run Pactlyn**
+> Ollama runs a small local server that keeps your data private. It starts automatically on login after installation.
+
+**Step 2 — Get the Pactlyn source** (until a packaged installer is available)
 
 ```bash
-# Clone and setup
+git clone https://github.com/yourusername/pactlyn-ai.git
+cd pactlyn-ai
+```
+
+> If you don't have `git`, install it first: `sudo apt install git`
+
+**Step 3 — Run the installer script**
+
+```bash
+./packaging/linux/install-user.sh
+```
+
+This single script:
+- Installs `uv` (fast Python package manager) if you don't already have it
+- Installs the `pactlyn` command into `~/.local/bin`
+- Sets up the database automatically
+- Adds **Pactlyn** to your application menu (search for it in your launcher)
+
+That's it. Open your app menu, search **Pactlyn**, and launch it.
+
+> **Every subsequent launch**: just click the icon, or type `pactlyn` in a terminal.  
+> Make sure Ollama is running (`ollama serve`) if it isn't already.
+
+---
+
+### 🔵 Developers — Run from source
+
+If you want to contribute or run the latest unreleased code:
+
+```bash
 git clone https://github.com/yourusername/pactlyn-ai.git
 cd pactlyn-ai
 
-# Install with development dependencies
+# Install all dependencies (including dev tools)
 uv sync --extra dev
 
-# Initialize database
+# Apply database migrations
 uv run alembic upgrade head
 
-# Launch Pactlyn
+# Launch
 uv run pactlyn
 ```
+
+---
 
 ### First Launch
 
-1. **Configure Models** (Settings → AI Models):
-   - Select your chat model: `qwen2.5:3b`
-   - Select embedding model: `nomic-embed-text`
-   - Models auto-discovered, preferences auto-saved
+1. **AI Models** (Settings → AI Models):
+   - Pactlyn auto-discovers models running in Ollama
+   - Confirm `llama3.2:3b` is selected as chat model
+   - Confirm `nomic-embed-text` is selected as embedding model
 
-2. **Try Your First Commitment**:
-   - Go to Home page
-   - Type: "I need to submit my project report by Friday 5pm"
-   - Click "Capture" → Review extracted details → Save
-   - Done! Pactlyn will remind you before the deadline
+2. **Capture your first commitment** (Home page):
+   - Type: `I need to submit my project report by Friday 5pm`
+   - Click **Capture** → review the extracted details → click **Save**
+   - Pactlyn will remind you before the deadline
 
-3. **Ask Questions**:
-   - Go to Assistant page
-   - Ask: "What am I waiting for?"
-   - Get AI-powered answers from your stored commitments
+3. **Ask a question** (Assistant page):
+   - Type: `What am I waiting for?`
+   - Get an AI answer sourced entirely from your local data
 
-### Testing Your Installation
+### Verify Everything Works
 
-**Quick 5-minute test** to verify everything works:
+| What to check | Expected result |
+|---|---|
+| Settings → AI Models → Status | "Connected" |
+| Home → type a task → Capture | Review dialog appears with extracted person + date |
+| Assistant → ask a question | Answer appears with `[source:…]` citations |
+| Documents → upload a PDF → Assistant | Answer appears with `📄 Sources:` section |
+| Memory page | Entries visible from your captures |
 
-```bash
-# Keep Ollama running in terminal 1
-ollama serve
+**Expected response times** (llama3.2:3b on a modern CPU):
+- Commitment capture: 10–30 s
+- Assistant Q&A: 15–45 s
+- Document Q&A: 20–60 s
 
-# Run Pactlyn in terminal 2
-uv run pactlyn
-```
+**Common issues:**
+- *"Checking…" stuck in model settings* → run `ollama serve` in a terminal
+- *Timeout errors* → try a smaller model (`ollama pull qwen2.5:0.5b`)
+- *Qdrant lock error on startup* → delete `~/.local/share/pactlyn/qdrant/.lock`
 
-**Test Checklist**:
-
-1. ✅ **Model Discovery** (Settings → AI Models):
-   - Status shows "Connected"
-   - Models list populated
-   - No "Checking..." stuck state
-
-2. ✅ **Capture Commitment** (Home page):
-   - Type: "Call John about budget by Tuesday 3pm"
-   - Click "Capture" → Wait 10-30 seconds
-   - Review dialog shows extracted: Person (John), Deadline (Tuesday 3pm)
-   - Click "Save" → Appears in Commitments page
-
-3. ✅ **Query Assistant** (Assistant page):
-   - Type: "What do I need to do this week?"
-   - Click "Ask local context" → Wait 20-60 seconds
-   - Answer appears with clean formatting (bold, bullets work)
-   - **No [1], [2], [doc1] brackets in answer text**
-
-4. ✅ **Document Q&A** (Documents page):
-   - Upload any text-based PDF
-   - Go to Assistant → Change mode to "Uploaded Documents"
-   - Ask: "Summarize this document"
-   - Answer shows with **"📄 Sources:"** section below
-   - Citations show document name + page numbers
-
-5. ✅ **Verify Memory** (Memory page):
-   - See episodic entries from your captures
-   - Shows extracted facts and relationships
-
-**Expected Performance** (qwen3:4b on 4GB GPU):
-- Commitment capture: 10-30 seconds
-- Document Q&A: 20-60 seconds
-- Assistant queries: 15-45 seconds
-
-**If tests fail**, see [Testing Checklist](docs/testing-checklist.md) for troubleshooting:
-- "Checking..." stuck → Restart Ollama
-- Timeout errors → Switch to faster model
-- Qdrant lock → Remove lock files
-- Brackets still showing → Restart Pactlyn
-
-**Full testing guide**: [docs/testing-checklist.md](docs/testing-checklist.md)
-- Comprehensive tests (20+ scenarios)
-- Performance benchmarks
-- Troubleshooting common issues
-- Automated test suite instructions
+Full troubleshooting guide: [docs/testing-checklist.md](docs/testing-checklist.md)
 
 ---
 
